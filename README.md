@@ -256,9 +256,80 @@ How do we send data from the server to client, or client to server? We've got a 
 - `event_name` (string): name of the event. Must match server subscription to trigger
 - `data` (table): table of data to send to the server. Only supports primitive data types like numbers, strings, and tables, so make sure to convert from a class type into a serializable format beforehand.
 
+These are all global methods to send data. Now let's look at receiving data.
+
+Here's a small code snippet that demonstrates a "ping pong" sort of effect. 
+
+```lua
+-- Serverside
+TestPingPongServer = class()
+function TestPingPongServer:__init()
+
+    Network:Subscribe("Pong", function(args) self:Pong(args) end)
+
+    Events:Subscribe("ClientReady", function(args) self:ClientReady(args) end)
+end
+
+-- Event fired by NAPI when a player finishes loading all their scripts after connecting
+function TestPingPongServer:ClientReady(args)
+    Network:Send("Ping", args.player, {
+        ping_message = "hello from server!"
+    })
+end
+
+-- Network event receiver for when a client calls "Pong"
+function TestPingPongServer:Pong(args)
+    print(string.format("Pong! Message from %s: %s", args.player:GetName(), args.pong_message))
+end
+
+-- Singleton
+TestPingPongServer = TestPingPongServer()
+
+-------------
+-- Clientside
+TestPingPongClient = class()
+function TestPingPongClient:__init()
+    Network:Subscribe("Ping", function(args) self:Ping(args) end)
+end
+
+function TestPingPongClient:Ping(args)
+    print(string.format("Ping! Message: %s", args.ping_message))
+
+    Network:Send("Pong", {
+        pong_message = "hello from client!"
+    })
+end
+
+-- Singleton
+TestPingPongClient = TestPingPongClient()
+```
+There's a lot going on here in this example, so let's break it down.
+
+The serverside code creates a singleton class and adds two subscriptions in the initialization. These subscriptions are hooked to specific event names that are specified as the first arguments. 
+
+`Network:Subscribe(event_name, callback)` subscribes to a network event that is called by clients. When it is called, the callback function is triggered. The callback includes a table of data that includes the `player` (the Player instance of the client that sent the data) and any data that the player also sent.
+
+`Events:Subscribe(event_name, callback)` works similarly, except that it only works on either serverside or clientside. In this case, we're subscribing to the `ClientReady` event that NAPI calls when a client has finished loading all their scripts and is ready to be sent data.
+
+The code execution goes something like this:
+1. Server loads its scripts and creates the `TestPingPongServer` singleton.
+2. The `TestPingPongServer` singleton initializes and subscribes to the two events.
+3. A client connects and downloads and executes all scripts. This includes the setup of the singleton, as well as the event subscriptions.
+4. After the client loads all scripts, the server receives the `ClientReady` event. 
+5. Inside the callback, the server triggers the network event on the client.
+6. The client receives the network event along with the data passed, and then calls another network event to the server with different data.
+7. The server receives this data and prints it accordingly.
+
+The code flow is very similar to default RedM/FiveM networking events since NAPI uses it internally. It just has a little bit of a different syntax than you're used to with some extra functionality. It's important that you understand how events work as they are a key part of any gamemode.
+
+## Closing Remarks
+NAPI isn't perfect by any means. There are certainly a lot of improvements that could be made and plenty of great things that could be added. The documentation here is very lacking, so it will probably take a lot of looking through NAPI to understand what is available and how to use it. 
+
+## Contact Us
+Feel free to contact us (Paradigm - Lord Farquaad or Dev_34) on our [Discord here](https://discord.gg/XAQ34Td). We'll be happy to answer any questions you might have about NAPI or provide you relevant examples on how to do certain things. Or if you'd like to collaborate on a project, let us know too! We always have too many ideas and not enough time.
 
 ## Can this be used for FiveM?
-Absolutely. You just need to change the native references and logic within NAPI. After that, all your scripts will work the exact same as they do in RedM, without any other porting needed. NAPI was actually written for FiveM, but we switched to RedM once it was announced. In the future, it could be one unified solution for writing gamemodes for both FiveM and RedM.
+Absolutely. You just need to change the native references and logic within NAPI. After that, all your scripts will work the exact same as they do in RedM, without any other porting needed. NAPI was originally written for FiveM, but we switched to RedM once it was announced. In the future, it could be one unified solution for writing gamemodes for both FiveM and RedM.
 
 ## Credits
-Huge props to the developers of FiveM and RedM, because without them, this wouldn't be possible. And huge thanks to the RedM/FiveM community as well, because much of the code within NAPI is based on snippets posted or existing open source scripts.
+Huge props to the developers of FiveM and RedM, because without them, this wouldn't be possible. And huge thanks to the RedM/FiveM community as well, because much of the code within NAPI is based on snippets posted or existing open source scripts. Some specific files within NAPI reference where specific code snippets were taken from - all credit for those go to the original authors.
