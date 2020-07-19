@@ -234,6 +234,13 @@ end)
 ```
 In the above snippet, we are now getting the position of the ped right when it dies, and printing it to the console! Wasn't that easy? Now we can do all sorts of other stuff, like add points to our counter, or spawn something else at its position.
 
+If you'd like to create your own network events, it's super easy to do!
+
+#### `Events:Fire(event_name, data)`
+- Fires an event across all modules on either server or clientside, depending on where it was called
+- `event_name` (string): name of the event. Must match the event subscription to trigger
+- `data` (table, optional): table of data that you want to send with the event.
+
 ### Network Events
 How do we send data from the server to client, or client to server? We've got a few different solutions for that.
 
