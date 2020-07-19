@@ -26,23 +26,6 @@ Citizen.CreateThread(function()
         ]]
 
         if IsClient then
-            Citizen.CreateThread(function()
-                -- disables base-game peds spawning
-                SetPedNonCreationArea(-9999.0, -9999.0, -9999.0, 9999.0, 9999.0, 9999.0)
-
-                while true do
-                    Wait(0)
-                    --SetPedDensityMultiplierThisFrame(0) -- native does not exist
-                    SetScenarioPedDensityMultiplierThisFrame(0.0)
-                    --SetScenarioPedDensityMultiplierThisFrame(0)
-                    SetVehicleDensityMultiplierThisFrame(0)
-                    SetRandomVehicleDensityMultiplierThisFrame(0)
-                    SetParkedVehicleDensityMultiplierThisFrame(0)
-                end
-            end)
-        end
-
-        if IsClient then
             Wait(6000)
         end
 
