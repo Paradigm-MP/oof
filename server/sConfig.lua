@@ -11,6 +11,6 @@ NAPI_Config =
         WaitingInQueue = "Hey there, %s. Sorry to inform you, but the server is full! Hang on for a few moments while we get you connected.\n%s\n" ..
             "Your position in queue: %s",
         Connected = "Connected! Welcome!",
-        LoadingIcon = "🔻"
+        LoadingIcon = "🔥"
     }
 }

@@ -48,31 +48,6 @@ function ActorModelEnum:__init()
     self.Test = 99
     self:SetDescription(self.Test, "Test")
 
-    -- "U_M_M_SDEXOTICSSHOPKEEPER_01" "CS_MysteriousStranger" "CS_EXOTICCOLLECTOR"
-    -- "A_C_Buffalo_Tatanka_01" the boss buffalo
-    -- "A_C_Buffalo_01" normal buffalo
-    -- "A_C_BoarLegendary_01" a huge boar
-    -- "A_C_LionMangy_01" a super fast lion (you're not escaping him)
-    -- "A_C_Bull_01" a bull
-    -- "A_C_Panther_01" a panther
-    -- "A_C_Wolf" a wolf! doggies
-    -- snakes: "A_C_Snake_01" "A_C_SnakeBlackTailRattle_01" "A_C_SnakeFerDeLance_01" "A_C_SnakeRedBoa_01"
-    -- "CS_Magnifico"
-    -- "CS_MysteriousStranger" guy with all grey outfit and grey tophat
-    -- "U_F_M_RhdNudeWoman_01" completely nude woman
-    -- "CS_crackpotRobot" an actual fucking robot
-    -- "CS_FORMYARTBIGWOMAN" a fat woman
-    -- "CS_SwampFreak" basically looks like a zombie or monster
-    -- "CS_Vampire" vampire
-    -- "U_M_M_ValPoopingMan_01" a guy with his pants down and dick&balls out
-    -- "RE_RALLY_MALES_01" KKK in black?
-    -- "RE_RALLYDISPUTE_MALES_01" KKK !!!!!!
-    -- "RE_RALLYSETUP_MALES_01" more KKK !!!!!!
-    -- "RE_SAVAGEAFTERMATH_MALES_01" something between a skeleton and a zombie
-    -- "RE_SAVAGEAFTERMATH_FEMALES_01" scalped woman with 4 arrows stuck in her LOL
-    -- "RE_NAKEDSWIMMER_MALES_01" totally naked man
-    -- "RE_DEADBODIES_MALES_01" guy with a disguise on
-
     if IsClient then
         self.model_hashes = {
             [self.Test] = GetHashKey("CS_crackpotRobot"),

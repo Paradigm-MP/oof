@@ -11,6 +11,8 @@ Want to make a cool server in RedM, but don't want to deal with all the messy na
 
 Our goal with NAPI is to abstract away all of the messiness included with calling natives directly and wrap it all up in a nice object-oriented package for you to use. It helps to promote better coding style and keeps your code more organized. Plus, NAPI supports inheritance (even multiple inheritance) so you can reuse logic from other classes.
 
+If you'd like an example of what this framework is capable of, check out our "Wave Survival" gamemode on RedM. It was created entirely using this framework.
+
 ## Getting Started
 This getting started guide assumes that you have experience with installing server resources and editing configuration files.
 
