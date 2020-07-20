@@ -19,21 +19,6 @@ function LocalPlayer:__init()
 end
 
 function LocalPlayer:__postLoad()
-    --print("entered LocalPlayer:__postLoad")
-    LocalPlayer:ConfigureBehaviors()
-end
-
-function LocalPlayer:ConfigureBehaviors()
-    self.behaviors = {}
-
-    -- taint damage with encoded localplayer identity
-    -- self.behaviors.BulletDetectionLocalPlayerBehavior = BulletDetectionLocalPlayerBehavior()
-
-    self.behaviors.DownedLocalPlayerBehavior = DownedLocalPlayerBehavior() -- handles downing & undowning the LocalPlayer
-    self.behaviors.RestrictAreaLocalPlayerBehavior = RestrictAreaLocalPlayerBehavior() -- handles map restriction
-    self.behaviors.ReviveLocalPlayerBehavior = ReviveLocalPlayerBehavior() -- handles player reviving
-    self.behaviors.ArmorLocalPlayerBehavior = ArmorLocalPlayerBehavior()
-    --self.behaviors.ReportEnemyInactivityLocalPlayerBehavior = ReportEnemyInactivityLocalPlayerBehavior() -- handles player reviving
 end
 
 function LocalPlayer:MonitorHealthChanges()
