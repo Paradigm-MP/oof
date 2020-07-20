@@ -85,19 +85,19 @@ if you see those two messages, congrats! You've successfully installed NAPI and 
 ### Essential modules
 There are some modules that are *essential* to working with NAPI. Because NAPI isn't particularly compatible with existing resources, we've created some modules to help get you started. Keep in mind that it's encouraged that you edit and extend the capabilities of these modules according to your needs. We created these out of necessity for our gamemode.
 
-#### [UI Module]()
+#### [UI Module](https://github.com/Paradigm-MP/napi-ui)
 The UI module is probably the most essential module if you plan on creating any sort of custom UI. Internally, the UI module uses the NUI event system to manipulate and create new UI elements. You won't have to touch any of that code. The UI module makes it very easy to create as many UI elements as you want and also allows you to set the ordering depending on your needs. 
 
-#### [Chat Module]()
+#### [Chat Module](https://github.com/Paradigm-MP/napi-chat)
 The chat module is another very essential module. Internally, it uses the UI module, so you'll have to have the UI module installed before using the chat module. This module gives you all the functionality you'd expect from a chat resource. It's still a somewhat work-in-progress as it was originally ported from another game, but it works fairly well most of the time.
 
-#### [Events Module]()
+#### [Events Module](https://github.com/Paradigm-MP/napi-defaultevents)
 The events module includes a lot of default events that you'll probably want to subscribe to and use. Some of these events include when a player dies, a ped dies, and ped spawn events. Additionally, it includes events that fire every second, minute, and hour for convenience.
 
 #### [AntiCheat Module]()
 This is an imcomplete module that serves as a base for anticheat capabilities for your server. Currently it only checks if a client illegally spawned an object (i.e. didn't use NAPI). However, similar checks are possible for spawning peds as well. Speedhack detection can also be added. In terms of protecting sensitive variables and event names, we also have a solution for that that we will release in the future. However, for the time being, you could edit our network event layer to modify the event names in case you are worried about that.
 
-#### [Blackscreen Module]()
+#### [Blackscreen Module](https://github.com/Paradigm-MP/napi-blackscreen)
 This is a very simple module that simply allows you to make the screen fade or cut to black, depending on the arguments you supply. It's important to use something like this so that the black screen overlays over all existing UI and game elements. It's also a great script for learning how the class and event systems work in NAPI.
 
 The installation for each module is very similar, but some have dependencies of others, so make sure to add them in the proper order in the fxmanifest.
