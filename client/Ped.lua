@@ -381,6 +381,14 @@ function Ped:SetToRagdoll(time)
     SetPedToRagdoll(self.ped_id, time, time or 1000, 0, true, true, false)
 end
 
+function Ped:IsRagdoll()
+    return IsPedRagdoll(self.ped_id)
+end
+
+function Ped:ResetRagdollTimer()
+    ResetPedRagdollTimer(self.ped_id)
+end
+
 function Ped:InVehicle()
     return IsPedInAnyVehicle(self.ped_id, false)
 end
