@@ -378,7 +378,7 @@ end
     Makes ped ragdoll for time in ms
 ]]
 function Ped:SetToRagdoll(time)
-    SetPedToRagdoll(self.ped_id, time, 1000, 0, true, true, false)
+    SetPedToRagdoll(self.ped_id, time, time or 1000, 0, true, true, false)
 end
 
 function Ped:InVehicle()
