@@ -53,7 +53,7 @@ gamemode-name
 fxmanifest.lua
 ```
 
-Each module can be thought of like what you would usually see in a normal RedM resource. It has some purpose that it carries out, and might interact with other scripts. For example, the [UI module]() is an essential part of every server that uses NAPI. It wraps the default NUI system into a nice class based and NAPI event based system and makes it easy to do what you want.
+Each module can be thought of like what you would usually see in a normal RedM resource. It has some purpose that it carries out, and might interact with other scripts. For example, the [UI module](https://github.com/Paradigm-MP/napi-ui) is an essential part of every server that uses NAPI. It wraps the default NUI system into a nice class based and NAPI event based system and makes it easy to do what you want.
 
 We separate each module into three types of Lua files: server, client, and shared. The files within `server` are files that only the server has access to; `client` files are files that only the clients have access to. Files within `shared` are files that both the server and client can access, such as shared classes, data structures, and config files.
 
