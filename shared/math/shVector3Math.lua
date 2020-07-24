@@ -22,4 +22,9 @@ function Vector3Math:RotationToDirection(rotation)
 	return vector3(direction.x, direction.y, direction.z)
 end
 
+function Vector3Math:Lerp(a, b, factor)
+	local diff = b - a
+	return a + factor * diff
+end
+
 Vector3Math = Vector3Math()

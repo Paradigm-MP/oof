@@ -5,6 +5,20 @@ function Camera:__init()
     self:FadeIn(0)
 end
 
+-- Interpolates between two positions over duration ms
+function Camera:InterpolateBetween(pos1, pos2, rot1, rot2, duration)
+    assert(self.freecam == nil, "cannot call Camera:InterpolateBetween multiple times without calling Camera:Reset first")
+    
+    ClearFocus()
+    local from_cam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", pos1.x, pos1.y, pos1.z, rot1.x, rot1.y, rot1.z, self:GetFOV())
+    local to_cam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", pos2.x, pos2.y, pos2.z, rot2.x, rot2.y, rot2.z, self:GetFOV())
+
+    SetCamActiveWithInterp(to_cam, from_cam, duration)
+    RenderScriptCams(true, false, 0, true, false, true)
+    SetCamAffectsAiming(from_cam, false)
+    SetCamAffectsAiming(to_cam, false)
+end
+
 function Camera:DetachFromPlayer()
     assert(self.freecam == nil, "cannot call Camera:DetachFromPlayer multiple times without calling Camera:Reset first")
     
@@ -37,6 +51,10 @@ end
 
 function Camera:GetFOV()
     return GetGameplayCamFov()
+end
+
+function Camera:PointAtCoord(pos)
+    PointCamAtCoord(self:GetCurrentCam(), pos.x, pos.y, pos.z)
 end
 
 function Camera:SetPosition(pos)
