@@ -7,20 +7,24 @@ end
 
 -- Interpolates between two positions over duration ms
 function Camera:InterpolateBetween(pos1, pos2, rot1, rot2, duration)
-    assert(self.freecam == nil, "cannot call Camera:InterpolateBetween multiple times without calling Camera:Reset first")
+    assert(self.freecam == nil 
+    and self.from_cam == nil
+    and self.to_cam == nil, "cannot call Camera:InterpolateBetween multiple times without calling Camera:Reset first")
     
     ClearFocus()
-    local from_cam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", pos1.x, pos1.y, pos1.z, rot1.x, rot1.y, rot1.z, self:GetFOV())
-    local to_cam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", pos2.x, pos2.y, pos2.z, rot2.x, rot2.y, rot2.z, self:GetFOV())
+    self.from_cam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", pos1.x, pos1.y, pos1.z, rot1.x, rot1.y, rot1.z, self:GetFOV())
+    self.to_cam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", pos2.x, pos2.y, pos2.z, rot2.x, rot2.y, rot2.z, self:GetFOV())
 
-    SetCamActiveWithInterp(to_cam, from_cam, duration)
+    SetCamActiveWithInterp(self.to_cam, self.from_cam, duration)
     RenderScriptCams(true, false, 0, true, false, true)
-    SetCamAffectsAiming(from_cam, false)
-    SetCamAffectsAiming(to_cam, false)
+    SetCamAffectsAiming(self.from_cam, false)
+    SetCamAffectsAiming(self.to_cam, false)
 end
 
 function Camera:DetachFromPlayer()
-    assert(self.freecam == nil, "cannot call Camera:DetachFromPlayer multiple times without calling Camera:Reset first")
+    assert(self.freecam == nil 
+    and self.from_cam == nil
+    and self.to_cam == nil, "cannot call Camera:DetachFromPlayer multiple times without calling Camera:Reset first")
     
     ClearFocus()
     self.freecam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", LocalPlayer:GetPosition(), 0, 0, 0, self:GetFOV())
@@ -46,6 +50,10 @@ function Camera:Reset()
     ClearFocus()
     RenderScriptCams(false, false, 0, true, false)
     DestroyCam(self.freecam, false)
+    DestroyCam(self.from_cam, false)
+    DestroyCam(self.to_cam, false)
+    self.from_cam = nil
+    self.to_cam = nil
     self.freecam = nil
 end
 
