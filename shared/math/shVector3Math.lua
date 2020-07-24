@@ -27,4 +27,8 @@ function Vector3Math:Lerp(a, b, factor)
 	return a + factor * diff
 end
 
+function Vector3Math:Length(a)
+	return math.sqrt(a.x * a.x + a.y * a.y + a.z * a.z)
+end
+
 Vector3Math = Vector3Math()
