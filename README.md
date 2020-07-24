@@ -33,10 +33,13 @@ Your core gamemode resource layout should look something like this:
 gamemode-name
 --\ napi
     --\ server
+        -- sNetwork.lua
+        -- sPlayer.lua
+        -- etc...
+    --\ client
         -- AssetRequester.lua
         -- Camera.lua
         -- etc...
-    --\ client
     --\ shared
 --\ module-name
     --\ server
