@@ -350,3 +350,7 @@ end
 function Entity:GetPedBonePositionPerformance(bone_enum)
     return GetWorldPositionOfEntityBone(self.entity, GetEntityBoneIndexByName(self.entity, PedBoneEnum:MapToBoneName(bone_enum)))
 end
+
+function Entity:IsInWater()
+    return IsEntityInWater(self.entity)
+end
