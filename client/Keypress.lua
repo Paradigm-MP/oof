@@ -36,8 +36,9 @@ function KeyPress:CheckForPressedKeys()
                     Events:Fire('KeyUp', {key = key})
                 elseif IsControlJustPressed(0, key) or IsControlJustPressed(1, key) or IsControlJustPressed(2, key) then
                     Events:Fire('KeyDown', {key = key})
+                elseif IsControlPressed(0, key) or IsControlPressed(1, key) or IsControlPressed(2, key) then
+                    Events:Fire('KeyPress', {key = key})
                 end
-
             end
             Citizen.Wait(1)
         end

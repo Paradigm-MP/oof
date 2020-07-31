@@ -26,8 +26,14 @@ function Camera:DetachFromPlayer()
     and self.from_cam == nil
     and self.to_cam == nil, "cannot call Camera:DetachFromPlayer multiple times without calling Camera:Reset first")
     
+    local pos = LocalPlayer:GetPosition()
+
     ClearFocus()
-    self.freecam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", LocalPlayer:GetPosition(), 0, 0, 0, self:GetFOV())
+    self.freecam = CreateCamWithParams(
+        "DEFAULT_SCRIPTED_CAMERA", 
+        pos.x, pos.y, pos.z, 
+        0, 0, 0, 
+        self:GetFOV())
     SetCamActive(self:GetCurrentCam(), true)
     RenderScriptCams(true, false, 0, true, false, true)
     SetCamAffectsAiming(self:GetCurrentCam(), false)

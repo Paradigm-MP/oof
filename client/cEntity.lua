@@ -203,6 +203,16 @@ function Entity:GetModel()
 end
 
 --[[
+    Sets the amount of physics damping per axis.
+
+    vertex: (number) ranges from 0-2
+    value: (number) amount of daming
+]]
+function Entity:SetDamping(vertex, value)
+    SetDamping(self.entity, vertex, value)
+end
+
+--[[
     Gets a position relative to the entity
     Offset values are relative to the entity.  
     x = left/right  
