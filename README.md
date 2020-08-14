@@ -137,7 +137,7 @@ local score_counter = Counter()
 ```
 In the above snippet, it creates a new `Counter` class and internally calls the `__init()` function, setting its `count` variable to 0. Now in order to increment our counter, we call:
 ```lua
-score_counter:Increment(1)
+score_counter:Increment(5)
 ```
 Now our counter's internal `count` variable is at 5. Isn't that cool? We can make as many counters as we want now, all counting independently.
 
