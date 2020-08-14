@@ -1,6 +1,18 @@
 Marker = class()
 
-MarkerTypes = {Box = 1857541051, Cylinder = -1795314153}
+-- Partially from here https://github.com/femga/rdr3_discoveries/blob/master/graphics/markers/marker_types.lua
+MarkerTypes = 
+{
+    Box = 1857541051, 
+    Cylinder = -1795314153,
+    Sphere = 0x50638AB9,
+    Ring = 0xEC032ADD,
+    Halo = 0x6903B113,
+    RaceCheckpoint = 0xE60FF3B9,
+    RaceFinish = 0x664669A6,
+    CanoePole = 0xE03A92AE,
+    Buoy = 0x751F27D6
+}
 
 --[[
     Creates a new marker in the world, aka a glowly circle thing.
