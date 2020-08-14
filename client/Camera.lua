@@ -79,6 +79,10 @@ function Camera:SetRotation(rot)
     SetCamRot(self:GetCurrentCam(), rot.x, rot.y, rot.z, 2)
 end
 
+function Camera:SetGameplayCamShakeAmplitude(amount)
+    SetGameplayCamShakeAmplitude(tofloat(amount))
+end
+
 CameraShakeType = 
 {
     DEATH_FAIL_IN_EFFECT_SHAKE = "DEATH_FAIL_IN_EFFECT_SHAKE",
