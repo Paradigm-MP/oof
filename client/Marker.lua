@@ -65,7 +65,7 @@ function Marker:Draw()
 
     if self.fadeout then
         self.color.a = self.color.a - 1
-        if self.color.a <= 0 then
+        if self.color.a <= 0 and self.render then
             self:Remove()
         end
     end
