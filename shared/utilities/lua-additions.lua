@@ -94,7 +94,23 @@ end
 function output_table(t)
     print("-----", t, "-----")
     for key, value in pairs(t) do
-        print("[", key, "]: ", value)
+        if type(value) ~= "table" then
+            print("[", key, "]: ", value)
+        else
+            print(key .. " {")
+            for k, v in pairs(value) do
+                if type(v) ~= "table" then
+                    print("[", k, "]: ", v)
+                else
+                    print(k .. " {")
+                    for k2, v2 in pairs(v) do
+                        print("[", k2, "]: ", v2)
+                    end
+                    print("}")
+                end
+            end
+            print("}")
+        end
     end
     print("------------------------")
 end
