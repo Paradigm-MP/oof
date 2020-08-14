@@ -150,6 +150,10 @@ end
     color - table of rgba values (or Color class)
     textureDict - Name of texture dictionary to load texture from (e.g. "CommonMenu", "MPWeaponsCommon", etc.)
     textureName - Name of texture to load from texture dictionary (e.g. "last_team_standing_icon", "tennis_icon", etc.)
+
+
+    textureDict and textureName can be found through OpenIV,
+    or you can find a small list here: https://github.com/femga/rdr3_discoveries/tree/master/useful_info_from_rpfs
 ]]
 function Render:DrawSprite(pos, size, rotation, color, textureDict, textureName)
     TypeCheck:Position(pos)
