@@ -145,7 +145,7 @@ end
     Draws sprite on the screen
 
     pos - table containing x and y coords of sprite position
-    size - table containing x and y sizes
+    size - table containing x and y sizes (relative to screen x and y size, ranges from 0-1)
     rotation - number of sprite rotation in degrees
     color - table of rgba values (or Color class)
     textureDict - Name of texture dictionary to load texture from (e.g. "CommonMenu", "MPWeaponsCommon", etc.)
@@ -158,7 +158,12 @@ function Render:DrawSprite(pos, size, rotation, color, textureDict, textureName)
     TypeCheck:Color(color)
     TypeCheck:Text(textureDict)
     TypeCheck:Text(textureName)
-    DrawSprite(textureDict, textureName, pos.x, pos.y, size.x, size.y, rotation, color.r, color.g, color.b, color.a)
+
+    if not HasStreamedTextureDictLoaded(textureDict) then
+        RequestStreamedTextureDict(textureDict, false);
+    else
+        DrawSprite(textureDict, textureName, pos.x, pos.y, tofloat(size.x), tofloat(size.y), tofloat(rotation), color.r, color.g, color.b, color.a)
+    end
 end
 
 --[[
