@@ -29,7 +29,7 @@ function Marker:__init(args)
     self.direction = args.direction
     self.rotation = args.rotation
     self.scale = args.scale
-    self.color = args.color
+    self.color = Color(args.color.r, args.color.g, args.color.b, args.color.a)
 
     self.bob_up_and_down = args.bob_up_and_down ~= nil and args.bob_up_and_down or false
     self.face_camera = args.face_camera ~= nil and args.face_camera or false
@@ -65,13 +65,13 @@ function Marker:Draw()
 
     if self.fadeout then
         self.color.a = self.color.a - 1
-        if self.color.a <= 0 and self.render then
+        if self.color.a <= 0 then
             self:Remove()
         end
     end
 end
 
 function Marker:Remove()
-    self.render:Unsubscribe()
+    if self.render then self.render:Unsubscribe() end
     self.render = nil
 end
