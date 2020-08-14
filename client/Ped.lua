@@ -610,6 +610,10 @@ function Ped:NetworkHasControlOfNetworkId()
     return NetworkHasControlOfNetworkId(self:GetNetId())
 end
 
+function Ped:DisablePainAudio(disabled)
+    DisablePedPainAudio(self:GetPedId(), disabled)
+end
+
 
 PedTypes =
 {  
