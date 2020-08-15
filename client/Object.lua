@@ -55,6 +55,10 @@ function Object:GetHash()
     return self.hash
 end
 
+function Object:Slide(to_pos, speed, has_collision)
+    SlideObject(self:GetEntityId(), to_pos.x, to_pos.y, to_pos.z, speed.x, speed.y, speed.z, has_collision)
+end
+
 function Object:Equals(object)
     return object ~= nil and self:GetEntityId() == object:GetEntityId()
 end
