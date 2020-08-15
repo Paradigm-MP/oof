@@ -364,3 +364,7 @@ end
 function Entity:IsInWater()
     return IsEntityInWater(self.entity)
 end
+
+function Entity:IsInVolume(volume)
+    return IsEntityInVolume(self.entity, volume:GetHandle(), true, 1)
+end
