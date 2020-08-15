@@ -288,8 +288,9 @@ function Entity:GetCollision()
     return not GetEntityCollisionDisabled(self.entity)
 end
 
+-- Must call this every frame to disable collision
 function Entity:ToggleCollision(enabled)
-    SetEntityCollision(self.entity, enabled, true)
+    SetEntityCollision(self.entity, enabled, false)
 end
 
 function Entity:SetPosition(pos)
