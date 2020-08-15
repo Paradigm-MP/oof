@@ -49,6 +49,7 @@ KeyPress = KeyPress()
 
 -- use this https://pastebin.com/6AHMTHps
 -- List of all controls from https://github.com/summeryukata/redm-simple-trainer/blob/master/Native/Controls.cs
+-- Better list of controls and default keybinds https://github.com/femga/rdr3_discoveries/tree/master/Controls
 Control = 
 {
     NextCamera = 0x7F8D09B8,
