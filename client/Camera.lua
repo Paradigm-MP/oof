@@ -21,40 +21,38 @@ function Camera:InterpolateBetween(pos1, pos2, rot1, rot2, duration)
     SetCamAffectsAiming(self.to_cam, false)
 end
 
-function Camera:DetachFromPlayer()
+function Camera:DetachFromPlayer(position, rotation, ease, ease_time)
     assert(self.freecam == nil 
     and self.from_cam == nil
     and self.to_cam == nil, "cannot call Camera:DetachFromPlayer multiple times without calling Camera:Reset first")
     
-    local pos = LocalPlayer:GetPosition()
+    local pos = position or Camera:GetPosition()
+    local rot = rotation or Camera:GetRotation()
 
     ClearFocus()
     self.freecam = CreateCamWithParams(
         "DEFAULT_SCRIPTED_CAMERA", 
         pos.x, pos.y, pos.z, 
-        0, 0, 0, 
+        rot.y, rot.y, rot.z, 
         self:GetFOV())
     SetCamActive(self:GetCurrentCam(), true)
-    RenderScriptCams(true, false, 0, true, false, true)
+    RenderScriptCams(true, ease, ease_time, true, false, true)
     SetCamAffectsAiming(self:GetCurrentCam(), false)
 end
 
 --[[
-    Attaches the camera to a player. Must use DetachFromPlayer first.
-    
-    player is an instance of cPlayer
+    Attaches the camera to an entity. Must use DetachFromPlayer first.
 ]]
-function Camera:AttachToPlayer(player)
-    assert(player:Exists(), "cannot Camera:AttachToPlayer that does not exist")
-    assert(self:GetCurrentCam() == self.cam, "must use Camera:DetachFromPlayer before using Camera:AttachToPlayer")
+function Camera:AttachToEntity(entity, offset)
+    assert(entity:Exists(), "cannot Camera:AttachToEntity on entity that does not exist")
+    assert(self:GetCurrentCam() ~= self.cam, "must use Camera:DetachFromPlayer before using Camera:AttachToEntity")
 
-    offsetCoords = GetOffsetFromEntityGivenWorldCoords(player:GetEntity(), self:GetPosition())
-    AttachCamToEntity(self:GetCurrentCam(), entity, offsetCoords.x, offsetCoords.y, offsetCoords.z, true)
+    AttachCamToEntity(self:GetCurrentCam(), entity:GetEntityId(), offset.x, offset.y, offset.z, true)
 end
 
-function Camera:Reset()
+function Camera:Reset(ease, ease_time)
     ClearFocus()
-    RenderScriptCams(false, false, 0, true, false)
+    RenderScriptCams(false, ease, ease_time or 0, true, false)
     DestroyCam(self.freecam, false)
     DestroyCam(self.from_cam, false)
     DestroyCam(self.to_cam, false)
@@ -65,6 +63,10 @@ end
 
 function Camera:GetFOV()
     return GetGameplayCamFov()
+end
+
+function Camera:PointAtEntity(entity)
+    PointCamAtEntity(self:GetCurrentCam(), entity:GetEntityId(), 0.0, 0.0, 0.0, true)
 end
 
 function Camera:PointAtCoord(pos)
