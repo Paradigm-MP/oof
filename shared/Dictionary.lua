@@ -38,7 +38,7 @@ function Dictionary:GetPhrase(language, id)
 		return
 	end
 
-	local phrase = phrases[id]
+	local phrase = id and phrases[id] or pharses[language]
 	if not phrase then
 		print("Trying to get phrase by wrong identifier")
 		return
