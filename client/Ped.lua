@@ -112,13 +112,6 @@ function Ped:Delete()
     SetEntityAsNoLongerNeeded(self.ped_id)
 end
 
-function Ped:GetRotation()
-    --return GetEntityRotation(self.entity)
-    local x, y, z, w = GetEntityQuaternion(self.ped_id)
-    print(vector3(x,y,z))
-    return vector3(x,y,z)
-end
-
 -- args.other_entity, args.speed
 function Ped:PermanentlyFollowEntity(args)
     TaskGoToEntity(self.ped_id, args.other_entity, -1, 0.00001, args.speed, 1073741824.0, 0)
@@ -377,8 +370,8 @@ end
 --[[
     Makes ped ragdoll for time in ms
 ]]
-function Ped:SetToRagdoll(time)
-    SetPedToRagdoll(self.ped_id, time, time or 1000, 0, true, true, false)
+function Ped:SetToRagdoll(time1, time2, mode)
+    SetPedToRagdoll(self.ped_id, time1, time2 or 1000, mode or 0, true, true, false)
 end
 
 function Ped:IsRagdoll()
