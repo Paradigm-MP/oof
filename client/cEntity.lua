@@ -342,6 +342,43 @@ function Entity:SetVelocity(velo)
     SetEntityVelocity(self.entity, velo.x, velo.y, velo.z)
 end
 
+--[[
+    Attaches this Entity to another Entity.
+
+    args (in table):
+        entity: (Entity) the entity to attach to
+        boneIndex: (number, optional) bone index to attach to
+        position: (vector3, optional) position on the entity to attach to
+        rotation: (vector3, optional): rotation to attach at
+        useSoftPinning (bool, optional): whether to use soft pinning or not
+        collision: (bool, optional): if the two objects should collide
+        isPed: (bool, optional): if one of the two objects is a Ped
+        vertexIndex (number, optional): vertex index
+        fixedRot: (bool, optional): whether or not the Entity's rotation stays the same while attached
+
+]]
+function Entity:AttachToEntity(args)
+    AttachEntityToEntity(
+        self.entity --[[ Entity ]], 
+        args.entity:GetEntityId() --[[ Entity ]], 
+        args.boneIndex or 0 --[[ integer ]], 
+        args.position and args.position.x or 0.0 --[[ number ]], 
+        args.position and args.position.y or 0.0 --[[ number ]], 
+        args.position and args.position.z or 0.0 --[[ number ]], 
+        args.rotation and args.rotation.x or 0.0 --[[ number ]], 
+        args.rotation and args.rotation.y or 0.0 --[[ number ]], 
+        args.rotation and args.rotation.z or 0.0 --[[ number ]], 
+        true --[[ boolean ]], 
+        args.useSoftPinning or false --[[ boolean ]], 
+        args.collision or false --[[ boolean ]], 
+        args.isPed or false --[[ boolean ]], 
+        args.vertexIndex or 0 --[[ integer ]], 
+        args.fixedRot or false --[[ boolean ]], 
+        false --[[ boolean ]], 
+        false --[[ boolean ]]
+    )
+end
+
 -- used by cPlayer
 function Entity:SetVisible(visible)
     SetEntityVisible(self.entity, visible)
