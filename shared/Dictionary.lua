@@ -30,7 +30,10 @@ function Dictionary:GetLanguage()
 end
 
 function Dictionary:GetPhrase(language, id)
-	if not id then language = self:GetLanguage() end
+	if not id then 
+            id = language
+            language = self:GetLanguage() 
+        end
 
 	local phrases = self:GetValue(language)
 	if not phrases then
@@ -38,7 +41,7 @@ function Dictionary:GetPhrase(language, id)
 		return
 	end
 
-	local phrase = id and phrases[id] or pharses[language]
+	local phrase = phrases[id]
 	if not phrase then
 		print("Trying to get phrase by wrong identifier")
 		return
