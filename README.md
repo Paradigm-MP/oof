@@ -343,3 +343,5 @@ Absolutely. You just need to change the native references and logic within NAPI.
 
 ## Credits
 Huge props to the developers of FiveM and RedM, because without them, this wouldn't be possible. And huge thanks to the RedM/FiveM community as well, because much of the code within NAPI is based on snippets posted or existing open source scripts. Some specific files within NAPI reference where specific code snippets were taken from - all credit for those go to the original authors.
+
+Credit to [Brouznouf](https://github.com/brouznouf) for the original [mysql-async repo](https://github.com/brouznouf/fivem-mysql-async/tree/2.0). We only made slight modifications to integrate it with NAPI.
