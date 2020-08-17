@@ -18,13 +18,12 @@ This getting started guide assumes that you have experience with installing serv
 
 
 ### Setting up your workspace
-You'll probably want to remove most, if not all, existing resources on your server. Most are not compatible with NAPI and you'll be writing them from scratch based on what you need.
+You'll probably want to remove most, if not all, existing resources on your server. Most are not compatible with NAPI and you'll be writing them from scratch based on what you need. NAPI also comes with [mysql-async](https://github.com/brouznouf/fivem-mysql-async/tree/2.0) built in, so working with persistent data is easy.
 
 For our Wave Survival Gamemode, the only resources that we use are:
 - [system]/[builders]/yarn
 - [system]/sessionmanager-rdr3
 - The core gamemode and NAPI in one resource
-- [mysql-async](https://github.com/brouznouf/fivem-mysql-async/tree/2.0) for data persistence
 
 
 Your core gamemode resource layout should look something like this:

@@ -67,9 +67,11 @@ server_scripts {
     'napi/shared/Events.lua',
     'napi/server/sNetwork.lua',
     -- mysql enabler
-    --'@mysql-async/lib/MySQL.lua', -- Enable this if using mysql
+    'napi/server/mysql-async/MySQLAsync.net.dll',
+    'napi/server/mysql-async/lib/init.lua',
+    'napi/server/mysql-async/lib/MySQL.lua',
     -- mysql wrapper
-    --'mysql/server/MySQL.lua', -- Enable this if using mysql
+    'napi/server/MySQL.lua',
     'napi/shared/ValueStorage.lua',
     'napi/shared/Timer.lua',
     'napi/server/sPlayer.lua',
