@@ -50,6 +50,10 @@ function math.round(num, decimal_places)
     return tonumber(string.format("%." .. (decimal_places or 0) .. "f", num))
 end
 
+function math.clamp(value, lower, upper)
+    return math.min(math.max(value, lower), upper)
+end
+
 function trim(s)
     return s:match'^()%s*$' and '' or s:match'^%s*(.*%S)'
 end
