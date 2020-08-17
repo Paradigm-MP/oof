@@ -21,7 +21,6 @@ This getting started guide assumes that you have experience with installing serv
 You'll probably want to remove most, if not all, existing resources on your server. Most are not compatible with NAPI and you'll be writing them from scratch based on what you need.
 
 For our Wave Survival Gamemode, the only resources that we use are:
-- [system]/[builders]/webpack
 - [system]/[builders]/yarn
 - [system]/sessionmanager-rdr3
 - The core gamemode and NAPI in one resource
