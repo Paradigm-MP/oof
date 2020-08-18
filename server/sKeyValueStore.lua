@@ -43,6 +43,11 @@ function KeyValueStore:Set(key, value, callback)
     local value_type = type(value)
     local cmd = [[INSERT INTO `key_value_store` (`key`, `value_type`, `value`) VALUES (@key, @value_type, @value) ON DUPLICATE KEY UPDATE `value`=@value, `value_type`=@value_type;]]
 
+    if value == nil then
+        self:Delete(key)
+        return
+    end
+
     local serialized_value = self:SerializeValue(value_type, value)
     assert(string.len(serialized_value) <= self.max_value_length, "KeyValueStore value must be less than " .. tostring(self.max_value_length))
 
