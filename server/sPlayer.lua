@@ -76,6 +76,18 @@ function Player:Disconnected()
     -- do not delete data yet as this instance is being passed with Events:Fire("PlayerQuit")
 end
 
+function Player:StoreValue(key, value)
+    assert(type(key) == "string", "key must be a string")
+    KeyValueStore:Set(self:GetUniqueId() .. key, value)
+end
+
+function Player:GetStoredValue(key, callback)
+    assert(type(key) == "string", "key must be a string")
+    KeyValueStore:Get(self:GetUniqueId() .. key, function(value)
+        callback(value)
+    end)
+end
+
 function Player:tostring()
     return "Player (" .. self.name .. ")"
 end

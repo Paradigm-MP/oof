@@ -18,7 +18,9 @@ end
 -- SQL.Execute("UPDATE player SET name=@name WHERE id=@id", {['@id'] = 10, ['@name'] = 'foo'}, function(data) end)
 function MySQLWrapper:Execute(query, params, callback)
     MySQL.Async.execute(query, params, function(rowsChanged)
-        callback(rowsChanged)
+        if callback then
+            callback(rowsChanged)
+        end
     end)
 end
 
