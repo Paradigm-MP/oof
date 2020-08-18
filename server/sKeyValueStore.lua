@@ -8,7 +8,7 @@ function KeyValueStore:__init()
     self.max_key_length = 100
     self.max_value_length = 1000
 
-    -- in order to support immediately calling :Get after a :Set, we cache values until the :Set callback
+    -- in order to support immediately calling :Get after a :Set, we cache values for a short period of time (at least 1 frame)
     self.cached_values = {}
     self.min_cache_time = 1000 -- the minimum amount of time (ms) that values will be cached
     self.remove_stale_cache_values_interval = 1000 -- how often (ms) to remove stale cache values
