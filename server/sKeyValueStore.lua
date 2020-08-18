@@ -3,6 +3,7 @@ KeyValueStore = class()
 -- TODO: object-oriented callback
 -- TODO: description of class here
 -- TODO: documentation
+-- TODO: Delete()
 function KeyValueStore:__init()
     SQL:Execute([[CREATE TABLE IF NOT EXISTS `key_value_store` (`key` VARCHAR(100) NOT NULL PRIMARY KEY, `value_type` VARCHAR(50), `value` VARCHAR(1000))]])
     self.max_key_length = 100
@@ -126,7 +127,7 @@ function KeyValueStore:DeserializeValue(value_type, value)
 end
 
 function KeyValueStore:Delete(key)
-
+    -- also remove from cache!
 end
 
 function KeyValueStore:CacheValue(key, value)
