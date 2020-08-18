@@ -17,7 +17,7 @@ function KeyValueStore:__init()
     self.outstanding_get_callbacks = {}
 
     self:RemoveStaleCachedValuesThread()
-
+    
     --[[
     RegisterCommand("db", function(source, args, rawCommand)
         KeyValueStore:Get("MyKey", function(value)
@@ -76,6 +76,7 @@ function KeyValueStore:Get(key, callback)
     -- called :Get but still waiting on the same :Get
     if self.outstanding_get_callbacks[key] then
         table.insert(self.outstanding_get_callbacks[key], {callback = callback})
+        return
     else
         self.outstanding_get_callbacks[key] = {
             {callback = callback}
