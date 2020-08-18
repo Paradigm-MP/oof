@@ -13,7 +13,26 @@ function KeyValueStore:__init()
     self.min_cache_time = 1000 -- the minimum amount of time (ms) that values will be cached
     self.remove_stale_cache_values_interval = 1000 -- how often (ms) to remove stale cache values
 
+    self.outstanding_get_callbacks = {}
+
     self:RemoveStaleCachedValuesThread()
+
+    --[[
+    RegisterCommand("db", function(source, args, rawCommand)
+        KeyValueStore:Get("MyKey", function(value)
+            print(value)
+        end)
+        KeyValueStore:Get("MyKey", function(value2)
+            print(value2)
+        end)
+        KeyValueStore:Get("MyKey", function(value3)
+            print(value3)
+            KeyValueStore:Get("MyKey", function(value4)
+                print(value4)
+            end)
+        end)
+    end)
+    ]]
 end
 
 function KeyValueStore:Set(key, value, callback)
@@ -48,8 +67,18 @@ function KeyValueStore:Get(key, callback)
     }
 
     if self.cached_values[key] then
+        print("returning cached value")
         callback(self.cached_values[key].value)
         return
+    end
+
+    -- called :Get but still waiting on the same :Get
+    if self.outstanding_get_callbacks[key] then
+        table.insert(self.outstanding_get_callbacks[key], {callback = callback})
+    else
+        self.outstanding_get_callbacks[key] = {
+            {callback = callback}
+        }
     end
 
     SQL:Fetch(query, params, function(result)
@@ -57,7 +86,16 @@ function KeyValueStore:Get(key, callback)
             local value = result[1] and result[1].value or nil
             local value_type = result[1] and result[1].value_type or nil
             if value then
-                callback(self:DeserializeValue(value_type, value))
+                local deserialized_value = self:DeserializeValue(value_type, value)
+                self:CacheValue(key, deserialized_value)
+
+                if self.outstanding_get_callbacks[key] then
+                    print("calling " .. tostring(count_table(self.outstanding_get_callbacks[key])) .. " callbacks")
+                    for _, callback_data in ipairs(self.outstanding_get_callbacks[key]) do
+                        callback_data.callback(deserialized_value)
+                    end
+                    self.outstanding_get_callbacks[key] = nil
+                end
             else
                 callback(nil)
             end
