@@ -93,7 +93,7 @@ function PlayerManager:PlayerConnect(source, name, setKickReason, deferrals)
     local identifiers, steamIdentifier = GetPlayerIdentifiers(source)
     deferrals.defer()
 
-    deferrals.update(NAPI_Config.Deferrals.CheckingSteamId)
+    deferrals.update(OOF_Config.Deferrals.CheckingSteamId)
 
     --[[for _, v in pairs(identifiers) do
         if string.find(v, "steam") then
@@ -103,14 +103,14 @@ function PlayerManager:PlayerConnect(source, name, setKickReason, deferrals)
     end]]
 
     --[[if not steamIdentifier then
-        deferrals.done(NAPI_Config.Deferrals.NotConnectedToSteam)
+        deferrals.done(OOF_Config.Deferrals.NotConnectedToSteam)
         CancelEvent()
         return
     else]]
     --if not self.whitelist_enabled or IsPlayerAceAllowed(source, "whitelist") then
-        deferrals.update(NAPI_Config.Deferrals.Connecting)
+        deferrals.update(OOF_Config.Deferrals.Connecting)
     --[[else
-        deferrals.done(NAPI_Config.Deferrals.NotWhitelisted)
+        deferrals.done(OOF_Config.Deferrals.NotWhitelisted)
         CancelEvent()
         return
     end]]
@@ -128,7 +128,7 @@ function PlayerManager:PlayerConnect(source, name, setKickReason, deferrals)
     local name_lower = string.lower(name)
     for id, player in pairs(sPlayers:GetPlayers()) do
         if string.lower(player:GetName()) == name_lower then
-            deferrals.done(string.format(NAPI_Config.Deferrals.DuplicateName, name))
+            deferrals.done(string.format(OOF_Config.Deferrals.DuplicateName, name))
             CancelEvent()
             return
         end
@@ -146,12 +146,12 @@ function PlayerManager:PlayerConnect(source, name, setKickReason, deferrals)
                 -- Stopped connecting to the queue
                 if not GetPlayerEndpoint(source) then
                     table.remove(self.queue, self:GetPositionInQueue(source))
-                    deferrals.done(NAPI_Config.Deferrals.ConnectionCancelled)
+                    deferrals.done(OOF_Config.Deferrals.ConnectionCancelled)
                     CancelEvent()
                     return
                 end
 
-                deferrals.update(string.format(NAPI_Config.Deferrals.WaitingInQueue, 
+                deferrals.update(string.format(OOF_Config.Deferrals.WaitingInQueue, 
                     name, self:GetLoadingIcons(time_elapsed), tostring(self:GetPositionInQueue(source))))
                 
                 time_elapsed = time_elapsed + 1
@@ -162,7 +162,7 @@ function PlayerManager:PlayerConnect(source, name, setKickReason, deferrals)
         end
 
 
-        deferrals.update(NAPI_Config.Deferrals.Connected)
+        deferrals.update(OOF_Config.Deferrals.Connected)
         deferrals.done()
         self.num_players_connected = self.num_players_connected + 1
     end)
@@ -173,7 +173,7 @@ end
 function PlayerManager:GetLoadingIcons(time)
     local str = ""
     for i = 1, time % 6 do
-        str = str .. NAPI_Config.Deferrals.LoadingIcon
+        str = str .. OOF_Config.Deferrals.LoadingIcon
     end
     return str
 end

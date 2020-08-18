@@ -3,7 +3,7 @@ Citizen.CreateThread(function()
 
     print(string.format(
         "%s\n-------------------------\n\n" ..
-        "%sInitializing NAPI...\n" ..
+        "%sInitializing OOF...\n" ..
         "%s\n-------------------------\n%s", 
         Colors.Console.LightBlue,
         Colors.Console.LightBlue,
@@ -106,7 +106,7 @@ Citizen.CreateThread(function()
 
     print(string.format(
         "%s\n-------------------------\n\n" ..
-        "%sNAPI initialized successfully!\n" ..
+        "%sOOF initialized successfully!\n" ..
         "%s\n-------------------------\n%s", 
         Colors.Console.LightBlue,
         Colors.Console.Green,

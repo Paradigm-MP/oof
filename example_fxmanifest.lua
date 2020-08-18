@@ -1,89 +1,89 @@
 ui_page 'ui/index.html'
 
 client_scripts {
-    -- api module, nothing should precede this module
-    'napi/shared/overloads.lua',
-    'napi/shared/utilities/*.lua',
-    'napi/shared/object-oriented/class.lua', -- no class instances on initial frame before this file
-    'napi/shared/object-oriented/shGetterSetter.lua', -- getter_setter, getter_setter_encrypted
-    'napi/shared/standalone-data-structures/*', -- Enum, IdPool
-    'napi/shared/math/*.lua',
+    -- OOF module, nothing should precede this module
+    'oof/shared/overloads.lua',
+    'oof/shared/utilities/*.lua',
+    'oof/shared/object-oriented/class.lua', -- no class instances on initial frame before this file
+    'oof/shared/object-oriented/shGetterSetter.lua', -- getter_setter, getter_setter_encrypted
+    'oof/shared/standalone-data-structures/*', -- Enum, IdPool
+    'oof/shared/math/*.lua',
     '**/shared/enums/*Enum.lua', -- load all Enums
     '**/client/enums/*Enum.lua',
-    'napi/shared/Events.lua',
-    'napi/client/cNetwork.lua',
-    'napi/shared/ValueStorage.lua',
-    'napi/client/TypeCheck.lua',
-    'napi/client/AssetRequester.lua',
-    'napi/shared/Timer.lua',
-    'napi/client/cEntity.lua',
-    'napi/client/cPlayer.lua',
-    'napi/client/cPlayers.lua',
-    'napi/client/cPlayerManager.lua',
-    'napi/client/Ped.lua',
-    'napi/client/Physics.lua',
-    'napi/client/LocalPlayer.lua',
-    'napi/shared/Color.lua',
-    'napi/client/Render.lua',
-    'napi/client/Camera.lua',
-    'napi/client/ObjectManager.lua',
-    'napi/client/Object.lua',
-    'napi/client/ScreenEffects.lua',
-    'napi/client/World.lua',
-    'napi/client/Sound.lua',
-    'napi/client/Light.lua',
-    'napi/client/ParticleEffect.lua',
-    'napi/client/Filter.lua',
-    'napi/client/Explosion.lua',
-    'napi/client/PauseMenu.lua',
-    'napi/client/Hud.lua',
-    'napi/client/Keypress.lua',
-    'napi/client/Prompt.lua',
-    'napi/client/Imap.lua',
-    'napi/client/Marker.lua',
-    'napi/client/Texture.lua',
-    'napi/client/apitest.lua',
-    'napi/client/localplayer_behaviors/*.lua',
-    'napi/client/weapons/*.lua',
+    'oof/shared/Events.lua',
+    'oof/client/cNetwork.lua',
+    'oof/shared/ValueStorage.lua',
+    'oof/client/TypeCheck.lua',
+    'oof/client/AssetRequester.lua',
+    'oof/shared/Timer.lua',
+    'oof/client/cEntity.lua',
+    'oof/client/cPlayer.lua',
+    'oof/client/cPlayers.lua',
+    'oof/client/cPlayerManager.lua',
+    'oof/client/Ped.lua',
+    'oof/client/Physics.lua',
+    'oof/client/LocalPlayer.lua',
+    'oof/shared/Color.lua',
+    'oof/client/Render.lua',
+    'oof/client/Camera.lua',
+    'oof/client/ObjectManager.lua',
+    'oof/client/Object.lua',
+    'oof/client/ScreenEffects.lua',
+    'oof/client/World.lua',
+    'oof/client/Sound.lua',
+    'oof/client/Light.lua',
+    'oof/client/ParticleEffect.lua',
+    'oof/client/Filter.lua',
+    'oof/client/Explosion.lua',
+    'oof/client/PauseMenu.lua',
+    'oof/client/Hud.lua',
+    'oof/client/Keypress.lua',
+    'oof/client/Prompt.lua',
+    'oof/client/Imap.lua',
+    'oof/client/Marker.lua',
+    'oof/client/Texture.lua',
+    'oof/client/apitest.lua',
+    'oof/client/localplayer_behaviors/*.lua',
+    'oof/client/weapons/*.lua',
 
     -- Add other modules here (client and shared)
 
     -- LOAD LAST
-    'napi/shared/object-oriented/LOAD_ABSOLUTELY_LAST.lua'
+    'oof/shared/object-oriented/LOAD_ABSOLUTELY_LAST.lua'
 }
 
 server_scripts {
-    -- api module, nothing should precede this module
-    'napi/server/sConfig.lua',
-    'napi/shared/overloads.lua', -- load order position does not matter because this is non-class code
-    'napi/shared/utilities/*.lua',
-    'napi/shared/object-oriented/class.lua', -- no class instances on initial frame before this file
-    'napi/shared/object-oriented/shGetterSetter.lua',
-    'napi/shared/math/*.lua',
-    'napi/shared/standalone-data-structures/*', -- Enum, IdPool
+    -- OOF module, nothing should precede this module
+    'oof/server/sConfig.lua',
+    'oof/shared/overloads.lua', -- load order position does not matter because this is non-class code
+    'oof/shared/utilities/*.lua',
+    'oof/shared/object-oriented/class.lua', -- no class instances on initial frame before this file
+    'oof/shared/object-oriented/shGetterSetter.lua',
+    'oof/shared/math/*.lua',
+    'oof/shared/standalone-data-structures/*', -- Enum, IdPool
     '**/shared/enums/*Enum.lua', -- load all the enums from all the modules
     '**/server/enums/*Enum.lua',
-    'napi/shared/Color.lua',
-    'napi/shared/Events.lua',
-    'napi/server/sNetwork.lua',
+    'oof/shared/Color.lua',
+    'oof/shared/Events.lua',
+    'oof/server/sNetwork.lua',
     -- mysql enabler
-    'napi/server/mysql-async/MySQLAsync.net.dll',
-    'napi/server/mysql-async/lib/init.lua',
-    'napi/server/mysql-async/lib/MySQL.lua',
+    'oof/server/mysql-async/MySQLAsync.net.dll',
+    'oof/server/mysql-async/lib/init.lua',
+    'oof/server/mysql-async/lib/MySQL.lua',
     -- mysql wrapper
-    'napi/server/MySQL.lua',
-    'napi/shared/ValueStorage.lua',
-    'napi/shared/Timer.lua',
-    'napi/server/sPlayer.lua',
-    'napi/server/sPlayers.lua',
-    'napi/server/sPlayerManager.lua',
-    'napi/server/sWorld.lua',
-    'napi/server/JSONUtils.lua',
+    'oof/server/MySQL.lua',
+    'oof/shared/ValueStorage.lua',
+    'oof/shared/Timer.lua',
+    'oof/server/sPlayer.lua',
+    'oof/server/sPlayers.lua',
+    'oof/server/sPlayerManager.lua',
+    'oof/server/sWorld.lua',
+    'oof/server/JSONUtils.lua',
 
     -- Add other modules here (server and shared)
 
     -- Load last
-    'napi/shared/object-oriented/LOAD_ABSOLUTELY_LAST.lua'
+    'oof/shared/object-oriented/LOAD_ABSOLUTELY_LAST.lua'
 }
 
 files {
