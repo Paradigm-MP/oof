@@ -4,6 +4,7 @@ KeyValueStore = class()
 -- TODO: description of class here
 -- TODO: documentation
 -- TODO: Delete()
+-- TODO: if Set() to nil then Delete()
 function KeyValueStore:__init()
     SQL:Execute([[CREATE TABLE IF NOT EXISTS `key_value_store` (`key` VARCHAR(100) NOT NULL PRIMARY KEY, `value_type` VARCHAR(50), `value` VARCHAR(1000))]])
     self.max_key_length = 100
@@ -68,7 +69,6 @@ function KeyValueStore:Get(key, callback)
     }
 
     if self.cached_values[key] then
-        print("returning cached value")
         callback(self.cached_values[key].value)
         return
     end
@@ -91,7 +91,6 @@ function KeyValueStore:Get(key, callback)
                 self:CacheValue(key, deserialized_value)
 
                 if self.outstanding_get_callbacks[key] then
-                    print("calling " .. tostring(count_table(self.outstanding_get_callbacks[key])) .. " callbacks")
                     for _, callback_data in ipairs(self.outstanding_get_callbacks[key]) do
                         callback_data.callback(deserialized_value)
                     end
