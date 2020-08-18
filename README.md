@@ -57,13 +57,29 @@ We separate each module into three types of Lua files: server, client, and share
 
 NAPI itself is a module. You must load in all of the NAPI files in a specific order to ensure that they are loaded properly. This can be seen in the `example_fxmanifest.lua` file. Your own fxmanifest should look something like this. The example fxmanifest only loads the NAPI module, assuming that you named it `napi`. 
 
-Make sure to modify your server's `.cfg` files as well. You only need to load your gamemode because the other system scripts are automatically used by the server itself. You can load your single-resource gamemode with 
+NAPI interally uses MySQL as its database. This allows for you to easily save and load player data. However, you'll have to do a bit of setup in order for this to work.
+
+Head on over to [MySQL](https://www.mysql.com/) and install your preferred version according to your platform. For Linux, you can use a command to install it. Once you've installed MySQL in your server environment, keep reading.😀
+
+Now we'll need to modify the server's `.cfg` files. You only need to load your gamemode because the other system scripts are automatically loaded by the server itself. You can load your single-resource gamemode with 
 ```
 ensure my-gamemode
 ```
 where `my-gamemode` is the name of your resource. 
 
-We recommend that you use the our example fxmanifest as a base and then add onto it as you create more modules. There are designated places within the fxmanifest that you should load your module's Lua files (see the comments). 
+You also need to set the MySQL connection settings in your `.cfg` as well. Add this line to set the connection convar:
+
+```set mysql_connection_string "server=127.0.0.1;database=DATABASE_NAME;userid=DATABASE_USERNAME;password=USER_PASSWORD"```
+
+Adjust the fields according to how you set up MySQL. For most users, `127.0.0.1` should be fine to connect to your locally hosted database. If it's your first time settting this up, you'll need to create a database to connect to. Try running this command in MySQL to create a new one:
+
+```
+CREATE DATABASE my_new_database;
+```
+
+That'll create a new database that you can now connect to and store data in.
+
+In terms of adding other resources to the config, we recommend that you use the our example fxmanifest as a base and then add onto it as you create more modules. There are designated places within the fxmanifest that you should load your module's Lua files (see the comments). This means that you won't ever have to touch the config files after today!
 
 Once you think you've created your single-resource gamemode correctly and installed NAPI, start your server. You should see two messages that look like this:
 ```
