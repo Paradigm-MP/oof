@@ -78,12 +78,12 @@ end
 
 function Player:StoreValue(key, value)
     assert(type(key) == "string", "key must be a string")
-    KeyValueStore:Set(self:GetUniqueId() .. key, value)
+    KeyValueStore:Set("Player_" .. tostring(self:GetUniqueId()) .. key, value)
 end
 
 function Player:GetStoredValue(key, callback)
     assert(type(key) == "string", "key must be a string")
-    KeyValueStore:Get(self:GetUniqueId() .. key, function(value)
+    KeyValueStore:Get("Player_" .. tostring(self:GetUniqueId()) .. key, function(value)
         callback(value)
     end)
 end
