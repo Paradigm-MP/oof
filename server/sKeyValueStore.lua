@@ -89,7 +89,7 @@ function KeyValueStore:DeserializeValue(value_type, value)
 end
 
 function KeyValueStore:Delete(key)
-
+    -- also remove from cache!
 end
 
 function KeyValueStore:CacheValue(key, value)
