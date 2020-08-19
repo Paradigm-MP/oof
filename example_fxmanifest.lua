@@ -1,4 +1,4 @@
-ui_page 'ui/index.html'
+ui_page 'oof/client/ui/index.html'
 
 client_scripts {
     -- OOF module, nothing should precede this module
@@ -45,6 +45,7 @@ client_scripts {
     'oof/client/apitest.lua',
     'oof/client/localplayer_behaviors/*.lua',
     'oof/client/weapons/*.lua',
+    'oof/client/ui/ui.lua',
 
     -- Add other modules here (client and shared)
 
@@ -87,6 +88,11 @@ server_scripts {
 }
 
 files {
+    -- general ui
+    'oof/client/ui/reset.css',
+    'oof/client/ui/jquery.js',
+    'oof/client/ui/events.js',
+    'oof/client/ui/index.html'
     -- Add files that you need here, like html/css/js for UI
 }
 

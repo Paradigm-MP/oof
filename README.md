@@ -1,7 +1,7 @@
 <p align="center"><img src=""></p>
 
-# OOF - Object-Oriented Framework for developing in FiveM and RedM
-OOF is an Object-Oriented Framework for developing in FiveM and RedM. Currently only supports RedM, but FiveM will be supported in the future.
+# OOF - Object-Oriented Framework for developing with Lua in FiveM and RedM
+OOF is an Object-Oriented Framework for developing scripts in Lua for FiveM and RedM. Currently only supports RedM, but FiveM will be supported in the future.
 
 ## Disclaimer
 **This is not a "drag and drop" resource that you can simply install on your server.** This is a *framework* that can be used to help you code faster and better. You must be proficient at scripting to use this and must have experience with writing resources from scratch to use this. If you are looking for something to help improve your RP server, this is not what you are looking for. This is intended for server developers who want to create the next great server from scratch (or with a little help from OOF modules), guided by their creativity and ingenuity. If you decide to use other resources, you may have difficulty integrating them into this framework. OOF is still being developed, so there are unfinished parts. We encourage you to contribute!
@@ -13,9 +13,11 @@ Our goal with OOF is to abstract away all of the messiness included with calling
 
 If you'd like an example of what this framework is capable of, check out our "Wave Survival" gamemode on RedM. It was created entirely using this framework.
 
+## [Wiki](https://github.com/Paradigm-MP/oof/wiki)
+We have a wiki that we're working on for OOF. It includes API references as well as examples to help you understand how to use different parts of OOF. Feel free to check it out and suggest changes.
+
 ## Getting Started
 This getting started guide assumes that you have experience with installing server resources and editing configuration files.
-
 
 ### Setting up your workspace
 You'll probably want to remove most, if not all, existing resources on your server. Most are not compatible with OOF and you'll be writing them from scratch based on what you need. OOF also comes with [mysql-async](https://github.com/brouznouf/fivem-mysql-async/tree/2.0) built in, so working with persistent data is easy.
@@ -51,7 +53,7 @@ gamemode-name
 fxmanifest.lua
 ```
 
-Each module can be thought of like what you would usually see in a normal RedM resource. It has some purpose that it carries out, and might interact with other scripts. For example, the [UI module](https://github.com/Paradigm-MP/oof-ui) is an essential part of every server that uses OOF. It wraps the default NUI system into a nice class based and OOF event based system and makes it easy to do what you want.
+Each module can be thought of like what you would usually see in a normal RedM resource. It has some purpose that it carries out, and might interact with other scripts. 
 
 We separate each module into three types of Lua files: server, client, and shared. The files within `server` are files that only the server has access to; `client` files are files that only the clients have access to. Files within `shared` are files that both the server and client can access, such as shared classes, data structures, and config files.
 
@@ -101,9 +103,6 @@ if you see those two messages, congrats! You've successfully installed OOF and h
 
 ### Essential modules
 There are some modules that are *essential* to working with OOF. Because OOF isn't particularly compatible with existing resources, we've created some modules to help get you started. Keep in mind that it's encouraged that you edit and extend the capabilities of these modules according to your needs. We created these out of necessity for our gamemode.
-
-#### [UI Module](https://github.com/Paradigm-MP/oof-ui)
-The UI module is probably the most essential module if you plan on creating any sort of custom UI. Internally, the UI module uses the NUI event system to manipulate and create new UI elements. You won't have to touch any of that code. The UI module makes it very easy to create as many UI elements as you want and also allows you to set the ordering depending on your needs. 
 
 #### [Chat Module](https://github.com/Paradigm-MP/oof-chat)
 The chat module is another very essential module. Internally, it uses the UI module, so you'll have to have the UI module installed before using the chat module. This module gives you all the functionality you'd expect from a chat resource. It's still a somewhat work-in-progress as it was originally ported from another game, but it works fairly well most of the time.
@@ -348,6 +347,130 @@ The code execution goes something like this:
 
 The code flow is very similar to default RedM/FiveM networking events since OOF uses it internally. It just has a little bit of a different syntax than you're used to with some extra functionality. It's important that you understand how events work as they are a key part of any gamemode.
 
+## UI System
+OOF comes with a system that allows you to easily create and manage UI / HUD, or really anything that you want to display on the screen using HTML, CSS, and JS. You can create as many UI elements as you want. It's super easy to use and allows you to use simple events to transfer data between your Lua scripts and JS scripts.
+
+### Displaying simple player data
+To get comfortable with the UI system, let's create a simple UI that displays the player's name and a welcome message. 
+
+To do this, we'll need to create a few files. We'll keep it simple for this example, but it should give you an idea of how things generally work. There are a couple modules that we've released, such as [blackscreen](https://github.com/Paradigm-MP/oof-blackscreen) and [chat](https://github.com/Paradigm-MP/oof-chat), that are great learning resources.
+
+Let's make a new module called `welcomemessage` for this. Inside, the file tree should look like this:
+
+```
+welcomemessage
+--\ client
+    -- cWelcomeMessage.lua
+    --\ ui
+        -- index.html
+        -- script.js
+        -- style.css
+```
+
+Make sure to add these files to your `fxmanifest`. Add the Lua right under `-- Add other modules here (client and shared)` and add the three ui files under `files` at the end.
+
+Let's focus on `cWelcomeMessage` first. We prefixed it with `c` so that it's easy to differentiate between server and client files with the same name. In the future, we might add an `sWelcomeMessage` on the server side to fetch data for players and perhaps display their play time.
+
+`cWelcomeMessage.lua`
+```lua
+cWelcomeMessage = class()
+
+function cWelcomeMessage:__init()
+    -- Create the UIInstance and store it in our class for easy access
+    self.ui = UI:Create({name = "welcome_message", path = "welcomemessage/client/ui/index.html"})
+
+    -- Wait until the UI is ready to CallEvent on it. If we CallEvent before it has loaded, it might not work
+    self.ui:Subscribe('Ready', function()
+        self:UIReady()
+    end)
+
+    -- Control.Jump is normally space, so we'll use that here
+    self.key_to_hide = Control.Jump
+
+    -- First tell KeyPress to look for this key being pressed
+    KeyPress:Subscribe(self.key_to_hide)
+
+    -- Then subscribe to the KeyUp event, which KeyPress will call when the key is pressed and you release it
+    Events:Subscribe('KeyUp', function(args)
+        self:KeyUp(args)
+    end)
+
+    self.welcome_message = "Hello %s! Welcome to the server! Press Space to hide this."
+end
+
+function cWelcomeMessage:UIReady()
+    -- CallEvent on the UI to send the message we want to display
+    self.ui:CallEvent("DisplayMessage", 
+    {
+        message = string.format(self.welcome_message, LocalPlayer:GetPlayer():GetName())
+    })
+end
+
+function cWelcomeMessage:KeyUp(args)
+    -- Hide welcome message when key is pressed. You can also do this just in JavaScript, but we are showing more API here. :)
+    if args.key == self.key_to_hide then
+        self.ui:Hide()
+    end 
+end
+
+-- Initialize it as a singleton, because this is essentially a "welcome message manager"
+cWelcomeMessage = cWelcomeMessage()
+```
+
+Hopefully the comments on the above code snippet make sense, as they should explain what's going on. We also are using another part of OOF called `KeyPress`, which is a great way to detect when a player presses certain keys.
+
+`index.html`
+```html
+<html>
+    <!-- Load jQuery from OOF UI. Optional, but highly recommended -->
+    <script src="../../../oof/client/ui/jquery.js" type="text/javascript"></script>
+    <script src="script.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <body>
+        <div class='welcome-message'></div>
+    </body>
+</html>
+```
+
+`style.css`
+```css
+/* Basic styling to make it appear in the middle of the screen */
+div.welcome-message
+{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: red;
+    color: white;
+    font-weight: bold;
+    border: 4px solid orange;
+    font-size: 40px;
+    padding: 20px;
+}
+```
+
+`script.js`
+```js
+// Wrap the entire script in the .ready() to make sure everything has finished loading
+$(document).ready(function() 
+{
+    // Subscribe to the DisplayMessage event to receive the data from Lua
+    OOF.Subscribe("DisplayMessage", (data) => 
+    {
+        // Use jQuery to set the text of our welcome message
+        $('div.welcome-message').text(data.message);
+    })
+
+    // Call the Ready event at the bottom of the script after everything has loaded
+    // This tells Lua that this UI is ready to be used
+    OOF.CallEvent("Ready");
+})
+```
+
+If you did everything right, you should see a welcome message appear with your name when you reload the resource and join the server! And if you press space, it will disappear! That wasn't so bad, right? See some of our other released modules for more UI usage examples and see our wiki for API reference. Our UI system is very powerful and we've only just scratched the surface.
+
+
 ## Closing Remarks
 OOF isn't perfect by any means. There are certainly a lot of improvements that could be made and plenty of great things that could be added. The documentation here is very lacking, so it will probably take a lot of looking through OOF to understand what is available and how to use it. 
 
@@ -355,6 +478,6 @@ OOF isn't perfect by any means. There are certainly a lot of improvements that c
 Feel free to contact us (Paradigm - Lord Farquaad or Dev_34) on our [Discord here](https://discord.gg/XAQ34Td). We'll be happy to answer any questions you might have about OOF or provide you relevant examples on how to do certain things. Or if you'd like to collaborate on a project, let us know too! We always have too many ideas and not enough time.
 
 ## Credits
-Huge props to the developers of FiveM and RedM, because without them, this wouldn't be possible. And huge thanks to the RedM/FiveM community as well, because much of the code within OOF is based on snippets posted or existing open source scripts. Some specific files within OOF reference where specific code snippets were taken from - all credit for those go to the original authors.
+Huge props to the developers of FiveM and RedM, because without them, this wouldn't be possible. And huge thanks to the RedM/FiveM community as well, because much of the code within OOF regarding natives is based on snippets posted or existing open source scripts. Some specific files within OOF reference where specific code snippets were taken from - all credit for those go to the original authors.
 
 Credit to [Brouznouf](https://github.com/brouznouf) for the original [mysql-async repo](https://github.com/brouznouf/fivem-mysql-async/tree/2.0). We only made slight modifications to integrate it with OOF.
