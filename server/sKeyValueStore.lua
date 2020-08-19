@@ -1,10 +1,13 @@
 KeyValueStore = class()
 
--- TODO: object-oriented callback
--- TODO: description of class here
--- TODO: documentation
--- TODO: Delete()
--- TODO: if Set() to nil then Delete()
+--[[
+ * KeyValueStore
+ * 
+ * KeyValueStore is a simple :Get() and :Set() value storage utility
+ * that persists the values in the MySQL database.
+ * Caching occurs on every operation (Get, Set, Delete).
+ * Supported types: string, number, boolean, table (converted to json string), nil
+]]
 function KeyValueStore:__init()
     SQL:Execute([[CREATE TABLE IF NOT EXISTS `key_value_store` (`key` VARCHAR(100) NOT NULL PRIMARY KEY, `value_type` VARCHAR(50), `value` VARCHAR(1000))]])
     self.max_key_length = 100
@@ -20,19 +23,19 @@ function KeyValueStore:__init()
     self:RemoveStaleCachedValuesThread()
     
     --[[
-    RegisterCommand("db", function(source, args, rawCommand)
-        KeyValueStore:Get("MyKey", function(value)
+    RegisterCommand("s", function(source, args, rawCommand)
+        KeyValueStore:Set("TestKey", math.random(1, 100))
+    end)
+
+    RegisterCommand("g", function(source, args, rawCommand)
+        KeyValueStore:Get("TestKey", function(value)
             print(value)
+            print(type(value))
         end)
-        KeyValueStore:Get("MyKey", function(value2)
-            print(value2)
-        end)
-        KeyValueStore:Get("MyKey", function(value3)
-            print(value3)
-            KeyValueStore:Get("MyKey", function(value4)
-                print(value4)
-            end)
-        end)
+    end)
+
+    RegisterCommand("del", function(source, args, rawCommand)
+        KeyValueStore:Delete("TestKey")
     end)
     ]]
 end
@@ -68,12 +71,15 @@ end
 
 -- returns nil if key does not exist
 function KeyValueStore:Get(key, callback)
+    assert(type(key) == "string", "KeyValueStore key must be a string")
+    assert(string.len(key) <= self.max_key_length, "KeyValueStore key must be less than " .. tostring(self.max_key_length))
     local query = [[SELECT `value`, `value_type` FROM `key_value_store` WHERE `key`=@key]]
     local params = {
         ["@key"] = key
     }
 
     if self.cached_values[key] then
+        self.cached_values[key].timer:Restart()
         callback(self.cached_values[key].value)
         return
     end
@@ -95,15 +101,10 @@ function KeyValueStore:Get(key, callback)
             if value then
                 local deserialized_value = self:DeserializeValue(value_type, value)
                 self:CacheValue(key, deserialized_value)
-
-                if self.outstanding_get_callbacks[key] then
-                    for _, callback_data in ipairs(self.outstanding_get_callbacks[key]) do
-                        callback_data.callback(deserialized_value)
-                    end
-                    self.outstanding_get_callbacks[key] = nil
-                end
+                self:CallGetCallbacks(key, deserialized_value)
             else
-                callback(nil)
+                -- either value doesnt exist or no result
+                self:CallGetCallbacks(key, nil)
             end
         end
     end)
@@ -131,8 +132,24 @@ function KeyValueStore:DeserializeValue(value_type, value)
     return value
 end
 
-function KeyValueStore:Delete(key)
-    -- also remove from cache!
+function KeyValueStore:Delete(key, callback)
+    assert(type(key) == "string", "KeyValueStore key must be a string")
+    local cmd = [[DELETE FROM `key_value_store` WHERE `key` = @key;]]
+
+    local params = {
+        ["@key"] = key
+    }
+
+    self:CacheValue(key, nil)
+
+    -- we want the Delete to be instantaneous so any outstanding get requests are handled with a nil return value (aka doesn't exist)
+    self:CallGetCallbacks(key, nil)
+
+    SQL:Execute(cmd, params, function()
+        if callback then
+            callback()
+        end
+    end)
 end
 
 function KeyValueStore:CacheValue(key, value)
@@ -140,6 +157,15 @@ function KeyValueStore:CacheValue(key, value)
         timer = Timer(),
         value = value
     }
+end
+
+function KeyValueStore:CallGetCallbacks(key, value)
+    if self.outstanding_get_callbacks[key] then
+        for _, callback_data in ipairs(self.outstanding_get_callbacks[key]) do
+            callback_data.callback(value)
+        end
+        self.outstanding_get_callbacks[key] = nil
+    end
 end
 
 function KeyValueStore:RemoveStaleCachedValuesThread()
