@@ -4,7 +4,7 @@ Texture = class()
 
 TextureTypes = {Dui = 1, Image = 2}
 local texture_id = 0
-local TEXTURE_DICT = CreateRuntimeTxd("Texture_NAPI_Dict")
+local TEXTURE_DICT = CreateRuntimeTxd("Texture_OOF_Dict")
 
 local function GetTextureName()
     texture_id = texture_id + 1
