@@ -27,6 +27,10 @@ function KeyValueStore:__init()
         KeyValueStore:Set("TestKey", math.random(1, 100))
     end)
 
+    RegisterCommand("s2", function(source, args, rawCommand)
+        KeyValueStore:Set("TestKey2", math.random(1, 100))
+    end)
+
     RegisterCommand("g", function(source, args, rawCommand)
         KeyValueStore:Get("TestKey", function(value)
             print(value)
@@ -37,7 +41,18 @@ function KeyValueStore:__init()
     RegisterCommand("del", function(source, args, rawCommand)
         KeyValueStore:Delete("TestKey")
     end)
+
+    RegisterCommand("mg", function(source, args, rawCommand)
+        local values_to_get = {"TestKey", "TestKey2"}
+        KeyValueStore:Get(values_to_get, function(values)
+            print("values: ", values)
+            if values then
+                output_table(values)
+            end
+        end)
+    end)
     ]]
+    
 end
 
 function KeyValueStore:Set(key, value, callback)
@@ -71,7 +86,11 @@ end
 
 -- returns nil if key does not exist
 function KeyValueStore:Get(key, callback)
-    assert(type(key) == "string", "KeyValueStore key must be a string")
+    assert(type(key) == "string" or type(key) == "table", "KeyValueStore:Get key must be a string or table of strings")
+    if type(key) == "table" then
+        KeyValueStore:GetMultiple(key, callback)
+        return
+    end
     assert(string.len(key) <= self.max_key_length, "KeyValueStore key must be less than " .. tostring(self.max_key_length))
     local query = [[SELECT `value`, `value_type` FROM `key_value_store` WHERE `key`=@key]]
     local params = {
@@ -80,6 +99,7 @@ function KeyValueStore:Get(key, callback)
 
     if self.cached_values[key] then
         self.cached_values[key].timer:Restart()
+        self.__current_callback_key = key
         callback(self.cached_values[key].value)
         return
     end
@@ -108,6 +128,23 @@ function KeyValueStore:Get(key, callback)
             end
         end
     end)
+end
+
+function KeyValueStore:GetMultiple(keys, callback)
+    local key_count = count_table(keys)
+    local requests_completed = 0
+    local values = {}
+    local function get_callback(value)
+        values[KeyValueStore.__current_callback_key] = value
+        requests_completed = requests_completed + 1
+        if requests_completed == key_count then
+            callback(values)
+        end
+    end
+
+    for key_index, key in ipairs(keys) do
+        KeyValueStore:Get(key, get_callback)
+    end
 end
 
 function KeyValueStore:SerializeValue(value_type, value)
@@ -162,6 +199,7 @@ end
 function KeyValueStore:CallGetCallbacks(key, value)
     if self.outstanding_get_callbacks[key] then
         for _, callback_data in ipairs(self.outstanding_get_callbacks[key]) do
+            self.__current_callback_key = key
             callback_data.callback(value)
         end
         self.outstanding_get_callbacks[key] = nil
