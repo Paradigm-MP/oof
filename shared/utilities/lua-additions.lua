@@ -95,6 +95,15 @@ function deepcopy(orig)
     return copy
 end
 
+-- does not keep same order
+function shallow_copy(t)
+    local new_table = {}
+    for k, v in pairs(t) do
+        new_table[k] = v
+    end
+    return new_table
+end
+
 function output_table(t)
     print("-----", t, "-----")
     for key, value in pairs(t) do
