@@ -33,7 +33,20 @@ function UIInstance:CallEvent(event_name, data)
     assert(type(event_name) == "string", "event_name expected to be a string")
     if not data then data = {} end
     data.nui_event = event_name
+    -- data = EnsureStringKeys(data)
     SendNUIMessage({nui_event = "ui/event", name = self.name, data = data})
+end
+
+-- Loops through all tables in a table and converts keys to strings if they are not already
+function EnsureStringKeys(input)
+    if type(input) == "table" then
+        local input_string_keys = {}
+        for key, value in pairs(input) do
+            input_string_keys[tostring(key)] = EnsureStringKeys(value)
+        end
+        return input_string_keys
+    end
+    return input
 end
 
 --[[
