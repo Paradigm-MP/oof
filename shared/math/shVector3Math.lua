@@ -31,4 +31,17 @@ function Vector3Math:Length(a)
 	return math.sqrt(a.x * a.x + a.y * a.y + a.z * a.z)
 end
 
+function Vector3Math:LerpOverTime(a, b, time, callback)
+	local timer = Timer()
+	Citizen.CreateThread(function()
+		local ms = timer:GetMilliseconds()
+		while ms < time do
+			ms = timer:GetMilliseconds()
+			callback(Vector3Math:Lerp(a, b, ms / time), false)
+			Wait(1)
+		end
+		callback(Vector3Math:Lerp(a, b, ms / time), true)
+	end)
+end
+
 Vector3Math = Vector3Math()
