@@ -133,6 +133,10 @@ function Ped:GetCurrentWeapon()
     return weaponHash
 end
 
+function Ped:IsSliding()
+    return Citizen.InvokeNative(0xD6740E14E4CEFC0B, self.ped_id)
+end
+
 function Ped:IsArmed()
     return true
     -- TODO: implement
