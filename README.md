@@ -7,7 +7,7 @@ OOF is an Object-Oriented Framework for developing scripts in Lua for FiveM and 
 **This is not a "drag and drop" resource that you can simply install on your server.** This is a *framework* that can be used to help you code faster and better. You must be proficient at scripting to use this and must have experience with writing resources from scratch to use this. If you are looking for something to help improve your RP server, this is not what you are looking for. This is intended for server developers who want to create the next great server from scratch (or with a little help from OOF modules), guided by their creativity and ingenuity. If you decide to use other resources, you may have difficulty integrating them into this framework. OOF is still being developed, so there are unfinished parts. We encourage you to contribute!
 
 ## Intro
-Want to make a cool server in RedM, but don't want to deal with all the messy natives? OOF is perfect for that.
+Want to make a cool server in FiveM or RedM, but don't want to deal with all the messy natives? OOF is perfect for that.
 
 Our goal with OOF is to abstract away all of the messiness included with calling natives directly and wrap it all up in a nice object-oriented package for you to use. It helps to promote better coding style and keeps your code more organized. Plus, OOF supports inheritance (even multiple inheritance) so you can reuse logic from other classes.
 
@@ -53,7 +53,7 @@ gamemode-name
 fxmanifest.lua
 ```
 
-Each module can be thought of like what you would usually see in a normal RedM resource. It has some purpose that it carries out, and might interact with other scripts. 
+Each module can be thought of like what you would usually see in a normal resource. It has some purpose that it carries out, and might interact with other scripts. 
 
 We separate each module into three types of Lua files: server, client, and shared. The files within `server` are files that only the server has access to; `client` files are files that only the clients have access to. Files within `shared` are files that both the server and client can access, such as shared classes, data structures, and config files.
 
