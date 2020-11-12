@@ -1,3 +1,5 @@
+if not IsRedM then return end
+
 Imap = class()
 
 function Imap:__init()

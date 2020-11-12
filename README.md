@@ -57,7 +57,31 @@ Each module can be thought of like what you would usually see in a normal RedM r
 
 We separate each module into three types of Lua files: server, client, and shared. The files within `server` are files that only the server has access to; `client` files are files that only the clients have access to. Files within `shared` are files that both the server and client can access, such as shared classes, data structures, and config files.
 
-OOF itself is a module. You must load in all of the OOF files in a specific order to ensure that they are loaded properly. This can be seen in the `example_fxmanifest.lua` file. Your own fxmanifest should look something like this. The example fxmanifest only loads the OOF module, assuming that you named it `oof`. 
+OOF itself is a module. You must load in all of the OOF files in a specific order to ensure that they are loaded properly. This can be seen in the `example_fxmanifest.lua` file. Your own fxmanifest should look something like this. The example fxmanifest only loads the OOF module, assuming that you named it `oof`. When you see `Uncomment ONE of these depending on the game this is running on` in the `example_fxmanifest.lua`, make sure you only uncomment one of those when adding oof to your gamemode. Make sure to do this for both client and server scripts since it is a shared file. Your fxmanifest might look something like this:
+
+```lua
+client_scripts {
+    'oof/shared/game/IsRedM.lua',
+    --'oof/shared/game/IsFiveM.lua',
+
+    'oof/shared/overloads.lua',
+    'oof/shared/utilities/*.lua',
+    ...
+
+... 
+
+server_scripts {
+
+    'oof/shared/game/IsRedM.lua',
+    --'oof/shared/game/IsFiveM.lua',
+
+    'oof/server/sConfig.lua',
+    'oof/shared/overloads.lua', -- load order position does not matter because this is non-class code
+    'oof/shared/utilities/*.lua',
+    ...
+
+...
+```
 
 OOF interally uses MySQL as its database. This allows for you to easily save and load player data. However, you'll have to do a bit of setup in order for this to work.
 
@@ -99,7 +123,7 @@ OOF initialized successfully!
 
 -------------------------
 ```
-if you see those two messages, congrats! You've successfully installed OOF and have taken your first steps to becoming a master of the framework.
+if you see those two messages, congrats! You've successfully installed OOF and have taken your first steps to becoming a master of the framework. If you don't see those messages, something went wrong and you should try the above steps again.
 
 ### Essential modules
 There are some modules that are *essential* to working with OOF. Because OOF isn't particularly compatible with existing resources, we've created some modules to help get you started. Keep in mind that it's encouraged that you edit and extend the capabilities of these modules according to your needs. We created these out of necessity for our gamemode.

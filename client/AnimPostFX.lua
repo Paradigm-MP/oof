@@ -1,3 +1,5 @@
+if not IsRedM then return end
+
 AnimPostFX = class()
 
 function AnimPostFX:__init()

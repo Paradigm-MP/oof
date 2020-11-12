@@ -2,6 +2,11 @@ ui_page 'oof/client/ui/index.html'
 
 client_scripts {
     -- OOF module, nothing should precede this module
+
+    -- Uncomment ONE of these depending on the game this is running on
+    --'oof/shared/game/IsRedM.lua',
+    --'oof/shared/game/IsFiveM.lua',
+
     'oof/shared/overloads.lua',
     'oof/shared/utilities/*.lua',
     'oof/shared/object-oriented/class.lua', -- no class instances on initial frame before this file
@@ -55,6 +60,11 @@ client_scripts {
 
 server_scripts {
     -- OOF module, nothing should precede this module
+    
+    -- Uncomment ONE of these depending on the game this is running on
+    --'oof/shared/game/IsRedM.lua',
+    --'oof/shared/game/IsFiveM.lua',
+
     'oof/server/sConfig.lua',
     'oof/shared/overloads.lua', -- load order position does not matter because this is non-class code
     'oof/shared/utilities/*.lua',

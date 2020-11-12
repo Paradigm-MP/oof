@@ -41,6 +41,7 @@ end
 
 Explosion = Explosion()
 
+if IsRedM then
 ExplosionTypes = 
 {
     EXP_TAG_DONTCARE = -1,
@@ -81,3 +82,4 @@ ExplosionTypes =
     EXP_TAG_TRACKING_ARROW = 34,
     EXP_TAG_POISON_BOTTLE = 35
 }
+end

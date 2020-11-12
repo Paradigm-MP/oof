@@ -72,6 +72,7 @@ end
 
 HUD = HUD()
 
+if IsRedM then
 HudComponent = {
     everything = -1679307491,
     minimapHonorAndCards = 724769646,
@@ -91,4 +92,5 @@ HudComponent = {
     honorMoneyCards = -2124237476,
     forceSkillCards = 1533515944,
     actionWheelItems = -2106452847
-  }
+}
+end

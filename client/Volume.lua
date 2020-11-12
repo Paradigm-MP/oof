@@ -1,3 +1,5 @@
+if not IsRedM then return end
+
 Volume = class()
 
 VolumeType = 

@@ -11,6 +11,20 @@ Citizen.CreateThread(function()
         Colors.Console.Default
     ))
 
+    if not IsRedM and not IsFiveM then
+        error("IsRedM and IsFiveM both set to false. Please load one file from oof/shared/game to set game.")
+    elseif IsRedM and IsFiveM then
+        error("IsRedM and IsFiveM both set to true. Please only load one file from oof/shared/game to set game.")
+    end
+
+    print(string.format(
+        "%sGame set to %s%s\n%s",
+        Colors.Console.LightBlue,
+        IsRedM and Colors.Console.DarkRed or (IsFiveM and Colors.Console.Yellow or Colors.Console.Red),
+        IsRedM and "RedM" or (IsFiveM and "FiveM" or "NONE"),
+        Colors.Console.Default
+    ))
+
     if __collect_inits then
         -- do not collect inits beyond the initial frame & do not collect nested init's
         __collect_inits = false

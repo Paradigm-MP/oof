@@ -1,4 +1,4 @@
--- CreateDui NOT IMPLEMENTED YET, WILL NOT WORK
+if not IsFiveM then return end
 
 Texture = class()
 
