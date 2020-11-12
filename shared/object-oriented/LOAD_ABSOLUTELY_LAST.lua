@@ -30,19 +30,12 @@ Citizen.CreateThread(function()
         __collect_inits = false
 
         -- wait until we're ready to do networking (only runs on the Client)
-        -- doesnt return true in redm? disabled for now
-        --[[
         if IsClient then
-            while not NetworkIsSessionStarted() do
+            while not NetworkIsSessionActive() do
                 Wait(0)
             end
         end
-        ]]
-
-        if IsClient then
-            Wait(6000)
-        end
-
+        
         -- immediate classes first
         for index, immediate_class_data in ipairs(__immediate_list) do
             local instance = immediate_class_data[1]
