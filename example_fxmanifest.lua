@@ -15,7 +15,7 @@ client_scripts {
     'oof/shared/math/*.lua',
     '**/shared/enums/*Enum.lua', -- load all Enums
     '**/client/enums/*Enum.lua',
-    'oof/shared/Events.lua',
+    'oof/shared/events/*.lua', -- Events class
     'oof/client/cNetwork.lua',
     'oof/shared/ValueStorage.lua',
     'oof/client/TypeCheck.lua',
@@ -75,7 +75,7 @@ server_scripts {
     '**/shared/enums/*Enum.lua', -- load all the enums from all the modules
     '**/server/enums/*Enum.lua',
     'oof/shared/Color.lua',
-    'oof/shared/Events.lua',
+    'oof/shared/events/*.lua', -- Events class
     'oof/server/sNetwork.lua',
     -- mysql enabler
     'oof/server/mysql-async/MySQLAsync.net.dll',
