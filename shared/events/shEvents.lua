@@ -1,26 +1,3 @@
-local Event = immediate_class()
-
-local event_id = 0
-function Event:__init(name, callback)
-    self.name = name
-    self.callback = callback
-    self.id = event_id
-    event_id = event_id + 1
-
-    self.default_event = AddEventHandler(name, function(...)
-        self:Fire(...)
-    end)
-end
-
-function Event:Unsubscribe()
-    Events:Unsubscribe(self.name, self.id)
-    RemoveEventHandler(self.default_event)
-end
-
-function Event:Fire(...)
-    return self.callback(...)
-end
-
 Events = immediate_class()
 
 function Events:__init()
@@ -42,14 +19,17 @@ function Events:Fire(event, ...)
     return return_vals
 end
 
-function Events:Subscribe(name, callback)
+function Events:Subscribe(name, instance, callback)
     assert(name ~= nil, "cannot subscribe event without name")
-    assert(type(callback) == "function", "cannot subscribe event without callback function")
+    if type(instance) ~= "function" and type(instance) ~= "table" then
+        error("callback function non-existant or no callback instance provided. Function usage is Events:Subscribe(name, instance, callback) or Events:Subscribe(name, callback)")
+    end
+
     if not self.subs[name] then
         self.subs[name] = {}
     end
 
-    local event = Event(name, callback)
+    local event = Event(name, instance, callback)
     self.subs[name][event.id] = event
 
     return event
