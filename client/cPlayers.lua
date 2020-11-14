@@ -1,26 +1,19 @@
-cPlayers = load_first_class()
-
-function cPlayers:__loadFirst()
-    self.players_by_unique_id = {}
-
-    -- Network is an immediate_class, so we can use it in __loadFirst
-    Network:Subscribe("api/SyncConnectedPlayers", function(data)
-        if not self.__loadFirstCompleted then
-            self.player_sync_data = data
-            self.__loadFirstCompleted = true
-        else
-            self:SyncConnectedPlayers(data)
-        end
-    end)
-
-    Network:Send("api/RequestApiPlayerData")
-end
+cPlayers = class()
 
 function cPlayers:__init()
     self.players_by_unique_id = {}
+    self.received_data = false
 
-    -- create & store Player instances out of the data that __loadFirst retrieved
-    self:SyncConnectedPlayers(self.player_sync_data, true)
+    Network:Subscribe("api/SyncConnectedPlayers", function(data)
+        self:SyncConnectedPlayers(data, not self.received_data)
+        self.received_data = true
+    end)
+
+    Network:Send("api/RequestApiPlayerData")
+
+    while not self.received_data do
+        Wait(10)
+    end
 end
 
 function cPlayers:__postLoad()
@@ -29,32 +22,21 @@ end
 
 -- getting all the players from the server
 function cPlayers:SyncConnectedPlayers(data, on_init)
-    print("--- entered SyncConnectedPlayers ---")
+    print("--- syncing Players ---")
     local local_player_ped_id = LocalPlayer:GetPedId()
 
     for player_unique_id, sync_data in pairs(data) do
         local player_ped = GetPlayerPed(GetPlayerFromServerId(sync_data.source_id))
 
-        --print("sync_data: ")
-        --for k, v in pairs(sync_data) do
-        --    print(k, " | ", v)
-        --end
-
-        if player_ped == local_player_ped_id then
-            LocalPlayer:SetUniqueId(sync_data.unique_id)
-            LocalPlayer:SetName(sync_data.name)
-        end
-
         if not self.players_by_unique_id[player_unique_id] then
             self:AddPlayer(sync_data)
 
             local player = self:GetByUniqueId(sync_data.unique_id)
-            -- TODO: add a __postLoad so we can fire this event when all the code is ran
             if not on_init then
                 Events:Fire("PlayerJoined", {player = player})
             end
 
-            print("new Player Added: ", player)
+            print("Player Added: ", player)
         else
             self:AddPlayer(sync_data)
         end
@@ -82,7 +64,6 @@ function cPlayers:GetNearestPlayer(position)
             closest_distance = distance
             closest_player = player
         end
-        --print("distance: ", distance)
     end
 
     return closest_player, closest_distance

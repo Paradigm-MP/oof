@@ -1,4 +1,4 @@
-ActorGroupEnum = immediate_class(Enum)
+ActorGroupEnum = class(Enum)
 
 function ActorGroupEnum:__init()
     self:EnumInit()

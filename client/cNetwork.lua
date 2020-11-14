@@ -1,8 +1,4 @@
--- immediate class is a class that immediately comes into existance, even before __loadFirst is executed
--- the point of immediate classes is to make sure __loadFirst functions can use these classes
--- do not make a Model (like Player, Entity, or Actor) an immediate_class
--- try not to use immediate_class's
-local NetworkEvent = immediate_class()
+local NetworkEvent = class()
 
 local NetworkEvent_id = 0
 function NetworkEvent:__init(name, instance, callback)
@@ -35,7 +31,7 @@ function NetworkEvent:Receive(args)
     end
 end
 
-Network = immediate_class()
+Network = class()
 
 function Network:__init()
     self.subs = {}
@@ -47,6 +43,13 @@ function Network:Send(name, args)
     assert(name ~= nil and type(name) == "string", "cannot Network:Send without valid networkevent")
 
     TriggerServerEvent(name, args)
+end
+
+--[[
+    Blocks the current Thread until a response is received from the server
+]]
+function Network:Fetch(name, args)
+    local has_received_data = false
 end
 
 --[[

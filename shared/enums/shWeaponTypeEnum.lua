@@ -1,4 +1,4 @@
-WeaponTypeEnum = immediate_class(Enum)
+WeaponTypeEnum = class(Enum)
 
 function WeaponTypeEnum:__init()
     self:EnumInit()

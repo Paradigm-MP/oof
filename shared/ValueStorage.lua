@@ -1,6 +1,6 @@
 -- Class for storing values on stuff
 
-ValueStorage = immediate_class()
+ValueStorage = class()
 
 function ValueStorage:__init()
     self:InitializeValueStorage()

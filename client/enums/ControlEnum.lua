@@ -1,4 +1,4 @@
-ControlEnum = immediate_class(Enum)
+ControlEnum = class(Enum)
 
 -- Taken from here https://github.com/crosire/scripthookvdotnet/blob/master/source/scripting_v3/GTA/Control.cs
 function ControlEnum:__init()

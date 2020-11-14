@@ -1,6 +1,6 @@
 
 -- Color class
-Color = immediate_class()
+Color = class()
 
 function Color:__init(r, g, b, a)
     self.__type = "Color"

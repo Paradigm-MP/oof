@@ -1,4 +1,4 @@
-Deque = immediate_class()
+Deque = class()
 --[[
     Deque: A double-ended queue implementation
 ]]

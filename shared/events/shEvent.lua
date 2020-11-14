@@ -1,4 +1,4 @@
-Event = immediate_class()
+Event = class()
 
 local event_id = 0
 function Event:__init(name, instance, callback)

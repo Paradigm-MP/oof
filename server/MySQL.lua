@@ -1,4 +1,4 @@
-MySQLWrapper = immediate_class()
+MySQLWrapper = class()
 
 
 function MySQLWrapper:__init()

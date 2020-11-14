@@ -1,10 +1,18 @@
-LocalPlayer = immediate_class()
+LocalPlayer = class()
 LocalPlayer.base_health = 500
 
 function LocalPlayer:__init()
     getter_setter(self, "name") -- declares LocalPlayer:GetName() and LocalPlayer:SetName() for self.name
     getter_setter(self, "unique_id") -- declares LocalPlayer:GetUniqueId() and LocalPlayer:SetUniqueId() for self.unique_id
     getter_setter(self, "is_spawning") -- declares LocalPlayer:GetIsSpawning() and LocalPlayer:SetIsSpawning() for self.is_spawning
+
+    local local_player_ped_id = LocalPlayer:GetPedId()
+    for player_unique_id, player in pairs(cPlayers:GetPlayers()) do
+        if player:GetPedId() == local_player_ped_id then
+            self:SetUniqueId(player_unique_id)
+            self:SetName(player:GetName())
+        end
+    end
 
     self.spawned = false
     self.controls_enabled = true
@@ -16,9 +24,6 @@ function LocalPlayer:__init()
     self:RestrictActions()
     self.values = ValueStorage()
     self.values:InitializeValueStorage(self)
-end
-
-function LocalPlayer:__postLoad()
 end
 
 function LocalPlayer:MonitorHealthChanges()

@@ -1,5 +1,5 @@
--- the base Enum class from which all other enums are children of
-Enum = immediate_class()
+-- the base Enum class
+Enum = class()
 
 function Enum:EnumInit()
     self.descriptions = {}

@@ -1,4 +1,4 @@
-ActorModelEnum = immediate_class(Enum)
+ActorModelEnum = class(Enum)
 
 --[[
 New agent profile checklist:

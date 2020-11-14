@@ -1,4 +1,4 @@
-VehicleEnum = immediate_class(Enum)
+VehicleEnum = class(Enum)
 
 function VehicleEnum:__init()
     self:EnumInit()

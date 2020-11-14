@@ -1,4 +1,4 @@
-Events = immediate_class()
+Events = class()
 
 function Events:__init()
     self.subs = {}
