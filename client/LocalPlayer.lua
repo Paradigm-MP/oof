@@ -97,11 +97,12 @@ function LocalPlayer:ToggleControls(enabled)
 end
 
 function LocalPlayer:RestrictActions()
-    print("LocalPlayer restricting actions")
+    --print("LocalPlayer restricting actions")
 
     -- disables weapon melee
     Citizen.CreateThread(function()
-        while true do
+        --[[
+           while true do
             Citizen.Wait(1) -- a short delay of 5 ms
             --DisableControlAction(0, 69, true) -- INPUT_VEH_ATTACK
             --DisableControlAction(0, 92, true) -- INPUT_VEH_PASSENGER_ATTACK
@@ -112,7 +113,8 @@ function LocalPlayer:RestrictActions()
             --DisableControlAction(0, 257, true) -- INPUT_ATTACK2
             --DisableControlAction(0, 263, true) -- INPUT_MELEE_ATTACK1
             --DisableControlAction(0, 264, true) -- INPUT_MELEE_ATTACK2
-        end
+        end 
+        ]]
     end)
 end
 

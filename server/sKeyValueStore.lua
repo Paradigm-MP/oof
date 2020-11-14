@@ -149,7 +149,8 @@ end
 
 function KeyValueStore:SerializeValue(value_type, value)
     if value_type == "table" then
-        return json.encode(value, {indent = false})
+        -- return json.encode(value, {indent = false})
+        return JsonOOF.encode(value)
     elseif value_type == "boolean" then
         if value then return "true" else return "false" end
     end
@@ -161,7 +162,7 @@ function KeyValueStore:DeserializeValue(value_type, value)
     if value_type == "number" then
         return tonumber(value)
     elseif value_type == "table" then
-        return json.decode(value)
+        return JsonOOF.decode(value)
     elseif value_type == "boolean" then
         if value == "true" then return true else return false end
     end

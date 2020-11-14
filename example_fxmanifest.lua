@@ -77,6 +77,7 @@ server_scripts {
     'oof/shared/Color.lua',
     'oof/shared/events/*.lua', -- Events class
     'oof/server/sNetwork.lua',
+    'oof/server/json/*.lua', -- JsonOOF class
     -- mysql enabler
     'oof/server/mysql-async/MySQLAsync.net.dll',
     'oof/server/mysql-async/lib/init.lua',
