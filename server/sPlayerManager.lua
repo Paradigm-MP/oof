@@ -37,8 +37,8 @@ function PlayerManager:ListenForLocalEvents()
 end
 
 function PlayerManager:ListenForNetworkEvents()
-    Network:Subscribe("api/RequestApiPlayerData", function(args) self:PlayerInitialDataRequest(args) end)
-    Network:Subscribe("api/ClientReady", function(args) self:ClientReady(args) end)
+    Network:Subscribe("api/RequestApiPlayerData", self, self.PlayerInitialDataRequest)
+    Network:Subscribe("api/ClientReady", self, self.ClientReady)
 end
 
 -- this comes from cPlayers:__loadFirst()

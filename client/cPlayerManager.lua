@@ -12,7 +12,7 @@ function PlayerManager:SubscribeToEvents()
 end
 
 function PlayerManager:ListenForNetworkEvents()
-    Network:Subscribe("PlayerRemoved", function(args) self:PlayerRemoved(args) end)
+    Network:Subscribe("PlayerRemoved", self, self.PlayerRemoved)
 end
 
 function PlayerManager:PlayerRemoved(args)

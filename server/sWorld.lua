@@ -8,7 +8,7 @@ function World:__init()
     self.timescale = 1
     self.blackout = false
 
-    Events:Subscribe("PlayerJoined", function(args) self:PlayerJoined(args) end)
+    Events:Subscribe("PlayerJoined", self, self.PlayerJoined)
 end
 
 --[[

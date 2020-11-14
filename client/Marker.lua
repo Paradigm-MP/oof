@@ -50,7 +50,7 @@ function Marker:__init(args)
     self.texture_name = args.texture_name
     self.draw_on_entity = args.draw_on_entity ~= nil and args.draw_on_entity or false
 
-    self.render = Events:Subscribe("Render", function() self:Draw() end)
+    self.render = Events:Subscribe("Render", self, self.Draw)
 end
 
 function Marker:SetColor(color)

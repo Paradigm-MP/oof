@@ -1,7 +1,7 @@
 ObjectManager = class()
 
 function ObjectManager:__init()
-    Events:Subscribe("onResourceStop", function(resource_name) self:OnResourceStop(resource_name) end)
+    Events:Subscribe("onResourceStop", self, self.OnResourceStop)
 end
 
 function ObjectManager:FindObjectByEntityId(id)

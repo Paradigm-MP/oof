@@ -9,13 +9,13 @@ function World:__init()
     self.blackout = false
 
     -- Network events for syncing world properties
-    Network:Subscribe("API/World/InitialSync", function(args) self:InitialSync(args) end)
-    Network:Subscribe("API/World/SetTimeScale", function(args) self:SetTimeScale(args.scale) end)
-    Network:Subscribe("API/World/SetBlackout", function(args) self:SetBlackout(args.blackout) end)
-    --Network:Subscribe("API/World/SetMixedWeather", function(args) self:SetTimeScale(args.scale) end)
-    Network:Subscribe("API/World/SetWeather", function(args) self:SetWeather(args.weather) end)
-    Network:Subscribe("API/World/SetTime", function(args) self:SetTime(args.time.hours, args.time.minutes, args.time.seconds) end)
-    Network:Subscribe("API/World/SetTimestepEnabled", function(args) self:SetTimestepEnabled(args.enabled) end)
+    Network:Subscribe("API/World/InitialSync", self, self.InitialSync)
+    Network:Subscribe("API/World/SetTimeScale", self, self.SetTimeScale)
+    Network:Subscribe("API/World/SetBlackout", self, self.SetBlackout)
+    --Network:Subscribe("API/World/SetMixedWeather", self,self:SetTimeScale(args.scale) end)
+    Network:Subscribe("API/World/SetWeather", self, self.SetWeather)
+    Network:Subscribe("API/World/SetTime", self, self.SetTime)
+    Network:Subscribe("API/World/SetTimestepEnabled", self, self.SetTimestepEnabled)
 end
 
 --[[

@@ -24,7 +24,7 @@ function Prompt:__init(args)
     self:SetContextPoint(self.position)
     self:SetContextSize(self.size)
 
-    Events:Subscribe("onResourceStop", function(name) self:OnResourceStop(name) end)
+    Events:Subscribe("onResourceStop", self, self.OnResourceStop)
 end
 
 function Prompt:Create()
