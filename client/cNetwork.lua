@@ -5,8 +5,9 @@
 local NetworkEvent = immediate_class()
 
 local NetworkEvent_id = 0
-function NetworkEvent:__init(name, callback)
+function NetworkEvent:__init(name, instance, callback)
     self.name = name
+    self.instance = instance
     self.callback = callback
     self.id = NetworkEvent_id
     NetworkEvent_id = NetworkEvent_id + 1
@@ -26,7 +27,12 @@ function NetworkEvent:Receive(args)
         end 
     end
     
-    self.callback(return_args)
+    if self.callback then
+        self.callback(self.instance, return_args)
+    else
+        local callback = self.instance
+        callback(return_args)
+    end
 end
 
 Network = immediate_class()
@@ -50,9 +56,9 @@ end
     Network:Subscribe("PlayerLoaded", function(args)
     end)
 ]]
-function Network:Subscribe(name, callback)
+function Network:Subscribe(name, instance, callback)
     assert(name ~= nil, "cannot subscribe networkevent without name")
-    assert(type(callback) == "function", "cannot subscribe Network without callback function")
+    assert(type(instance) == "table" or type(instance) == "function", "callback function non-existant or no callback instance provided. Function usage is Network:Subscribe(name, instance, callback) or Network:Subscribe(name, callback)")
 
     if not self.subs[name] then
         self.subs[name] = {}
@@ -65,7 +71,7 @@ function Network:Subscribe(name, callback)
         end)
     end
 
-    local networkevent = NetworkEvent(name, callback)
+    local networkevent = NetworkEvent(name, instance, callback)
     self.subs[name][networkevent.id] = networkevent
 
     return networkevent
