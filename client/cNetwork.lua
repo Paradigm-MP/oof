@@ -79,10 +79,16 @@ function Network:Fetch(name, args)
     end)
 
 
+    local response_timer = Timer()
+    local fetched_data
     while not self.fetch_data[fetch_id] do
         Wait(10)
+        if response_timer:GetSeconds() > 4 then
+            print("Network:Fetch timed out! No response received from the server within 4 seconds. Did you forget to add a Network:Subscribe for this Fetch in the server-side code?")
+            break
+        end
     end
-    local fetched_data = self.fetch_data[fetch_id]
+    fetched_data = self.fetch_data[fetch_id]
     self.fetch_data[fetch_id] = nil
     subscription:Unsubscribe()
 

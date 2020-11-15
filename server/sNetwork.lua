@@ -71,7 +71,7 @@ function Network:Send(name, players, args)
 end
 
 --[[
-    Blocks the current Thread until a response is received from the server
+    Blocks the current Thread until a response is received from the client
 ]]
 function Network:Fetch(name, players, args)
     self.current_fetch_id = self.current_fetch_id + 1
@@ -90,11 +90,16 @@ function Network:Fetch(name, players, args)
         self.fetch_data[fetch_id] = args
     end)
 
-
+    local response_timer = Timer()
+    local fetched_data
     while not self.fetch_data[fetch_id] do
         Wait(10)
+        if response_timer:GetSeconds() > 4 then
+            print("Network:Fetch timed out! No response received from the client within 4 seconds. Did you forget to add a Network:Subscribe for this Fetch in the client-side code?")
+            break
+        end
     end
-    local fetched_data = self.fetch_data[fetch_id]
+    fetched_data = self.fetch_data[fetch_id]
     self.fetch_data[fetch_id] = nil
     subscription:Unsubscribe()
 
