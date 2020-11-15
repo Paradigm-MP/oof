@@ -50,7 +50,13 @@ function Marker:__init(args)
     self.texture_name = args.texture_name
     self.draw_on_entity = args.draw_on_entity ~= nil and args.draw_on_entity or false
 
+    self.visible = true
+
     self.render = Events:Subscribe("Render", self, self.Draw)
+end
+
+function Marker:SetVisible(visible)
+    self.visible = visible
 end
 
 function Marker:SetColor(color)
@@ -62,6 +68,7 @@ function Marker:FadeOut()
 end
 
 function Marker:Draw()
+    if not self.visible then return end
     Citizen.InvokeNative(0x2A32FAA57B937173,
         self.type,
         self.position.x, self.position.y, self.position.z,
