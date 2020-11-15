@@ -62,7 +62,7 @@ function Network:Fetch(name, args)
     fetch_args.__is_fetch = nil
     fetch_args.__fetch_id = nil
 
-    Network:Subscribe(name .. "__FetchCallback" .. tostring(fetch_id), function(args)
+    local subscription = Network:Subscribe(name .. "__FetchCallback" .. tostring(fetch_id), function(args)
         self.fetch_data[fetch_id] = args
     end)
 
@@ -72,6 +72,7 @@ function Network:Fetch(name, args)
     end
     local fetched_data = self.fetch_data[fetch_id]
     self.fetch_data[fetch_id] = nil
+    subscription:Unsubscribe()
 
     return fetched_data
 end
