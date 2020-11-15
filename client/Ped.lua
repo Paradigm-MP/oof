@@ -319,10 +319,6 @@ function Ped:IsMale()
     return IsPedMale(self.ped_id)
 end
 
-function Ped:SetPedActorGroup(actor_group_enum)
-    SetPedRelationshipGroupHash(self:GetPedId(), ActorGroupEnum:GetGroupHash(actor_group_enum))
-end
-
 function Ped:IsJumping()
     return IsPedJumping(self.ped_id)
 end

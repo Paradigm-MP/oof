@@ -213,8 +213,6 @@ function LocalPlayer:Spawn(args)
             --print("LocalPlayer Health: ", GetEntityHealth(LocalPlayer:GetPedId()))
             -- 150 for Player Zero by default
 
-            LocalPlayer:SetActorGroup(ActorGroupEnum.PlayerGroup)
-
             self:SetIsSpawning(false)
             self.spawned = true
             Events:Fire("LocalPlayerSpawn", {})
@@ -277,18 +275,6 @@ end
 
 function LocalPlayer:GetEntityId()
     return GetPlayerPed(PlayerId())
-end
-
-function LocalPlayer:SetActorGroup(actor_group_enum)
-    SetPedRelationshipGroupHash(LocalPlayer:GetPedId(), ActorGroupEnum:GetGroupHash(actor_group_enum))
-end
-
-function LocalPlayer:GetActorGroupEnum()
-    return ActorGroupEnum:GetFromHash(GetPedRelationshipGroupHash(self:GetPedId()))
-end
-
-function LocalPlayer:SetIsInvincibleFromActorGroup(actor_group_enum, is_invincible)
-    SetEntityCanBeDamagedByRelationshipGroup(LocalPlayer:GetPedId(), not is_invincible, ActorGroupEnum:GetGroupHash(actor_group_enum))
 end
 
 function LocalPlayer:SetTotallyInvincible(invincible)
