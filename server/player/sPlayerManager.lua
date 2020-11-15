@@ -48,7 +48,7 @@ function PlayerManager:PlayerInitialDataRequest(data)
 end
 
 function PlayerManager:ClientReady(args)
-    -- fired after a client has executed all the firstLoads, inits, and postloads of all their classes
+    -- fired after a client has executed all the inits & postloads from all their classes
     Events:Fire("ClientReady", {player = args.player})
 end
 

@@ -23,9 +23,9 @@ client_scripts {
     'oof/client/AssetRequester.lua',
     'oof/shared/Timer.lua',
     'oof/client/cEntity.lua',
-    'oof/client/cPlayer.lua',
-    'oof/client/cPlayers.lua',
-    'oof/client/cPlayerManager.lua',
+    'oof/client/player/cPlayer.lua',
+    'oof/client/player/cPlayers.lua',
+    'oof/client/player/cPlayerManager.lua',
     'oof/client/Ped.lua',
     'oof/client/Physics.lua',
     'oof/client/LocalPlayer.lua',
@@ -71,7 +71,7 @@ server_scripts {
     'oof/shared/utilities/*.lua',
     'oof/shared/object-oriented/class.lua', -- no class instances on initial frame before this file
     'oof/shared/object-oriented/shGetterSetter.lua',
-    'oof/shared/object-oriented/shObjectOrientedUtilities.lua', -- is_class_instance
+    'oof/shared/object-oriented/shObjectOrientedUtilities.lua', -- is_class_instance function
     'oof/shared/math/*.lua',
     'oof/shared/standalone-data-structures/*', -- Enum, IdPool
     '**/shared/enums/*Enum.lua', -- load all the enums from all the modules
@@ -89,9 +89,9 @@ server_scripts {
     'oof/server/key-value-store/*.lua',
     'oof/shared/ValueStorage.lua',
     'oof/shared/Timer.lua',
-    'oof/server/sPlayer.lua',
-    'oof/server/sPlayers.lua',
-    'oof/server/sPlayerManager.lua',
+    'oof/server/player/sPlayer.lua', -- Player class
+    'oof/server/player/sPlayers.lua', -- Players class
+    'oof/server/player/sPlayerManager.lua', -- PlayerManager class
     'oof/server/sWorld.lua',
 
     -- Add other modules here (server and shared)
