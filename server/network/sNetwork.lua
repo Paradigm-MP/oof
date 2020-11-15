@@ -14,7 +14,7 @@ function NetworkEvent:Unsubscribe()
 end
 
 function NetworkEvent:Receive(source, args, name)
-    -- source is nil if this is clientside, otherwise it is the player who sent it
+    -- source is the player who sent it
     local player = sPlayers:GetById(source)
     local return_args = {source = source, player = player}
     local is_fetch = false

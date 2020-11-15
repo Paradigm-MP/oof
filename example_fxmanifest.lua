@@ -17,7 +17,7 @@ client_scripts {
     '**/shared/enums/*Enum.lua', -- load all Enums
     '**/client/enums/*Enum.lua',
     'oof/shared/events/*.lua', -- Events class
-    'oof/client/cNetwork.lua',
+    'oof/client/network/*.lua', -- Network class
     'oof/shared/ValueStorage.lua',
     'oof/client/TypeCheck.lua',
     'oof/client/AssetRequester.lua',
@@ -78,7 +78,7 @@ server_scripts {
     '**/server/enums/*Enum.lua',
     'oof/shared/Color.lua',
     'oof/shared/events/*.lua', -- Events class
-    'oof/server/sNetwork.lua',
+    'oof/server/network/*.lua', -- Network class
     'oof/server/json/*.lua', -- JsonOOF, JsonUtils class
     -- mysql enabler
     'oof/server/mysql-async/MySQLAsync.net.dll',
