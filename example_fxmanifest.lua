@@ -35,7 +35,7 @@ client_scripts {
     'oof/client/ObjectManager.lua',
     'oof/client/Object.lua',
     'oof/client/ScreenEffects.lua',
-    'oof/client/World.lua',
+    'oof/client/world/*.lua', -- World class
     'oof/client/Sound.lua',
     'oof/client/Light.lua',
     'oof/client/ParticleEffect.lua',
@@ -92,7 +92,7 @@ server_scripts {
     'oof/server/player/sPlayer.lua', -- Player class
     'oof/server/player/sPlayers.lua', -- Players class
     'oof/server/player/sPlayerManager.lua', -- PlayerManager class
-    'oof/server/sWorld.lua',
+    'oof/server/world/*.lua', -- World class
 
     -- Add other modules here (server and shared)
 
