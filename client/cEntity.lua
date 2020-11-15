@@ -1,7 +1,6 @@
 Entity = class(ValueStorage)
 
 function Entity:__init(ent)
-    self.__type = "Entity"
     self:InitializeEntity(ent)
 end
 
@@ -99,7 +98,7 @@ function Entity:SetEntityHeadingTowardsEntity(other_entity, ped)
         local dy = p2.y - p1.y
 
         heading = GetHeadingFromVector_2d(dx, dy)
-    elseif entity_type == "Entity" then
+    elseif is_class_instance(other_entity, Entity) then
         local other_entity_id = other_entity:GetEntityId()
         local p1 = GetEntityCoords(self.entity, true)
         local p2 = GetEntityCoords(other_entity_id, true)
@@ -115,7 +114,7 @@ end
 
 function Entity:GetHeadingTowardsEntity(other_entity)
     local p1 = GetEntityCoords(self.entity, true)
-    local p2 = GetEntityCoords(type(other_entity) == "Entity" and other_entity:GetEntityId() or other_entity, true)
+    local p2 = GetEntityCoords(is_class_instance(other_entity, Entity) and other_entity:GetEntityId() or other_entity, true)
 
     -- old debug code, remove at some point
     if p1.y - .01 <= 0.0 and p1.y + .01 >= 0 then

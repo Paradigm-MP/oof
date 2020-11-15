@@ -2,7 +2,6 @@
 Player = class(ValueStorage)
 
 function Player:__init(player_id, ids)
-    self.__type = "Player"
     self.player_id = tonumber(player_id)
     self.ids = ids -- steam, discord, license, live (xbox live), fivem, ip
     self.name = GetPlayerName(player_id)

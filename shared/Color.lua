@@ -3,8 +3,6 @@
 Color = class()
 
 function Color:__init(r, g, b, a)
-    self.__type = "Color"
-    
     -- Hex
     if type(r) == "string" then
         r, g, b = self:HexToRGB(r)

@@ -22,7 +22,7 @@ function TypeCheck:Text(text)
 end
 
 function TypeCheck:Color(color)
-    assert(type(color) == "Color", "color expected to be a Color")
+    assert(is_class_instance(color, Color), "color expected to be a Color")
     assert(color.r ~= nil and color.g ~= nil and color.b ~= nil and color.a ~= nil, "color missing a component")
 end
 

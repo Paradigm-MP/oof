@@ -4,18 +4,9 @@
 
 IsTest = true
 
-local OgLuaType = type -- we maintain a reference to the original superglobal function
-function type(variable) -- then we redefine the superglobal, and add logic on top of the original superglobal function
-    if OgLuaType(variable) == "table" and variable.__class_instance and variable.__type then
-        return variable.__type
-    else
-        return OgLuaType(variable)
-    end
-end
-
 local OgLuaTostring = tostring
 function tostring(variable)
-    if OgLuaType(variable) == "table" and variable.__class_instance then
+    if type(variable) == "table" and variable.__class_instance then
         return variable:tostring()
     else
         return OgLuaTostring(variable)
