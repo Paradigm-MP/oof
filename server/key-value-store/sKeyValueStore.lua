@@ -8,15 +8,25 @@ KeyValueStore = class()
  * Caching occurs on every operation (Get, Set, Delete).
  * Supported types: string, number, boolean, table (converted to json string), nil
 ]]
+
+-- the minimum amount of time (ms) that values will be cached
+KeyValueStore.MinimumCacheTime = 1000
+
+-- how often (ms) to remove stale cache entries
+KeyValueStore.CacheClearInterval = 1000
+
+-- The minimum amount of time an operation will be cached is: KeyValueStore.MinimumCacheTime
+-- The maximum amount of time an operation will be cached is calculated as: KeyValueStore.MinimumCacheTime + KeyValueStore.CacheClearInterval
+
 function KeyValueStore:__init()
-    SQL:Execute([[CREATE TABLE IF NOT EXISTS `key_value_store` (`key` VARCHAR(100) NOT NULL PRIMARY KEY, `value_type` VARCHAR(50), `value` VARCHAR(1000))]])
-    self.max_key_length = 100
-    self.max_value_length = 1000
+    SQL:Execute([[CREATE TABLE IF NOT EXISTS `key_value_store` (`key` VARCHAR(200) NOT NULL PRIMARY KEY, `value_type` VARCHAR(50), `value` TEXT)]])
+    self.max_key_length = 200
+    self.max_value_length = 65000
 
     -- in order to support immediately calling :Get after a :Set, we cache values for a short period of time (at least 1 frame)
     self.cached_values = {}
-    self.min_cache_time = 1000 -- the minimum amount of time (ms) that values will be cached
-    self.remove_stale_cache_values_interval = 1000 -- how often (ms) to remove stale cache values
+    self.min_cache_time = KeyValueStore.MinimumCacheTime
+    self.remove_stale_cache_values_interval = KeyValueStore.CacheClearInterval
 
     self.outstanding_get_callbacks = {}
 

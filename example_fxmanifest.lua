@@ -85,7 +85,8 @@ server_scripts {
     'oof/server/mysql-async/lib/init.lua',
     'oof/server/mysql-async/lib/MySQL.lua',
     -- mysql wrapper
-    'oof/server/MySQL.lua',
+    'oof/server/mysql/MySQL.lua',
+    'oof/server/key-value-store/*.lua',
     'oof/shared/ValueStorage.lua',
     'oof/shared/Timer.lua',
     'oof/server/sPlayer.lua',
