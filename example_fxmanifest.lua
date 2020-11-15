@@ -11,6 +11,7 @@ client_scripts {
     'oof/shared/utilities/*.lua',
     'oof/shared/object-oriented/class.lua', -- no class instances on initial frame before this file
     'oof/shared/object-oriented/shGetterSetter.lua', -- getter_setter, getter_setter_encrypted
+    'oof/shared/object-oriented/shObjectOrientedUtilities.lua', -- is_class_instance
     'oof/shared/standalone-data-structures/*', -- Enum, IdPool
     'oof/shared/math/*.lua',
     '**/shared/enums/*Enum.lua', -- load all Enums
@@ -70,6 +71,7 @@ server_scripts {
     'oof/shared/utilities/*.lua',
     'oof/shared/object-oriented/class.lua', -- no class instances on initial frame before this file
     'oof/shared/object-oriented/shGetterSetter.lua',
+    'oof/shared/object-oriented/shObjectOrientedUtilities.lua', -- is_class_instance
     'oof/shared/math/*.lua',
     'oof/shared/standalone-data-structures/*', -- Enum, IdPool
     '**/shared/enums/*Enum.lua', -- load all the enums from all the modules

@@ -13,21 +13,33 @@ function NetworkEvent:Unsubscribe()
     Network:Unsubscribe(self.name, self.id)
 end
 
-function NetworkEvent:Receive(source, args)
+function NetworkEvent:Receive(source, args, name)
     -- source is nil if this is clientside, otherwise it is the player who sent it
-    local return_args = {source = source, player = sPlayers:GetById(source)}
+    local player = sPlayers:GetById(source)
+    local return_args = {source = source, player = player}
+    local is_fetch = false
+    local fetch_id
 
-    if args then 
-        for k,v in pairs(args) do 
+    if args then
+        is_fetch = args.__is_fetch
+        fetch_id = args.__fetch_id
+        args.__is_fetch = nil
+        args.__fetch_id = nil
+        for k, v in pairs(args) do
             return_args[k] = v 
         end 
     end
     
+    local return_value
     if self.callback then
-        self.callback(self.instance, return_args)
+        return_value = self.callback(self.instance, return_args)
     else
         local callback = self.instance
-        callback(return_args)
+        return_value = callback(return_args)
+    end
+
+    if is_fetch then
+        Network:Send(name .. "__FetchCallback" .. tostring(fetch_id), player, return_value)
     end
 end
 
@@ -41,12 +53,12 @@ end
 function Network:Send(name, players, args)
     assert(name ~= nil and type(name) == "string", "cannot Network:Send without valid networkevent")
 
-    assert(type(players) == "number" or type(players) == "table" or type(players) == "Player", 
+    assert(type(players) == "number" or type(players) == "table" or is_class_instance(players, Player), 
         "cannot Network:Send without valid player id(s). Specify -1 for all, one id, or a table")
     
     if type(players) == "number" then
         TriggerClientEvent(name, players, args)
-    elseif type(players) == "Player" then
+    elseif is_class_instance(players, Player) then
         TriggerClientEvent(name, players:GetId(), args)
     elseif type(players) == "table" then
         for _, id in pairs(players) do
@@ -75,7 +87,7 @@ function Network:Subscribe(name, instance, callback)
         RegisterNetEvent(name)
         self.handlers[name] = AddEventHandler(name, function(args)
             for _, networkevent in pairs(self.subs[name]) do
-                networkevent:Receive(source, args)
+                networkevent:Receive(source, args, name)
             end
         end)
     end

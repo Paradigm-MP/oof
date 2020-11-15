@@ -36,7 +36,8 @@ Network = class()
 function Network:__init()
     self.subs = {}
     self.handlers = {}
-
+    self.current_fetch_id = 1
+    self.fetch_data = {}
 end
 
 function Network:Send(name, args)
@@ -49,7 +50,30 @@ end
     Blocks the current Thread until a response is received from the server
 ]]
 function Network:Fetch(name, args)
-    local has_received_data = false
+    self.current_fetch_id = self.current_fetch_id + 1
+    local fetch_id = self.current_fetch_id
+    local fetch_args = args
+    if not args then
+        fetch_args = {}
+    end
+    fetch_args.__is_fetch = true
+    fetch_args.__fetch_id = fetch_id
+    Network:Send(name, fetch_args)
+    fetch_args.__is_fetch = nil
+    fetch_args.__fetch_id = nil
+
+    Network:Subscribe(name .. "__FetchCallback" .. tostring(fetch_id), function(args)
+        self.fetch_data[fetch_id] = args
+    end)
+
+
+    while not self.fetch_data[fetch_id] do
+        Wait(10)
+    end
+    local fetched_data = self.fetch_data[fetch_id]
+    self.fetch_data[fetch_id] = nil
+
+    return fetched_data
 end
 
 --[[
