@@ -13,21 +13,33 @@ function NetworkEvent:Unsubscribe()
     Network:Unsubscribe(self.name, self.id)
 end
 
-function NetworkEvent:Receive(args)
+function NetworkEvent:Receive(args, name)
     -- source is nil if this is clientside, otherwise it is the player who sent it
     local return_args = {}
+    local is_fetch = false
+    local fetch_id
 
-    if args then 
+    if args then
+        is_fetch = args.__is_fetch
+        fetch_id = args.__fetch_id
+        args.__is_fetch = nil
+        args.__fetch_id = nil
         for k,v in pairs(args) do 
             return_args[k] = v
         end 
     end
     
+    local return_value
     if self.callback then
-        self.callback(self.instance, return_args)
+        return_value = self.callback(self.instance, return_args)
     else
         local callback = self.instance
-        callback(return_args)
+        return_value = callback(return_args)
+    end
+
+    if is_fetch then
+        assert(return_value and type(return_value) == "table", "A Network:Fetch handler function must return a table!")
+        Network:Send(name .. "__FetchCallback" .. tostring(fetch_id), return_value)
     end
 end
 
@@ -94,7 +106,7 @@ function Network:Subscribe(name, instance, callback)
         RegisterNetEvent(name)
         self.handlers[name] = AddEventHandler(name, function(args)
             for _, networkevent in pairs(self.subs[name]) do
-                networkevent:Receive(args)
+                networkevent:Receive(args, name)
             end
         end)
     end
