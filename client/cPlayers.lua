@@ -111,6 +111,7 @@ function cPlayers:GetNumPlayers()
 end
 
 function cPlayers:GetPlayers()
+    -- todo: write new iterator
     return self.players_by_unique_id
 end
 

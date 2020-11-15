@@ -1,15 +1,12 @@
-JSONUtils = class()
+JsonUtils = class()
 
-function JSONUtils:__init()
-end
-
-function JSONUtils:LoadJSON(path)
+function JsonUtils:LoadJSON(path)
     return json.decode(LoadResourceFile(GetCurrentResourceName(), path))
 end
 
-function JSONUtils:SaveJSON(data, path)
+function JsonUtils:SaveJSON(data, path)
     SaveResourceFile(GetCurrentResourceName(), path, json.encode(data, {indent = true}), -1)
     return true
 end
 
-JSONUtils = JSONUtils()
+JsonUtils = JsonUtils()
