@@ -1,5 +1,5 @@
-if not IsRedM then return end
-
+if IsRedM then
+    
 Imap = class()
 
 function Imap:__init()
@@ -35,6 +35,8 @@ function Imap:LoadValentine()
 end
 
 Imap = Imap()
+
+end
 
 Imaps = 
 {

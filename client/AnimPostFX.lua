@@ -1,5 +1,3 @@
-if not IsRedM then return end
-
 AnimPostFX = class()
 
 function AnimPostFX:__init()
@@ -14,7 +12,9 @@ function AnimPostFX:Stop(name)
     AnimpostfxStop(name)
 end
 
-AnimPostFX = AnimPostFX()
+if IsRedM then
+	AnimPostFX = AnimPostFX()
+end
 
 -- List of FX names from https://github.com/femga/rdr3_discoveries/blob/master/graphics/animpostfx/animpostfx.lua
 --[[local animpostfx = {
