@@ -7,7 +7,7 @@ client_scripts {
     --'oof/shared/game/IsRedM.lua',
     --'oof/shared/game/IsFiveM.lua',
 
-    'oof/shared/overloads.lua',
+    'oof/shared/lua-overloads/*.lua',
     'oof/shared/lua-additions/*.lua',
     'oof/shared/object-oriented/class.lua', -- no class instances on initial frame before this file
     'oof/shared/object-oriented/shGetterSetter.lua', -- getter_setter, getter_setter_encrypted
@@ -21,7 +21,7 @@ client_scripts {
     'oof/shared/ValueStorage.lua',
     'oof/client/TypeCheck.lua',
     'oof/client/AssetRequester.lua',
-    'oof/shared/Timer.lua',
+    'oof/shared/timer/*.lua', -- Timer class
     'oof/client/cEntity.lua',
     'oof/client/player/cPlayer.lua',
     'oof/client/player/cPlayers.lua',
@@ -67,7 +67,7 @@ server_scripts {
     --'oof/shared/game/IsFiveM.lua',
 
     'oof/server/sConfig.lua',
-    'oof/shared/overloads.lua', -- load order position does not matter because this is non-class code
+    'oof/shared/lua-overloads/*.lua',
     'oof/shared/lua-additions/*.lua',
     'oof/shared/object-oriented/class.lua', -- no class instances on initial frame before this file
     'oof/shared/object-oriented/shGetterSetter.lua',
@@ -88,7 +88,7 @@ server_scripts {
     'oof/server/mysql/MySQL.lua',
     'oof/server/key-value-store/*.lua',
     'oof/shared/ValueStorage.lua',
-    'oof/shared/Timer.lua',
+    'oof/shared/timer/*.lua', -- Timer class
     'oof/server/player/sPlayer.lua', -- Player class
     'oof/server/player/sPlayers.lua', -- Players class
     'oof/server/player/sPlayerManager.lua', -- PlayerManager class
