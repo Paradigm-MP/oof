@@ -29,7 +29,7 @@ client_scripts {
     'oof/client/Ped.lua',
     'oof/client/Physics.lua',
     'oof/client/LocalPlayer.lua',
-    'oof/shared/Color.lua',
+    'oof/shared/color/*.lua',
     'oof/client/Render.lua',
     'oof/client/Camera.lua',
     'oof/client/ObjectManager.lua',
@@ -76,7 +76,7 @@ server_scripts {
     'oof/shared/standalone-data-structures/*', -- Enum, IdPool
     '**/shared/enums/*Enum.lua', -- load all the enums from all the modules
     '**/server/enums/*Enum.lua',
-    'oof/shared/Color.lua',
+    'oof/shared/color/*.lua',
     'oof/shared/events/*.lua', -- Events class
     'oof/server/network/*.lua', -- Network class
     'oof/server/json/*.lua', -- JsonOOF, JsonUtils class
