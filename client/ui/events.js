@@ -134,6 +134,8 @@ $(document).ready(function()
     {
         const keycode = (typeof e.which === 'number') ? e.which : e.keyCode;
 
+        $.post(`http://${res_name}/ui/keypress`, JSON.stringify({key: keycode, type: type}));
+
         const returns = []
 
         const event_name = key_types[type];
@@ -152,6 +154,7 @@ $(document).ready(function()
                 return return_val;
             }
         })
+
     }
 
     document.onkeyup = (e) => {OnKey(e, 'keyup');}

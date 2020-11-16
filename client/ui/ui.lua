@@ -96,10 +96,24 @@ function UI:__init()
         self.size.x = args.size.x
         self.size.y = args.size.y
     end)
+    
+    --[[ In order to use this event, please make sure to have these two lines in your code:
+        UI:KeepInput(true)
+        UI:SetFocus(true)
+
+        This will ensure that the UI picks up keypresses even when not visible
+    --]]
+    RegisterNUICallback("ui/keypress", function(args)
+        Events:Fire("UIKeyPress", args)
+    end)
 
     self:SetNuiFocus()
 
     SendNUIMessage({nui_event = "ui/lua_ready"})
+end
+
+function UI:KeepInput(keep_input)
+    SetNuiFocusKeepInput(keep_input)
 end
 
 function UI:GetSize()
