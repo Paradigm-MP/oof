@@ -20,7 +20,7 @@ client_scripts {
     'oof/client/network/*.lua', -- Network class
     'oof/shared/value-storage/*.lua', -- ValueStorage class
     'oof/client/typecheck/*.lua', -- TypeCheck class
-    'oof/client/AssetRequester.lua',
+    'oof/client/asset-requester/*.lua',
     'oof/shared/timer/*.lua', -- Timer class
     'oof/client/entity/*.lua', -- Entity class
     'oof/client/player/cPlayer.lua',
@@ -32,21 +32,21 @@ client_scripts {
     'oof/shared/color/*.lua',
     'oof/client/render/*.lua',
     'oof/client/camera/*.lua', -- Camera class
+    'oof/client/blip/*.lua', -- Blip class
     'oof/client/object/*.lua', -- Object, ObjectManager classes
     'oof/client/ScreenEffects.lua',
     'oof/client/world/*.lua', -- World class
     'oof/client/sound/*.lua', -- Sound class
     'oof/client/light/*.lua', -- Light class
     'oof/client/ParticleEffect.lua',
-    'oof/client/Filter.lua',
+    'oof/client/volume/*.lua', -- Volume class
     'oof/client/explosion/*.lua', -- Explosion class
     'oof/client/PauseMenu.lua',
     'oof/client/hud/*.lua', -- HUD class
     'oof/client/keypress/*.lua',
     'oof/client/prompt/*.lua', -- Prompt class
-    'oof/client/Imap.lua',
+    'oof/client/imap/*.lua', -- Imap class
     'oof/client/marker/*.lua', -- Marker class
-    'oof/client/Texture.lua',
     'oof/client/apitest.lua',
     'oof/client/localplayer_behaviors/*.lua',
     'oof/client/weapons/*.lua',
