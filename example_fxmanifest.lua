@@ -18,7 +18,7 @@ client_scripts {
     '**/client/enums/*Enum.lua',
     'oof/shared/events/*.lua', -- Events class
     'oof/client/network/*.lua', -- Network class
-    'oof/shared/ValueStorage.lua',
+    'oof/shared/value-storage/*.lua', -- ValueStorage class
     'oof/client/TypeCheck.lua',
     'oof/client/AssetRequester.lua',
     'oof/shared/timer/*.lua', -- Timer class
@@ -87,7 +87,7 @@ server_scripts {
     -- mysql wrapper
     'oof/server/mysql/MySQL.lua',
     'oof/server/key-value-store/*.lua',
-    'oof/shared/ValueStorage.lua',
+    'oof/shared/value-storage/*.lua', -- ValueStorage class
     'oof/shared/timer/*.lua', -- Timer class
     'oof/server/player/sPlayer.lua', -- Player class
     'oof/server/player/sPlayers.lua', -- Players class
