@@ -38,10 +38,11 @@ client_scripts {
     'oof/client/world/*.lua', -- World class
     'oof/client/sound/*.lua', -- Sound class
     'oof/client/light/*.lua', -- Light class
-    'oof/client/ParticleEffect.lua',
+    'oof/client/particle-effect/*.lua', -- ParticleEffect class
+    'oof/client/anim-post-fx/*.lua', -- AnimPostFX class
     'oof/client/volume/*.lua', -- Volume class
     'oof/client/explosion/*.lua', -- Explosion class
-    'oof/client/PauseMenu.lua',
+    'oof/client/pause-menu/*.lua', -- PauseMenu class
     'oof/client/hud/*.lua', -- HUD class
     'oof/client/keypress/*.lua',
     'oof/client/prompt/*.lua', -- Prompt class

@@ -1,8 +1,5 @@
 ScreenEffects = class()
 
-function ScreenEffects:__init()
-end
-
 --[[
     toggle blurred screen
 ]]
