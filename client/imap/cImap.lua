@@ -2,10 +2,6 @@ if not IsRedM then return end
 
 Imap = class()
 
-function Imap:__init()
-
-end
-
 function Imap:Request(hash)
     RequestImap(hash)
 end
