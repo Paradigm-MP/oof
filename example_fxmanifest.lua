@@ -19,31 +19,30 @@ client_scripts {
     'oof/shared/events/*.lua', -- Events class
     'oof/client/network/*.lua', -- Network class
     'oof/shared/value-storage/*.lua', -- ValueStorage class
-    'oof/client/TypeCheck.lua',
+    'oof/client/typecheck/*.lua', -- TypeCheck class
     'oof/client/AssetRequester.lua',
     'oof/shared/timer/*.lua', -- Timer class
-    'oof/client/cEntity.lua',
+    'oof/client/entity/*.lua', -- Entity class
     'oof/client/player/cPlayer.lua',
     'oof/client/player/cPlayers.lua',
     'oof/client/player/cPlayerManager.lua',
     'oof/client/Ped.lua',
     'oof/client/physics/*.lua',
-    'oof/client/LocalPlayer.lua',
+    'oof/client/localplayer/*.lua', -- LocalPlayer class
     'oof/shared/color/*.lua',
     'oof/client/render/*.lua',
     'oof/client/camera/*.lua', -- Camera class
-    'oof/client/ObjectManager.lua',
-    'oof/client/Object.lua',
+    'oof/client/object/*.lua', -- Object, ObjectManager classes
     'oof/client/ScreenEffects.lua',
     'oof/client/world/*.lua', -- World class
     'oof/client/Sound.lua',
     'oof/client/Light.lua',
     'oof/client/ParticleEffect.lua',
     'oof/client/Filter.lua',
-    'oof/client/Explosion.lua',
+    'oof/client/explosion/*.lua', -- Explosion class
     'oof/client/PauseMenu.lua',
     'oof/client/Hud.lua',
-    'oof/client/Keypress.lua',
+    'oof/client/keypress/*.lua',
     'oof/client/Prompt.lua',
     'oof/client/Imap.lua',
     'oof/client/Marker.lua',

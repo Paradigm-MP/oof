@@ -1,8 +1,5 @@
 TypeCheck = class()
 
-function TypeCheck:__init()
-end
-
 
 function TypeCheck:Number(n)
     assert(type(n) == "number", "arg expected to be a number")

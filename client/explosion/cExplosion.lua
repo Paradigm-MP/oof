@@ -1,8 +1,5 @@
 Explosion = class()
 
-function Explosion:__init()
-end
-
 --[[
     Creates an explosion
 
