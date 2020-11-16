@@ -1,4 +1,4 @@
-if not IsRedM then return end
+if IsRedM then
 
 Prompt = class()
 
@@ -77,4 +77,6 @@ end
 
 function Prompt:Remove()
     Citizen.InvokeNative(0x00EDE88D4D13CF59, self.prompt)
+end
+
 end

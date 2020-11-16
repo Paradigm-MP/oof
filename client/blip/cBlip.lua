@@ -1,5 +1,5 @@
-if not IsRedM then return end
-
+if IsRedM then
+	
 Blip = class()
 
 BlipPositionType = 
@@ -56,6 +56,8 @@ end
 
 function Blip:Remove()
     Citizen.InvokeNative(0xF2C3C9DA47AAA54A, self.blip_id)
+end
+
 end
 
 -- From GlitchDetector

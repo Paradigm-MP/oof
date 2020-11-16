@@ -1,5 +1,5 @@
-if not IsRedM then return end
-
+if IsRedM then
+    
 Volume = class()
 
 VolumeType = 
@@ -45,4 +45,6 @@ end
 
 function Volume:Remove()
     Citizen.InvokeNative(0x43F867EF5C463A53, self.volume)
+end
+
 end

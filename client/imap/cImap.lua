@@ -1,5 +1,5 @@
-if not IsRedM then return end
-
+if IsRedM then
+    
 Imap = class()
 
 function Imap:Request(hash)
@@ -31,6 +31,8 @@ function Imap:LoadValentine()
 end
 
 Imap = Imap()
+
+end
 
 Imaps = 
 {
