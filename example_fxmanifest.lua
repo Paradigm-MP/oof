@@ -38,7 +38,6 @@ client_scripts {
     'oof/client/sound/*.lua', -- Sound class
     'oof/client/light/*.lua', -- Light class
     'oof/client/ParticleEffect.lua',
-    'oof/client/Filter.lua',
     'oof/client/explosion/*.lua', -- Explosion class
     'oof/client/PauseMenu.lua',
     'oof/client/hud/*.lua', -- HUD class
