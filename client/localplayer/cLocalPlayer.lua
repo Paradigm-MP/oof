@@ -17,13 +17,16 @@ function LocalPlayer:__init()
     self.spawned = false
     self.controls_enabled = true
 
+    self.disabled_actions = {}
+
     self.last_recorded_health = 0
     self:MonitorHealthChanges()
 
     ShutdownLoadingScreen()
-    self:RestrictActions()
     self.values = ValueStorage()
     self.values:InitializeValueStorage(self)
+
+    self:RestrictedActionsThread()
 end
 
 function LocalPlayer:MonitorHealthChanges()
@@ -101,25 +104,21 @@ function LocalPlayer:ToggleControls(enabled)
     end
 end
 
-function LocalPlayer:RestrictActions()
-    --print("LocalPlayer restricting actions")
+function LocalPlayer:RestrictAction(control, restricted)
+    self.disabled_actions[control] = restricted
+end
 
-    -- disables weapon melee
+function LocalPlayer:RestrictedActionsThread()
     Citizen.CreateThread(function()
-        --[[
-           while true do
-            Citizen.Wait(1) -- a short delay of 5 ms
-            --DisableControlAction(0, 69, true) -- INPUT_VEH_ATTACK
-            --DisableControlAction(0, 92, true) -- INPUT_VEH_PASSENGER_ATTACK
-            --DisableControlAction(0, 114, true) -- INPUT_VEH_FLY_ATTACK
-            --DisableControlAction(0, 140, true) -- INPUT_MELEE_ATTACK_LIGHT
-            --DisableControlAction(0, 141, true) -- INPUT_MELEE_ATTACK_HEAVY
-            --DisableControlAction(0, 142, true) -- INPUT_MELEE_ATTACK_ALTERNATE
-            --DisableControlAction(0, 257, true) -- INPUT_ATTACK2
-            --DisableControlAction(0, 263, true) -- INPUT_MELEE_ATTACK1
-            --DisableControlAction(0, 264, true) -- INPUT_MELEE_ATTACK2
-        end 
-        ]]
+        while true do
+            Wait(1)
+
+            for control, restricted in pairs(self.disabled_actions) do
+                if restricted then
+                    DisableControlAction(0, control, true)
+                end
+            end
+        end
     end)
 end
 
