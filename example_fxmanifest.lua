@@ -8,7 +8,7 @@ client_scripts {
     --'oof/shared/game/IsFiveM.lua',
 
     'oof/shared/overloads.lua',
-    'oof/shared/utilities/*.lua',
+    'oof/shared/lua-additions/*.lua',
     'oof/shared/object-oriented/class.lua', -- no class instances on initial frame before this file
     'oof/shared/object-oriented/shGetterSetter.lua', -- getter_setter, getter_setter_encrypted
     'oof/shared/object-oriented/shObjectOrientedUtilities.lua', -- is_class_instance
@@ -68,7 +68,7 @@ server_scripts {
 
     'oof/server/sConfig.lua',
     'oof/shared/overloads.lua', -- load order position does not matter because this is non-class code
-    'oof/shared/utilities/*.lua',
+    'oof/shared/lua-additions/*.lua',
     'oof/shared/object-oriented/class.lua', -- no class instances on initial frame before this file
     'oof/shared/object-oriented/shGetterSetter.lua',
     'oof/shared/object-oriented/shObjectOrientedUtilities.lua', -- is_class_instance function
