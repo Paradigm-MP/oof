@@ -1,9 +1,5 @@
 Physics = class()
 
-function Physics:__init()
-
-end
-
 --[[
     Casts a ray from a point to another point.
 
