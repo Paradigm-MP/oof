@@ -26,6 +26,7 @@ function Vector3Math:RadToDeg(rad)
 	return rad * 180 / math.pi
 end
 
+-- Adapted from https://github.com/citizenfx/fivem/blob/master/code/client/clrcore/Math/GameMath.cs
 function Vector3Math:RotationToDirection2(dir, roll)
 	dir = dir / Vector3Math:Length(dir)
 	local rotval_z = -Vector3Math:RadToDeg(math.atan2(dir.x, dir.y));
