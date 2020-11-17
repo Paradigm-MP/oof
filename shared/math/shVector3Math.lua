@@ -22,6 +22,20 @@ function Vector3Math:RotationToDirection(rotation)
 	return vector3(direction.x, direction.y, direction.z)
 end
 
+function Vector3Math:RadToDeg(rad)
+	return rad * 180 / math.pi
+end
+
+function Vector3Math:RotationToDirection2(dir, roll)
+	dir = dir / Vector3Math:Length(dir)
+	local rotval_z = -Vector3Math:RadToDeg(math.atan2(dir.x, dir.y));
+	local rotpos = vector3(dir.z, Vector3Math:Length(vector3(dir.x, dir.y, 0.0)), 0.0)
+	rotpos = rotpos / Vector3Math:Length(rotpos)
+	local rotval_x = Vector3Math:RadToDeg(math.atan2(rotpos.x, rotpos.y))
+	local rotval_y = roll or 0
+	return vector3(rotval_x, rotval_y, rotval_z)
+end
+
 function Vector3Math:Lerp(a, b, factor)
 	local diff = b - a
 	return a + factor * diff
