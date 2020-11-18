@@ -1,4 +1,10 @@
 local OgLuaPrint = print
+
+-- format time to have a 0 in front if its short
+local function f_time(time)
+    return time < 10 and "0" .. time or time
+end
+
 function print(...)
     local args = {...}
     local output_str = string.format("%s[%s]%s", 
@@ -17,9 +23,4 @@ function print(...)
     end
 
     OgLuaPrint(output_str)
-end
-
--- format time to have a 0 in front if its short
-local function f_time(time)
-    return time < 10 and "0" .. time or time
 end

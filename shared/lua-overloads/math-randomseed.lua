@@ -1,12 +1,4 @@
 local OgMathRandomseed = math.randomseed
-function math.randomseed(x)
-    local number_form = x
-    if type(x) == 'string' then
-        number_form = string_to_number(x)
-    end
-
-    OgMathRandomseed(number_form)
-end
 
 local function string_to_number(str)
     local insert = table.insert
@@ -24,4 +16,13 @@ local function string_to_number(str)
         end
         return numeric_representation
     end
+end
+
+function math.randomseed(x)
+    local number_form = x
+    if type(x) == 'string' then
+        number_form = string_to_number(x)
+    end
+
+    OgMathRandomseed(number_form)
 end
