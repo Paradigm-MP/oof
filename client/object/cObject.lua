@@ -12,6 +12,7 @@ Objects = {} -- Global table to keep track of all the objects, indexed by entity
     rotation (optional) - vector3 of rotation 
     isNetwork (optional) - (bool) whether you want this object to be synced across the network
     quaternion (optional) - quat
+    kinematic (optional) - if the object is kinematic or not
     callback (optional) - callback function that is called after the object is spawned
 ]]
 function Object:__init(args)

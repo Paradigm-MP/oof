@@ -32,6 +32,7 @@ MarkerTypes =
         texture_dict (string, default nil): if the marker uses a texture
         texture_name (string, default nil): if the marker uses a texture
         draw_on_entity (bool, default false): if the marker draws on entities
+        rotation_order (number 0-2, default 1): rotation order of the marker
 
 ]]
 function Marker:__init(args)
@@ -49,6 +50,8 @@ function Marker:__init(args)
     self.texture_dict = args.texture_dict
     self.texture_name = args.texture_name
     self.draw_on_entity = args.draw_on_entity ~= nil and args.draw_on_entity or false
+
+    self.rotation_order = args.rotation_order or 1
 
     self.visible = true
 
@@ -77,7 +80,7 @@ function Marker:Draw()
         self.scale.x, self.scale.y, self.scale.z,
         self.color.r, self.color.g, self.color.b, self.color.a,
         self.bob_up_and_down, self.face_camera,
-        1, self.is_rotating, 
+        self.rotation_order, self.is_rotating, 
         self.texture_dict, self.texture_name,
         self.draw_on_entity
     )

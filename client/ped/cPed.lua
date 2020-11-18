@@ -607,6 +607,18 @@ function Ped:DisablePainAudio(disabled)
     DisablePedPainAudio(self:GetPedId(), disabled)
 end
 
+function Ped:SetCanRagdoll(can_ragdoll)
+    SetPedCanRagdoll(self.ped_id, can_ragdoll)
+end
+
+function Ped:IsOnFoot()
+    return IsPedOnFoot(self.ped_id)
+end
+
+function Ped:IsGettingUp()
+    return IsPedGettingUp(self.ped_id)
+end
+
 
 PedTypes =
 {  

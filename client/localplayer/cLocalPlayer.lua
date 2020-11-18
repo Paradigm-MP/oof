@@ -142,10 +142,10 @@ function LocalPlayer:GetHealth()
 end
 
 function LocalPlayer:StopRagdollImmediately()
-    SetPedCanRagdoll(LocalPlayer:GetPedId(), false)
+    LocalPlayer:GetPed():SetCanRagdoll(false)
     Citizen.CreateThread(function()
         Wait(250)
-        SetPedCanRagdoll(LocalPlayer:GetPedId(), true)
+        LocalPlayer:GetPed():SetCanRagdoll(true)
     end)
 end
 
