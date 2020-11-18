@@ -1,8 +1,10 @@
--- Pure Lua global utility functions (considered as additions to vanilla Lua)
--- no class instances should be instantiated in this file
+-- Pure Lua global utility functions (considered as additions to the vanilla Lua environment)
+-- no class instances can be instantiated in this file
 
 IsServer = IsDuplicityVersion() -- true if the machine this code runs on is the (single) server
 IsClient = not IsServer -- true if the machine this code runs on is one of the clients / players connected to the server
+
+CreateThread = Citizen.CreateThread
 
 function unpack(t, i)
     i = i or 1
