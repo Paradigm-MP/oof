@@ -34,33 +34,56 @@ function KeyValueStore:__init()
     
 end
 
-function KeyValueStore:Set(key, value, callback)
-    assert(type(key) == "string", "KeyValueStore key must be a string")
-    assert(string.len(key) <= self.max_key_length, "KeyValueStore key must be less than " .. tostring(self.max_key_length))
-    local value_type = type(value)
+function KeyValueStore:Set(args)
+    assert(type(args) == "table", "KeyValueStore:Set requires a table of arguments")
+    assert(type(args.key) == "string", "KeyValueStore:Set 'key' argument must be a string")
+    assert(string.len(args.key) <= self.max_key_length, "KeyValueStore:Set 'key' argument must be less than " .. tostring(self.max_key_length))
+    local value_type = type(args.value)
     local cmd = [[INSERT INTO `key_value_store` (`key`, `value_type`, `value`) VALUES (@key, @value_type, @value) ON DUPLICATE KEY UPDATE `value`=@value, `value_type`=@value_type;]]
 
-    if value == nil then
-        self:Delete(key)
+    if args.value == nil then
+        -- TODO: delete synchronous option
+        self:Delete(args.key)
         return
     end
 
-    local serialized_value = self:SerializeValue(value_type, value)
-    assert(string.len(serialized_value) <= self.max_value_length, "KeyValueStore value must be less than " .. tostring(self.max_value_length))
+    local serialized_value = self:SerializeValue(value_type, args.value)
+    if string.len(serialized_value) > self.max_value_length then
+        error("KeyValueStore:Set serialized value length exceeds the maximum length of " .. tostring(self.max_value_length) .. " for the key '" .. args.key .. "'. Please reduce the amount of information you are trying to store.")
+    end
 
-    self:CacheValue(key, value)
+    self:CacheValue(args.key, args.value)
 
     local params = {
-        ["@key"] = key,
-        ["@value"] = self:SerializeValue(value_type, value),
+        ["@key"] = args.key,
+        ["@value"] = serialized_value,
         ["@value_type"] = value_type
     }
 
+    local has_database_callback = false
+
     SQL:Execute(cmd, params, function(rows)
-        if callback then
-            callback()
+        if not args.synchronous and args.callback then
+            args.callback()
+        end
+
+        if args.synchronous then
+            has_database_callback = true
         end
     end)
+
+    if args.synchronous then
+        local response_timer = Timer()
+        while not has_database_callback do
+            Wait(5)
+            if response_timer:GetSeconds() > 4 then
+                print("KeyValueStore:Set timed out! No database callback within 4 seconds")
+                break
+            end
+        end
+
+        return
+    end
 end
 
 --[[
