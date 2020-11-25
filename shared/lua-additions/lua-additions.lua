@@ -109,12 +109,12 @@ end
 function output_table(t)
     print("-----", t, "-----")
     for key, value in pairs(t) do
-        if type(value) ~= "table" then
+        if type(value) ~= "table" or (type(value) == "table" and value.__class_instance) then
             print("[", key, "]: ", value)
         else
             print(key .. " {")
             for k, v in pairs(value) do
-                if type(v) ~= "table" then
+                if type(v) ~= "table" or (type(value) == "table" and value.__class_instance) then
                     print("[", k, "]: ", v)
                 else
                     print(k .. " {")
