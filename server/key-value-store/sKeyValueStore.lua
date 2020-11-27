@@ -38,12 +38,12 @@ function KeyValueStore:Set(args)
     assert(type(args) == "table", "KeyValueStore:Set requires a table of arguments")
     assert(type(args.key) == "string", "KeyValueStore:Set 'key' argument must be a string")
     assert(string.len(args.key) <= self.max_key_length, "KeyValueStore:Set 'key' argument must be less than " .. tostring(self.max_key_length))
+    assert(not args.synchronous or (args.synchronous and not args.callback), "KeyValueStore:Set does not accept a 'callback' argument when the 'synchronous' argument is true")
     local value_type = type(args.value)
     local cmd = [[INSERT INTO `key_value_store` (`key`, `value_type`, `value`) VALUES (@key, @value_type, @value) ON DUPLICATE KEY UPDATE `value`=@value, `value_type`=@value_type;]]
 
     if args.value == nil then
-        -- TODO: delete synchronous option
-        self:Delete(args.key)
+        self:Delete(args.key, args.callback, args.synchronous)
         return
     end
 
@@ -63,12 +63,12 @@ function KeyValueStore:Set(args)
     local has_database_callback = false
 
     SQL:Execute(cmd, params, function(rows)
-        if not args.synchronous and args.callback then
-            args.callback()
-        end
-
         if args.synchronous then
             has_database_callback = true
+        end
+
+        if not args.synchronous and args.callback then
+            args.callback()
         end
     end)
 
@@ -89,7 +89,7 @@ end
 --[[
     Returns the value associated with a key from the KeyValueStore
     Returns nil if the key does not exist
-    Either the 'key' or 'keys' parameter is used to fetch 1 or potentially multiple keys respectively
+    Either the 'key' or 'keys' argument is used to fetch 1 or potentially multiple keys respectively
 
     args: (in table)
         key - (string) the singular key to search for
@@ -97,12 +97,13 @@ end
         synchronous (boolean) 
             whether to delay the execution of the current thread (synchronous = true) until we can return the result,
             otherwise the 'callback' function is called with the result (synchronous = false or nil)
-        callback (function) when the 'synchronous' parameter is false or nil, this function is called with the result
+        callback (function) when the 'synchronous' argument is false or nil, this function is called with the result
 ]]
 function KeyValueStore:Get(args)
     assert(type(args) == "table", "KeyValueStore:Get requires a table of arguments")
-    assert((type(args.key) == "string" or type(args.keys) == "table") and not (args.key and args.keys), "KeyValueStore:Get requires either a 'key' parameter of type string, or a 'keys' parameter of type table")
-    assert(args.synchronous or args.callback, "KeyValueStore:Get requires a 'callback' parameter of type function when the 'synchronous' parameter is nil or false")
+    assert((type(args.key) == "string" or type(args.keys) == "table") and not (args.key and args.keys), "KeyValueStore:Get requires either a 'key' argument of type string, or a 'keys' argument of type table")
+    assert(args.synchronous or args.callback, "KeyValueStore:Get requires a 'callback' argument of type function when the 'synchronous' argument is nil or false")
+    assert(not args.synchronous or (args.synchronous and not args.callback), "KeyValueStore:Get does not accept a 'callback' argument when the 'synchronous' argument is true")
     if type(args.keys) == "table" then
         for _, key in pairs(args.keys) do
             -- TODO: output the key that is too long
@@ -238,8 +239,9 @@ function KeyValueStore:DeserializeValue(value_type, value)
     return value
 end
 
-function KeyValueStore:Delete(key, callback)
-    assert(type(key) == "string", "KeyValueStore key must be a string")
+function KeyValueStore:Delete(key, callback, synchronous)
+    assert(type(key) == "string", "KeyValueStore:Delete key must be a string")
+    assert(not callback or type(callback) == "function", "KeyValueStore:Delete 'callback' argument must be a function or not nil")
     local cmd = [[DELETE FROM `key_value_store` WHERE `key` = @key;]]
 
     local params = {
@@ -251,11 +253,29 @@ function KeyValueStore:Delete(key, callback)
     -- we want the Delete to be instantaneous so any outstanding get requests are handled with a nil return value (aka doesn't exist)
     self:CallGetCallbacks(key, nil)
 
+    local has_database_callback = false
+
     SQL:Execute(cmd, params, function()
-        if callback then
+        if synchronous then
+            has_database_callback = true
+        end
+        if not synchronous and callback then
             callback()
         end
     end)
+
+    if synchronous then
+        local response_timer = Timer()
+        while not has_database_callback do
+            Wait(5)
+            if response_timer:GetSeconds() > 4 then
+                print("KeyValueStore:Delete timed out! No database callback within 4 seconds")
+                break
+            end
+        end
+
+        return
+    end
 end
 
 function KeyValueStore:CacheValue(key, value)
