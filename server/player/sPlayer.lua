@@ -75,9 +75,16 @@ function Player:Disconnected()
     -- do not delete data yet as this instance is being passed with Events:Fire("PlayerQuit")
 end
 
-function Player:StoreValue(key, value, callback)
-    assert(type(key) == "string", "key must be a string")
-    KeyValueStore:Set("Player_" .. tostring(self:GetUniqueId()) .. key, value, callback)
+function Player:StoreValue(args)
+    assert(type(args) == "table", "Player:StoreValue requires a table of arguments")
+    assert(type(args.key) == "string", "Player:StoreValue 'key' argument must be a string")
+    assert(not (args.synchronous and args.callback), "Player:StoreValue does not accept a 'callback' argument if the 'synchronous' argument is true")
+
+    if args.synchronous then
+        return KeyValueStore:Set({key = "Player_" .. tostring(self:GetUniqueId()) .. args.key, value = args.value, synchronous = true})
+    else
+        KeyValueStore:Set({key = "Player_" .. tostring(self:GetUniqueId()) .. args.key, value = args.value, callback = args.callback})
+    end
 end
 
 function Player:GetStoredValue(args)
