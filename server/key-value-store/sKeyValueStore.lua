@@ -32,128 +32,186 @@ function KeyValueStore:__init()
 
     self:RemoveStaleCachedValuesThread()
     
-    --[[
-    RegisterCommand("s", function(source, args, rawCommand)
-        KeyValueStore:Set("TestKey", math.random(1, 100))
-    end)
-
-    RegisterCommand("s2", function(source, args, rawCommand)
-        KeyValueStore:Set("TestKey2", math.random(1, 100))
-    end)
-
-    RegisterCommand("g", function(source, args, rawCommand)
-        KeyValueStore:Get("TestKey", function(value)
-            print(value)
-            print(type(value))
-        end)
-    end)
-
-    RegisterCommand("del", function(source, args, rawCommand)
-        KeyValueStore:Delete("TestKey")
-    end)
-
-    RegisterCommand("mg", function(source, args, rawCommand)
-        local values_to_get = {"TestKey", "TestKey2"}
-        KeyValueStore:Get(values_to_get, function(values)
-            print("values: ", values)
-            if values then
-                output_table(values)
-            end
-        end)
-    end)
-    ]]
-    
 end
 
-function KeyValueStore:Set(key, value, callback)
-    assert(type(key) == "string", "KeyValueStore key must be a string")
-    assert(string.len(key) <= self.max_key_length, "KeyValueStore key must be less than " .. tostring(self.max_key_length))
-    local value_type = type(value)
+function KeyValueStore:Set(args)
+    assert(type(args) == "table", "KeyValueStore:Set requires a table of arguments")
+    assert(type(args.key) == "string", "KeyValueStore:Set 'key' argument must be a string")
+    assert(string.len(args.key) <= self.max_key_length, "KeyValueStore:Set 'key' argument must be less than " .. tostring(self.max_key_length))
+    local value_type = type(args.value)
     local cmd = [[INSERT INTO `key_value_store` (`key`, `value_type`, `value`) VALUES (@key, @value_type, @value) ON DUPLICATE KEY UPDATE `value`=@value, `value_type`=@value_type;]]
 
-    if value == nil then
-        self:Delete(key)
+    if args.value == nil then
+        -- TODO: delete synchronous option
+        self:Delete(args.key)
         return
     end
 
-    local serialized_value = self:SerializeValue(value_type, value)
-    assert(string.len(serialized_value) <= self.max_value_length, "KeyValueStore value must be less than " .. tostring(self.max_value_length))
+    local serialized_value = self:SerializeValue(value_type, args.value)
+    if string.len(serialized_value) > self.max_value_length then
+        error("KeyValueStore:Set serialized value length exceeds the maximum length of " .. tostring(self.max_value_length) .. " for the key '" .. args.key .. "'. Please reduce the amount of information you are trying to store.")
+    end
 
-    self:CacheValue(key, value)
+    self:CacheValue(args.key, args.value)
 
     local params = {
-        ["@key"] = key,
-        ["@value"] = self:SerializeValue(value_type, value),
+        ["@key"] = args.key,
+        ["@value"] = serialized_value,
         ["@value_type"] = value_type
     }
 
+    local has_database_callback = false
+
     SQL:Execute(cmd, params, function(rows)
-        if callback then
-            callback()
+        if not args.synchronous and args.callback then
+            args.callback()
+        end
+
+        if args.synchronous then
+            has_database_callback = true
         end
     end)
-end
 
--- returns nil if key does not exist
-function KeyValueStore:Get(key, callback)
-    assert(type(key) == "string" or type(key) == "table", "KeyValueStore:Get key must be a string or table of strings")
-    if type(key) == "table" then
-        KeyValueStore:GetMultiple(key, callback)
-        return
-    end
-    assert(string.len(key) <= self.max_key_length, "KeyValueStore key must be less than " .. tostring(self.max_key_length))
-    local query = [[SELECT `value`, `value_type` FROM `key_value_store` WHERE `key`=@key]]
-    local params = {
-        ["@key"] = key
-    }
-
-    if self.cached_values[key] then
-        self.cached_values[key].timer:Restart()
-        self.__current_callback_key = key
-        callback(self.cached_values[key].value)
-        return
-    end
-
-    -- called :Get but still waiting on the same :Get
-    if self.outstanding_get_callbacks[key] then
-        table.insert(self.outstanding_get_callbacks[key], {callback = callback})
-        return
-    else
-        self.outstanding_get_callbacks[key] = {
-            {callback = callback}
-        }
-    end
-
-    SQL:Fetch(query, params, function(result)
-        if callback then
-            local value = result[1] and result[1].value or nil
-            local value_type = result[1] and result[1].value_type or nil
-            if value then
-                local deserialized_value = self:DeserializeValue(value_type, value)
-                self:CacheValue(key, deserialized_value)
-                self:CallGetCallbacks(key, deserialized_value)
-            else
-                -- either value doesnt exist or no result
-                self:CallGetCallbacks(key, nil)
+    if args.synchronous then
+        local response_timer = Timer()
+        while not has_database_callback do
+            Wait(5)
+            if response_timer:GetSeconds() > 4 then
+                print("KeyValueStore:Set timed out! No database callback within 4 seconds")
+                break
             end
         end
-    end)
+
+        return
+    end
 end
 
-function KeyValueStore:GetMultiple(keys, callback)
-    local key_count = count_table(keys)
-    local requests_completed = 0
-    local values = {}
-    local function get_callback(value)
-        values[KeyValueStore.__current_callback_key] = value
-        requests_completed = requests_completed + 1
-        if requests_completed == key_count then
-            callback(values)
+--[[
+    Returns the value associated with a key from the KeyValueStore
+    Returns nil if the key does not exist
+    Either the 'key' or 'keys' parameter is used to fetch 1 or potentially multiple keys respectively
+
+    args: (in table)
+        key - (string) the singular key to search for
+        keys - (sequential table of strings) the list of keys to search for
+        synchronous (boolean) 
+            whether to delay the execution of the current thread (synchronous = true) until we can return the result,
+            otherwise the 'callback' function is called with the result (synchronous = false or nil)
+        callback (function) when the 'synchronous' parameter is false or nil, this function is called with the result
+]]
+function KeyValueStore:Get(args)
+    assert(type(args) == "table", "KeyValueStore:Get requires a table of arguments")
+    assert((type(args.key) == "string" or type(args.keys) == "table") and not (args.key and args.keys), "KeyValueStore:Get requires either a 'key' parameter of type string, or a 'keys' parameter of type table")
+    assert(args.synchronous or args.callback, "KeyValueStore:Get requires a 'callback' parameter of type function when the 'synchronous' parameter is nil or false")
+    if type(args.keys) == "table" then
+        for _, key in pairs(args.keys) do
+            -- TODO: output the key that is too long
+            assert(string.len(key) <= self.max_key_length, "KeyValueStore key must be less than " .. tostring(self.max_key_length))
+        end
+
+        if args.synchronous then
+            return KeyValueStore:GetMultiple(args)
+        else
+            KeyValueStore:GetMultiple(args)
+            return
         end
     end
 
-    for key_index, key in ipairs(keys) do
-        KeyValueStore:Get(key, get_callback)
+    assert(string.len(args.key) <= self.max_key_length, "KeyValueStore key must be less than " .. tostring(self.max_key_length))
+    local query = [[SELECT `value`, `value_type` FROM `key_value_store` WHERE `key`=@key]]
+    local params = {
+        ["@key"] = args.key
+    }
+
+    if self.cached_values[args.key] then
+        self.cached_values[args.key].timer:Restart()
+        self.__current_callback_key = args.key
+
+        if args.synchronous then
+            return self.cached_values[args.key].value
+        else
+            args.callback(self.cached_values[args.key].value)
+            return
+        end
+    end
+
+    if not args.synchronous then
+        -- called :Get but still waiting on the same :Get
+        if self.outstanding_get_callbacks[args.key] then
+            table.insert(self.outstanding_get_callbacks[args.key], {callback = args.callback})
+            return
+        else
+            self.outstanding_get_callbacks[args.key] = {
+                {callback = args.callback}
+            }
+        end
+    end
+
+    local has_sql_result = false
+    local sql_result
+
+    SQL:Fetch(query, params, function(result)
+        local value = result[1] and result[1].value or nil
+        local value_type = result[1] and result[1].value_type or nil
+
+        if not args.synchronous and args.callback then
+            if value then
+                local deserialized_value = self:DeserializeValue(value_type, value)
+                self:CacheValue(args.key, deserialized_value)
+                self:CallGetCallbacks(args.key, deserialized_value)
+            else
+                -- either value doesnt exist or no result
+                self:CallGetCallbacks(args.key, nil)
+            end
+        end
+
+        if args.synchronous then
+            if value then
+                local deserialized_value = self:DeserializeValue(value_type, value)
+                self:CacheValue(args.key, deserialized_value)
+                sql_result = deserialized_value
+            end
+            has_sql_result = true
+        end
+    end)
+
+    local response_timer = Timer()
+    if args.synchronous then
+        while not has_sql_result do
+            Wait(5)
+            if response_timer:GetSeconds() > 4 then
+                print("KeyValueStore:Get timed out! No response received within 4 seconds")
+                return nil
+            end
+        end
+
+        return sql_result
+    end
+end
+
+function KeyValueStore:GetMultiple(args)
+    local values = {}
+
+    if args.synchronous then
+        for _, key in ipairs(args.keys) do
+            values[key] = KeyValueStore:Get({key = key, synchronous = true})
+        end
+        return values
+    else
+        local key_count = count_table(args.keys)
+        local requests_completed = 0
+
+        local function get_callback(value)
+            values[KeyValueStore.__current_callback_key] = value
+            requests_completed = requests_completed + 1
+            if requests_completed == key_count then
+                args.callback(values)
+            end
+        end
+    
+        for key_index, key in ipairs(args.keys) do
+            KeyValueStore:Get({key = key, callback = get_callback})
+        end
     end
 end
 

@@ -80,11 +80,34 @@ function Player:StoreValue(key, value, callback)
     KeyValueStore:Set("Player_" .. tostring(self:GetUniqueId()) .. key, value, callback)
 end
 
-function Player:GetStoredValue(key, callback)
-    assert(type(key) == "string", "key must be a string")
-    KeyValueStore:Get("Player_" .. tostring(self:GetUniqueId()) .. key, function(value)
-        callback(value)
-    end)
+function Player:GetStoredValue(args)
+    assert(type(args) == "table", "Player:GetStoredValue requires a table of arguments")
+    assert((type(args.key) == "string" or type(args.keys) == "table") and not (args.key and args.keys), "Player:GetStoredValue requires either a 'key' parameter of type string, or a 'keys' parameter of type table")
+    assert(args.synchronous or args.callback, "Player:GetStoredValue requires a 'callback' parameter of type function when the 'synchronous' parameter is nil or false")
+    local kvs_args = {}
+
+    if args.key then
+        kvs_args.key = "Player_" .. tostring(self:GetUniqueId()) .. args.key
+    end
+
+    if args.keys then
+        kvs_args.keys = {}
+        for _, key in ipairs(args.keys) do
+            table.insert(kvs_args.keys, "Player_" .. tostring(self:GetUniqueId()) .. key)
+        end
+    end
+
+    if args.synchronous then
+        kvs_args.synchronous = true
+
+        return KeyValueStore:Get(kvs_args)
+    else
+        kvs_args.callback = function(value)
+            args.callback(value)
+        end
+
+        KeyValueStore:Get(kvs_args)
+    end
 end
 
 function Player:tostring()
