@@ -1,1 +1,2 @@
 IsFiveM = true
+IsRedM = false
