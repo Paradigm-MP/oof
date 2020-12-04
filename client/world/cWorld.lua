@@ -92,6 +92,7 @@ function World:SetWeather(weather, transition_time)
         )]]
     --Chat:Print("Entered cWorld:SetWeather to {" .. tostring(weather) .. "}")
     self.weather = weather
+    -- TODO: implement for fivem (not sure if this works in fivem, needs testing)
     Citizen.InvokeNative(0x59174F1AFE095B5A, GetHashKey(weather), true, false, true, true, false)
 end
 
@@ -105,7 +106,12 @@ end
 ]]
 function World:SetTime(hours, minutes, seconds)
     print("Setting time to {", hours, "}, {", minutes, "}, {", seconds, "}")
-    NetworkClockTimeOverride(hours, minutes or 0, seconds or 0)
+
+    if IsRedM then
+        -- TODO: implement for fivem
+        NetworkClockTimeOverride(hours, minutes or 0, seconds or 0)
+    end
+    
     --NetworkOverrideClockTime(hours, minutes, seconds)
     --SetClockTime(hours, minutes, seconds)
     --AdvanceClockTimeTo(hours, minutes, seconds)
