@@ -46,7 +46,7 @@ client_scripts {
     'oof/client/hud/*.lua', -- HUD class
     'oof/client/keypress/*.lua',
     'oof/client/prompt/*.lua', -- Prompt class
-    'oof/client/imap/*.lua', -- Imap class
+    'oof/client/map/*.lua', -- Imap/Ipl class
     'oof/client/marker/*.lua', -- Marker class
     'oof/client/apitest.lua',
     'oof/client/localplayer_behaviors/*.lua',

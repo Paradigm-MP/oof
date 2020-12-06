@@ -3,11 +3,13 @@ if IsRedM then
 Imap = class()
 
 function Imap:Request(hash)
+    if IsFiveM then hash = GetHashKey(hash) end
     RequestImap(hash)
 end
 
 
 function Imap:Remove(hash)
+    if IsFiveM then hash = GetHashKey(hash) end
     RemoveImap(hash)
 end
 
@@ -15,6 +17,18 @@ function Imap:RequestAll()
     for _, hash in pairs(Imaps) do
         self:Request(hash)
     end
+end
+
+function Imap:RemoveAll()
+    Citizen.CreateThread(function()
+        for _, hash in pairs(Imaps) do
+            self:Remove(hash)
+
+            if _ % 50 == 0 then
+                Wait(1)
+            end
+        end
+    end)
 end
 
 -- https://github.com/MissBehavin/redm-ipl/blob/master/client.lua
@@ -31,8 +45,6 @@ function Imap:LoadValentine()
 end
 
 Imap = Imap()
-
-end
 
 Imaps = 
 {
@@ -2917,3 +2929,4 @@ Imaps =
     -833697651,
     -73017470
 }
+end
