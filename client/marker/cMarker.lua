@@ -1,18 +1,27 @@
 Marker = class()
 
--- Partially from here https://github.com/femga/rdr3_discoveries/blob/master/graphics/markers/marker_types.lua
-MarkerTypes = 
-{
-    Box = 1857541051, 
-    Cylinder = -1795314153,
-    Sphere = 0x50638AB9,
-    Ring = 0xEC032ADD,
-    Halo = 0x6903B113,
-    RaceCheckpoint = 0xE60FF3B9,
-    RaceFinish = 0x664669A6,
-    CanoePole = 0xE03A92AE,
-    Buoy = 0x751F27D6
-}
+if IsRedM then
+    -- Partially from here https://github.com/femga/rdr3_discoveries/blob/master/graphics/markers/marker_types.lua
+    MarkerTypes = 
+    {
+        Box = 1857541051, 
+        Cylinder = -1795314153,
+        Sphere = 0x50638AB9,
+        Ring = 0xEC032ADD,
+        Halo = 0x6903B113,
+        RaceCheckpoint = 0xE60FF3B9,
+        RaceFinish = 0x664669A6,
+        CanoePole = 0xE03A92AE,
+        Buoy = 0x751F27D6
+    }
+elseif IsFiveM then
+    -- Add more markers from this list as neede: https://forum.cfx.re/t/resource-available-markers/99384
+    MarkerTypes = 
+    {
+        UpsideDownCone = 0,
+        VerticalCylinder = 1
+    }
+end
 
 --[[
     Creates a new marker in the world, aka a glowly circle thing.
@@ -72,8 +81,8 @@ end
 
 function Marker:Draw()
     if not self.visible then return end
-    Citizen.InvokeNative(0x2A32FAA57B937173,
-        self.type,
+    Citizen.InvokeNative(IsFiveM and 0x28477EC23D892089 or 0x2A32FAA57B937173,
+        1,
         self.position.x, self.position.y, self.position.z,
         self.direction.x, self.direction.z, self.direction.z,
         self.rotation.x, self.rotation.y, self.rotation.z,
