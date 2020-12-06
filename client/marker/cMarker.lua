@@ -19,7 +19,8 @@ elseif IsFiveM then
     MarkerTypes = 
     {
         UpsideDownCone = 0,
-        VerticalCylinder = 1
+        VerticalCylinder = 1,
+        DebugSphere = 28
     }
 end
 
