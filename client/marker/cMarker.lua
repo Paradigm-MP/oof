@@ -15,7 +15,7 @@ if IsRedM then
         Buoy = 0x751F27D6
     }
 elseif IsFiveM then
-    -- Add more markers from this list as neede: https://forum.cfx.re/t/resource-available-markers/99384
+    -- Add more markers from this list as needed: https://docs.fivem.net/docs/game-references/markers/
     MarkerTypes = 
     {
         UpsideDownCone = 0,

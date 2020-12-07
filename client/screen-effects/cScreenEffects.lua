@@ -1,3 +1,4 @@
+if IsFiveM then
 ScreenEffects = class()
 
 --[[
@@ -125,3 +126,4 @@ ScreenEffect = {
     "Dont_tazeme_bro",
     "DeathFailOut"
 }
+end

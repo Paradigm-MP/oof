@@ -420,8 +420,10 @@ function Ped:GetType()
     return GetPedType(self.ped_id)
 end
 
-function Ped:SetOutfitPreset(outfit)
-    SetPedOutfitPreset(self.ped_id, outfit, 0)
+if IsRedM then
+    function Ped:SetOutfitPreset(outfit)
+        SetPedOutfitPreset(self.ped_id, outfit, 0)
+    end
 end
 
 function Ped:HasWeapon(hash)
