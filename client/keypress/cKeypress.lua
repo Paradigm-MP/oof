@@ -839,6 +839,8 @@ if IsFiveM then
         INPUT_MOVE_UP_ONLY = 32,
         INPUT_MOVE_DOWN_ONLY = 33,
         INPUT_MOVE_LEFT_ONLY = 34,
-        INPUT_MOVE_RIGHT_ONLY = 35
+        INPUT_MOVE_RIGHT_ONLY = 35,
+        INPUT_FRONTEND_LEADERBOARD = 211,
+        INPUT_MP_TEXT_CHAT_ALL = 245
     }
 end
