@@ -48,6 +48,7 @@ client_scripts {
     'oof/client/prompt/*.lua', -- Prompt class
     'oof/client/map/*.lua', -- Imap/Ipl class
     'oof/client/marker/*.lua', -- Marker class
+    'oof/client/water/*.lua', -- Water class
     'oof/client/apitest.lua',
     'oof/client/localplayer_behaviors/*.lua',
     'oof/client/weapons/*.lua',
