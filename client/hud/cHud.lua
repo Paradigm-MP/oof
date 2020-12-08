@@ -70,6 +70,12 @@ function HUD:Render()
     --if not self.display_cash then RemoveMultiplayerHudCash() end -- native does not exist
 end
 
+if IsFiveM then
+function HUD:SetVisible(visible)
+    DisplayHud(visible)
+end
+end
+
 HUD = HUD()
 
 if IsRedM then
