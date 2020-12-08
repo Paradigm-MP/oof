@@ -64,8 +64,12 @@ function Network:Send(name, players, args)
     elseif is_class_instance(players, Player) then
         TriggerClientEvent(name, players:GetId(), args)
     elseif type(players) == "table" then
-        for _, id in pairs(players) do
-            TriggerClientEvent(name, id, args)
+        for _, player in pairs(players) do
+            if type(player) == "number" then
+                TriggerClientEvent(name, player, args)
+            elseif is_class_instance(player, Player) then
+                TriggerClientEvent(name, player:GetId(), args)
+            end
         end
     end
 end
