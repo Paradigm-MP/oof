@@ -59,6 +59,7 @@ end
 --[[
     Sets the world weather. Valid weather strings are:
     
+    REDM weather types:
     "RAIN",
     "FOG",
     "SNOWLIGHT",
@@ -81,6 +82,10 @@ end
     "WHITEOUT",
     "GROUNDBLIZZARD",
 
+    FIVEM weather types:
+    extrasunny, clear, neutral, smog, foggy, overcast, clouds, clearing, 
+    rain, thunder, snow, blizzard, snowlight, xmas & halloween
+
     Adapted from: https://github.com/TomGrobbe/vSync/blob/master/vSync/vs_client.lua
 ]]
 function World:SetWeather(weather, transition_time)
@@ -92,8 +97,38 @@ function World:SetWeather(weather, transition_time)
         )]]
     --Chat:Print("Entered cWorld:SetWeather to {" .. tostring(weather) .. "}")
     self.weather = weather
-    -- TODO: implement for fivem (not sure if this works in fivem, needs testing)
-    Citizen.InvokeNative(0x59174F1AFE095B5A, GetHashKey(weather), true, false, true, true, false)
+
+    if IsRedM then
+        -- TODO: implement for fivem (not sure if this works in fivem, needs testing)
+        Citizen.InvokeNative(0x59174F1AFE095B5A, GetHashKey(weather), true, false, true, true, false)
+    else
+        -- Adapted from: https://github.com/TomGrobbe/vSync/blob/master/vSync/vs_client.lua
+        Citizen.CreateThread(function()
+            while true do
+    
+                if self.prev_weather ~= self.weather then
+                    self.prev_weather = self.weather
+                    SetWeatherTypeOverTime(self.weather, 15.0)
+                    Citizen.Wait(15000)
+                end
+    
+                Citizen.Wait(100)
+                ClearOverrideWeather()
+                ClearWeatherTypePersist()
+                SetWeatherTypePersist(self.prev_weather)
+                SetWeatherTypeNow(self.prev_weather)
+                SetWeatherTypeNowPersist(self.prev_weather)
+    
+                if self.prev_weather == 'XMAS' then
+                    SetForceVehicleTrails(true)
+                    SetForcePedFootstepsTracks(true)
+                else
+                    SetForceVehicleTrails(false)
+                    SetForcePedFootstepsTracks(false)
+                end
+            end
+        end)
+    end
 end
 
 
@@ -105,14 +140,13 @@ end
     seconds - 0-59
 ]]
 function World:SetTime(hours, minutes, seconds)
-    print("Setting time to {", hours, "}, {", minutes, "}, {", seconds, "}")
+    -- print("Setting time to {", hours, "}, {", minutes, "}, {", seconds, "}")
 
     if IsRedM then
-        -- TODO: implement for fivem
         NetworkClockTimeOverride(hours, minutes or 0, seconds or 0)
+    else
+        NetworkOverrideClockTime(hours, minutes, seconds)
     end
-    
-    --NetworkOverrideClockTime(hours, minutes, seconds)
     --SetClockTime(hours, minutes, seconds)
     --AdvanceClockTimeTo(hours, minutes, seconds)
     self.last_set_time = {hours = hours, minutes = minutes, seconds = seconds}
@@ -129,12 +163,12 @@ function World:SetTimestepEnabled(enabled)
         self.last_set_time = self:GetTime()
     end
 
-    --Citizen.CreateThread(function()
-    --    while not self.timestep_enabled do
-    --        self:SetTime(self.last_set_time.hours, self.last_set_time.minutes, self.last_set_time.seconds)
-    --        Wait(500)
-    --    end
-    --end)
+    Citizen.CreateThread(function()
+       while not self.timestep_enabled do
+           self:SetTime(self.last_set_time.hours, self.last_set_time.minutes, self.last_set_time.seconds)
+           Wait(1000)
+       end
+    end)
 
 end
 
