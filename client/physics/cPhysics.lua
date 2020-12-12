@@ -22,7 +22,7 @@ Physics = class()
     returns - table containing:
                 retval - (int)
                 hit - (bool) whether it hit anything. False if it reached its destination
-                position - (vector3) the position hit by the ray
+                position - (vector3) the position hit by the ray. if it does not hit anything, it will be equal to endpos
                 normal - (vector3) surface normal coords of where the ray hit
                 entity - (entity) handle of the entity hit by the ray
 
@@ -31,7 +31,17 @@ function Physics:Raycast(startpos, endpos, flags, ignore_entity)
     TypeCheck:Position3D(startpos)
     TypeCheck:Position3D(endpos)
     
-    return self:GetShapeTestResult(StartShapeTestRay(startpos.x, startpos.y, startpos.z, endpos.x, endpos.y, endpos.z, flags or -1, ignore_entity or 0, 1))
+    local result = self:GetShapeTestResult(StartShapeTestRay(startpos.x, startpos.y, startpos.z, endpos.x, endpos.y, endpos.z, flags or -1, ignore_entity or 0, 1))
+    result.hit = result.hit == 1
+    
+    if not result.hit then
+        print("not hit")
+        result.position = endpos
+    end
+
+    output_table(result)
+
+    return result
 end
 
 --[[
