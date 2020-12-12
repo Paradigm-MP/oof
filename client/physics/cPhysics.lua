@@ -35,11 +35,8 @@ function Physics:Raycast(startpos, endpos, flags, ignore_entity)
     result.hit = result.hit == 1
     
     if not result.hit then
-        print("not hit")
         result.position = endpos
     end
-
-    output_table(result)
 
     return result
 end
