@@ -216,4 +216,27 @@ function World:DisablePedSpawning()
     end)
 end
 
+function World:SetWindSpeed(speed)
+    SetWind(tofloat(speed))
+end
+
+--[[
+    Sets the wind direction.
+
+    This is NOT a heading. It's a FLOAT value from 0.0-7.0. Look at this image:  
+    i.imgur.com/FwVpGS6.png
+]]
+function World:SetWindDirection(dir)
+    SetWindDirection(tofloat(dir))
+end
+
+function World:GetWindSpeed()
+    return GetWindSpeed()
+end
+
+-- Returns 3 numbers? Needs testing
+function World:GetWindDirection()
+    return GetWindDirection()
+end
+
 World = World()
