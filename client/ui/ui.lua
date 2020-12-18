@@ -10,9 +10,13 @@ end
 --[[
     Subscribe to UI events!
 ]]
-function UIInstance:Subscribe(event_name, callback)
+function UIInstance:Subscribe(event_name, instance, callback)
     RegisterNUICallback(event_name, function(args)
-        callback(args)
+        if not callback then
+            instance(args)
+        else
+            callback(instance, args)
+        end
     end)
 end
 
