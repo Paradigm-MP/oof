@@ -111,7 +111,7 @@ $(document).ready(function()
             args = args || {}
             args = JSON.stringify(args)
 
-            $.post(`http://${res_name}/${event_name}`, args);
+            $.post(`http://${res_name}/${this.name}_${event_name}`, args);
         }
 
         Subscribe(event_name, callback)

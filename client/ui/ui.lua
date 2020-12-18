@@ -11,7 +11,7 @@ end
     Subscribe to UI events!
 ]]
 function UIInstance:Subscribe(event_name, instance, callback)
-    RegisterNUICallback(event_name, function(args)
+    RegisterNUICallback(string.format("%s_%s", self.name, event_name), function(args)
         if not callback then
             instance(args)
         else
