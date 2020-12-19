@@ -34,6 +34,8 @@ Citizen.CreateThread(function()
             while not NetworkIsSessionActive() do
                 Wait(0)
             end
+
+            Wait(1000)
         end
 
         -- execute the inits in the order we received them
