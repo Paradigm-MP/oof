@@ -436,7 +436,18 @@ end
 
 function Ped:GiveWeapon(hash, ammo, equipNow, hand)
     if not self:HasWeapon(hash) then
-        GiveWeaponToPed_2(self.ped_id, hash, ammo, equipNow, 1, hand or false, 0.0)
+
+        if IsFiveM then
+            GiveWeaponToPed(
+                self.ped_id, 
+                hash, 
+                ammo, 
+                false, 
+                equipNow
+            )
+        else
+            GiveWeaponToPed_2(self.ped_id, hash, ammo, equipNow, 1, hand or false, 0.0)
+        end
     else
         self:SetWeaponAmmo(hash, self:GetTotalAmmoInWeapon(hash) + ammo)
     end
