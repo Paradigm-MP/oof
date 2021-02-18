@@ -23,6 +23,7 @@ client_scripts {
     'oof/client/asset-requester/*.lua',
     'oof/shared/timer/*.lua', -- Timer class
     'oof/shared/xml/*.lua', -- XML class
+    'oof/shared/csv/*.lua', -- CSV class
     'oof/client/entity/*.lua', -- Entity class
     'oof/client/player/cPlayer.lua',
     'oof/client/player/cPlayers.lua',
@@ -92,6 +93,7 @@ server_scripts {
     'oof/shared/value-storage/*.lua', -- ValueStorage class
     'oof/shared/timer/*.lua', -- Timer class
     'oof/shared/xml/*.lua', -- XML class
+    'oof/shared/csv/*.lua', -- CSV class
     'oof/server/player/sPlayer.lua', -- Player class
     'oof/server/player/sPlayers.lua', -- Players class
     'oof/server/player/sPlayerManager.lua', -- PlayerManager class

@@ -319,11 +319,11 @@ function TestPingPongServer:__init()
 
     Network:Subscribe("Pong", function(args) self:Pong(args) end)
 
-    Events:Subscribe("ClientReady", function(args) self:ClientReady(args) end)
+    Events:Subscribe("ClientModulesLoaded", function(args) self:ClientModulesLoaded(args) end)
 end
 
 -- Event fired by OOF when a player finishes loading all their scripts after connecting
-function TestPingPongServer:ClientReady(args)
+function TestPingPongServer:ClientModulesLoaded(args)
     Network:Send("Ping", args.player, {
         ping_message = "hello from server!"
     })
@@ -361,13 +361,13 @@ The serverside code creates a singleton class and adds two subscriptions in the 
 
 `Network:Subscribe(event_name, callback)` subscribes to a network event that is called by clients. When it is called, the callback function is triggered. The callback includes a table of data that includes the `player` (the Player instance of the client that sent the data) and any data that the player also sent.
 
-`Events:Subscribe(event_name, callback)` works similarly, except that it only works on either serverside or clientside. In this case, we're subscribing to the `ClientReady` event that OOF calls when a client has finished loading all their scripts and is ready to be sent data.
+`Events:Subscribe(event_name, callback)` works similarly, except that it only works on either serverside or clientside. In this case, we're subscribing to the `ClientModulesLoaded` event that OOF calls when a client has finished loading all their scripts and is ready to be sent data.
 
 The code execution goes something like this:
 1. Server loads its scripts and creates the `TestPingPongServer` singleton.
 2. The `TestPingPongServer` singleton initializes and subscribes to the two events.
 3. A client connects and downloads and executes all scripts. This includes the setup of the singleton, as well as the event subscriptions.
-4. After the client loads all scripts, the server receives the `ClientReady` event. 
+4. After the client loads all scripts, the server receives the `ClientModulesLoaded` event. 
 5. Inside the callback, the server triggers the network event on the client.
 6. The client receives the network event along with the data passed, and then calls another network event to the server with different data.
 7. The server receives this data and prints it accordingly.
