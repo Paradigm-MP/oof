@@ -49,7 +49,7 @@ end
 
 function PlayerManager:ClientReady(args)
     -- fired after a client has executed all the inits & postloads from all their classes
-    Events:Fire("ClientReady", {player = args.player})
+    Events:Fire("ClientModulesLoaded", {player = args.player})
 end
 
 -- Reset name to default if the api is stopped
