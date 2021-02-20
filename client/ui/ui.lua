@@ -12,11 +12,14 @@ end
 ]]
 function UIInstance:Subscribe(event_name, instance, callback)
     RegisterNUICallback(string.format("%s_%s", self.name, event_name), function(args)
-        if not callback then
-            instance(args)
-        else
-            callback(instance, args)
-        end
+        -- Use a thread to get proper callstack on future errors
+        Citizen.CreateThread(function()
+            if not callback then
+                instance(args)
+            else
+                callback(instance, args)
+            end
+        end)
     end)
 end
 
