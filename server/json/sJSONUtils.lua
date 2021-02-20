@@ -1,7 +1,9 @@
 JsonUtils = class()
 
 function JsonUtils:LoadJSON(path)
-    return json.decode(LoadResourceFile(GetCurrentResourceName(), path))
+    local contents = LoadResourceFile(GetCurrentResourceName(), path)
+    if not contents then return end
+    return json.decode(contents)
 end
 
 function JsonUtils:SaveJSON(data, path)
