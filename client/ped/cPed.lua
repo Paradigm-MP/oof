@@ -572,8 +572,8 @@ function Ped:GetBonePosition(bone)
     return GetWorldPositionOfEntityBone(self.ped_id, bone)
 end
 
-function Ped:GetBonePositionWithOffset(bone, offset)
-    return GetPedBoneCoords(self.ped_id, bone, offset.x, offset.y, offset.z)
+function Ped:GetBonePositionWithOffset(bone_enum, offset)
+    return GetPedBoneCoords(self.ped_id, GetEntityBoneIndexByName(self.ped_id, PedBoneEnum:MapToBoneName(bone_enum)), offset.x, offset.y, offset.z)
 end
 
 -- pastebin.com/D7JMnX1g 
