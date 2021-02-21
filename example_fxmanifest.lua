@@ -94,6 +94,7 @@ server_scripts {
     'oof/shared/timer/*.lua', -- Timer class
     'oof/shared/xml/*.lua', -- XML class
     'oof/shared/csv/*.lua', -- CSV class
+    'oof/server/fs-additions/*.lua', -- Directory/file exists helper functions
     'oof/server/player/sPlayer.lua', -- Player class
     'oof/server/player/sPlayers.lua', -- Players class
     'oof/server/player/sPlayerManager.lua', -- PlayerManager class
