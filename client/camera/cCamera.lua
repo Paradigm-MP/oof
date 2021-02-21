@@ -43,6 +43,10 @@ function Camera:InterpolateBetween(pos1, pos2, rot1, rot2, duration)
     SetCamAffectsAiming(self.to_cam, false)
 end
 
+function Camera:SetFOV(fov)
+    SetCamFov(self:GetCurrentCam(), tofloat(fov))
+end
+
 function Camera:DetachFromPlayer(position, rotation, ease, ease_time)
     assert(self.freecam == nil 
     and self.from_cam == nil
