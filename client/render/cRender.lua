@@ -253,7 +253,7 @@ if IsRedM then
         TypeCheck:Text(text)
         TypeCheck:Position(pos)
 
-        local str = Citizen.InvokeNative(0xFA925AC00EB830B9, 10, "LITERAL_STRING", text, Citizen.ResultAsLong())
+        local str = Citizen.InvokeNative(0xFA925AC00EB830B9, 10, "LITERAL_STRING", tostring(text), Citizen.ResultAsLong())
         SetTextScale(tofloat(scale), tofloat(scale))
         SetTextColor(math.floor(color.r), math.floor(color.g), math.floor(color.b), math.floor(color.a))
         if enableShadow then SetTextDropshadow(1, 0, 0, 0, 255) end
@@ -270,9 +270,9 @@ elseif IsFiveM then
     ]]
     function Render:DrawText(pos, text, color, scale, font)
         font = font or 0
+        text = tostring(text)
         TypeCheck:Number(scale)
         TypeCheck:Color(color)
-        TypeCheck:Text(text)
         TypeCheck:Position(pos)
         SetTextFont(font)
         SetTextScale(1, scale + 0.00000001) -- For some reason it can't be 1 LOL
