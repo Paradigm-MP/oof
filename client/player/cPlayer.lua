@@ -108,6 +108,18 @@ function Player:SetMeleeWeaponDamageModifier(modifier)
     SetPlayerMeleeWeaponDamageModifier(self:GetPlayerId(), tofloat(modifier))
 end
 
+function Player:DisableFiring(disabled)
+    self.firing_disabled = disabled
+
+    Citizen.CreateThread(function()
+        while self.firing_disabled do
+            DisablePlayerFiring(self.player_id, true)
+            Wait(1)
+        end
+    end)
+
+end
+
 function Player:GetPosition()
     return self:GetPed():GetPosition()
 end
