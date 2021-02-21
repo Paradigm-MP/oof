@@ -5,6 +5,28 @@ function Camera:__init()
     self:FadeIn(0)
 end
 
+CameraViewMode = 
+{
+    ThirdPersonClose = 0,
+    ThirdPersonMiddle = 1,
+    ThirdPersonFar = 2,
+    FirstPerson = 4
+}
+
+if IsFiveM then
+    -- Locks the camera view mode to a specific CameraViewMode
+    -- Must be called every frame to override manual controls
+    -- unless you also disable the camera control with:
+    -- LocalPlayer:RestrictAction(Control.NextCamera, true)
+    function Camera:LockCameraMode(mode)
+        if GetFollowPedCamViewMode() ~= mode or 
+        GetFollowVehicleCamViewMode() ~= mode then
+            SetFollowPedCamViewMode(mode)
+            SetFollowVehicleCamViewMode(mode)
+        end
+    end
+end
+
 -- Interpolates between two positions over duration ms
 function Camera:InterpolateBetween(pos1, pos2, rot1, rot2, duration)
     assert(self.freecam == nil 
