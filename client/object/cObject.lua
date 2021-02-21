@@ -28,7 +28,7 @@ function Object:__init(args)
 
     LoadModel(self.hash, function()
         self.entity = CreateObject(self.hash, args.position.x, args.position.y, args.position.z, args.isNetwork == true, true, true, true, true)
-        self:SetQuaternion(type(args.quaterion) == "quat" and args.quaterion or quat(0,0,0,0))
+        self:SetQuaternion(type(args.quaternion) == "quat" and args.quaternion or quat(0,0,0,0))
         self:SetKinematic(args.kinematic or false)
         self:SetAsPersistent()
         if args.rotation then self:SetRotation(args.rotation) end
