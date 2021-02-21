@@ -394,6 +394,11 @@ function Entity:GetEntityBonePosition(bone_name)
     return bone_position
 end
 
+-- Returns vector3 in degrees of rotation
+function Entity:GetBoneRotation(bone_enum)
+    return GetWorldRotationOfEntityBone(self.entity, GetEntityBoneIndexByName(self.entity, PedBoneEnum:MapToBoneName(bone_enum)))
+end
+
 function Entity:GetPedBonePositionPerformance(bone_enum)
     return GetWorldPositionOfEntityBone(self.entity, GetEntityBoneIndexByName(self.entity, PedBoneEnum:MapToBoneName(bone_enum)))
 end
