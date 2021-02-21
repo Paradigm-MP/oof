@@ -108,6 +108,14 @@ function Player:SetMeleeWeaponDamageModifier(modifier)
     SetPlayerMeleeWeaponDamageModifier(self:GetPlayerId(), tofloat(modifier))
 end
 
+function Player:SetRunSprintMultiplier(multiplier)
+    SetRunSprintMultiplierForPlayer(self:GetPlayerId(), tofloat(multiplier))
+end
+
+function Player:ResetStamina()
+    ResetPlayerStamina(self.player_id)
+end
+
 function Player:DisableFiring(disabled)
     self.firing_disabled = disabled
 
