@@ -200,18 +200,87 @@ function World:GetWeather()
 end
 
 function World:DisablePedSpawning()
+
+    if IsFiveM then
+        
+        SetGarbageTrucks(0)
+        SetRandomBoats(0)
+
+        for i = 1, 15 do
+			EnableDispatchService(i, false)
+		end
+
+        local SCENARIO_TYPES = {
+            "DRIVE",
+            "WORLD_VEHICLE_EMPTY",
+            "WORLD_VEHICLE_DRIVE_SOLO",
+            "WORLD_VEHICLE_BOAT_IDLE_ALAMO",
+            "WORLD_VEHICLE_PARK_PERPENDICULAR_NOSE_IN",
+            "WORLD_VEHICLE_MILITARY_PLANES_SMALL",
+            "WORLD_VEHICLE_MILITARY_PLANES_BIG",
+        }
+        local SCENARIO_GROUPS = {
+            2017590552, -- LSIA planes
+            2141866469, -- Sandy Shores planes
+            "BLIMP",
+            "ALAMO_PLANES",
+            "ARMY_HELI",
+            "GRAPESEED_PLANES",
+            "SANDY_PLANES",
+            "ng_planes",
+        }
+        local SUPPRESSED_MODELS = {
+            "SHAMAL",
+            "LUXOR",
+            "LUXOR2",
+            "LAZER",
+            "TITAN",
+            "CRUSADER",
+            "RHINO",
+            "AIRTUG",
+            "RIPLEY",
+            "SUNTRAP",
+            "BLIMP",
+        }
+
+        Citizen.CreateThread(function()
+            while true do
+
+                for _, sctyp in pairs(SCENARIO_TYPES) do
+                    SetScenarioTypeEnabled(sctyp, false)
+                end
+
+                for _, scgrp in pairs(SCENARIO_GROUPS) do
+                    SetScenarioGroupEnabled(scgrp, false)
+                end
+
+                for _, model in pairs(SUPPRESSED_MODELS) do
+                    SetVehicleModelIsSuppressed(GetHashKey(model), true)
+                end
+
+                Wait(5000)
+            end
+        end)
+
+    end
+
     Citizen.CreateThread(function()
         -- disables base-game peds spawning
-        SetPedNonCreationArea(-9999.0, -9999.0, -9999.0, 9999.0, 9999.0, 9999.0)
+        SetPedNonCreationArea(-16384.0, -16384.0, -16384.0, 16384.0, 16384.0, 16384.0)
 
         while true do
             Wait(0)
-            --SetPedDensityMultiplierThisFrame(0) -- native does not exist
-            SetScenarioPedDensityMultiplierThisFrame(0.0)
-            --SetScenarioPedDensityMultiplierThisFrame(0)
-            SetVehicleDensityMultiplierThisFrame(0)
-            SetRandomVehicleDensityMultiplierThisFrame(0)
-            SetParkedVehicleDensityMultiplierThisFrame(0)
+            if IsFiveM then
+                SetPedDensityMultiplierThisFrame(0.0)
+            end
+
+            SetScenarioPedDensityMultiplierThisFrame(0.0, 0.0)
+            SetVehicleDensityMultiplierThisFrame(0.0)
+            SetRandomVehicleDensityMultiplierThisFrame(0.0)
+            SetParkedVehicleDensityMultiplierThisFrame(0.0)
+            
+            local pos = LocalPlayer:GetPosition()
+            RemoveVehiclesFromGeneratorsInArea(pos.x - 500, pos.y - 500, pos.z - 500, pos.x + 500, pos.y + 500, pos.z + 500);
         end
     end)
 end
