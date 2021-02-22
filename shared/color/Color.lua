@@ -80,6 +80,23 @@ Colors.RDR2 = -- Colors used in RDR2 stuff like notifications
     ["Light Red"] = "~t8~",
 }
 
+Colors.GTAV = -- Colors used in GTAV stuff like notifications
+{
+    ["Red"] = "~r~",
+    ["Blue"] = "~b~",
+    ["Green"] = "~g~",
+    ["Yellow"] = "~y~",
+    ["Purple"] = "~p~",
+    ["Orange"] = "~o~",
+    ["Gray"] = "~c~",
+    ["Darkgray"] = "~m~",
+    ["Black"] = "~u~",
+    ["Newline"] = "~n~",
+    ["Defaultwhite"] = "~s~",
+    ["White"] = "~w~",
+    ["Bold"] = "~h~"
+}
+
 Colors.Console = -- Colors used in console and server name
 {
     ["Red"] = "^1",
