@@ -264,6 +264,10 @@ function World:DisablePedSpawning()
 
     end
 
+    AddEventHandler("populationPedCreating", function()
+        CancelEvent()
+    end)
+
     Citizen.CreateThread(function()
         -- disables base-game peds spawning
         SetPedNonCreationArea(-16384.0, -16384.0, -16384.0, 16384.0, 16384.0, 16384.0)
