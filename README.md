@@ -137,9 +137,6 @@ The chat module is another very essential module. Internally, it uses the UI mod
 #### [Events Module](https://github.com/Paradigm-MP/oof-defaultevents)
 The events module includes a lot of default events that you'll probably want to subscribe to and use. Some of these events include when a player dies, a ped dies, and ped spawn events. Additionally, it includes events that fire every second, minute, and hour for convenience.
 
-#### [AntiCheat Module]()
-This is an imcomplete module that serves as a base for anticheat capabilities for your server. Currently it only checks if a client illegally spawned an object (i.e. didn't use OOF). However, similar checks are possible for spawning peds as well. Speedhack detection can also be added. In terms of protecting sensitive variables and event names, we also have a solution for that that we will release in the future. However, for the time being, you could edit our network event layer to modify the event names in case you are worried about that.
-
 #### [Blackscreen Module](https://github.com/Paradigm-MP/oof-blackscreen)
 This is a very simple module that simply allows you to make the screen fade or cut to black, depending on the arguments you supply. It's important to use something like this so that the black screen overlays over all existing UI and game elements. It's also a great script for learning how the class and event systems work in OOF.
 
