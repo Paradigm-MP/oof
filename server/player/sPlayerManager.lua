@@ -3,14 +3,7 @@ PlayerManager = class()
 function PlayerManager:__init()
     -- If whitelist is enabled or not
     self.whitelist_enabled = GetConvarInt("whitelist_enabled", 0) == 1
-    self.original_server_name = GetConvar("sv_hostname", "")
     print("Whitelist enabled: " .. tostring(self.whitelist_enabled))
-
-    --[[if self.whitelist_enabled  then
-        SetConvar("sv_hostname", 
-            self.original_server_name .. string.format(" [%sWHITELIST%s]", 
-            Colors.Console.Yellow, Colors.Console.Default))
-    end]]
 
     self.max_players = GetConvarInt('sv_maxclients', 32)
     self.queue = {} -- Queue of players who are waiting to get into the server
@@ -22,18 +15,15 @@ end
 
 function PlayerManager:ListenForLocalEvents()
     -- when a player disconnects
-    AddEventHandler("playerDropped", function(reason)
+    Events:Subscribe("playerDropped", function(reason)
         self:PlayerDisconnect(source, reason)
     end)
 
     -- handle their connection request
-    AddEventHandler("playerConnecting", function(name, setKickReason, deferrals)
+    Events:Subscribe("playerConnecting", function(name, setKickReason, deferrals)
         self:PlayerConnect(source, name, setKickReason, deferrals)
     end)
 
-    AddEventHandler('onResourceStop', function(resourceName)
-        self:OnResourceStop(resourceName)
-    end)
 end
 
 function PlayerManager:ListenForNetworkEvents()
@@ -50,13 +40,6 @@ end
 function PlayerManager:ClientReady(args)
     -- fired after a client has executed all the inits & postloads from all their classes
     Events:Fire("ClientModulesLoaded", {player = args.player})
-end
-
--- Reset name to default if the api is stopped
-function PlayerManager:OnResourceStop(resourceName)
-    if resourceName == GetCurrentResourceName() then
-        SetConvar("sv_hostname", self.original_server_name)
-    end
 end
 
 function PlayerManager:PlayerDisconnect(source, reason)
