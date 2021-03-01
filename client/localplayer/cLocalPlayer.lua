@@ -245,7 +245,7 @@ end
 ]]
 function LocalPlayer:NetworkResurrect(args)
     NetworkResurrectLocalPlayer(args.pos.x, args.pos.y, args.pos.z, args.heading or 0, true, true, false)
-    self.ped = Ped({ped = GetPlayerPed(PlayerId())})
+    self.ped = Ped({ped = self:GetPedId()})
 end
 
 function LocalPlayer:GetPlayer()
@@ -265,15 +265,15 @@ function LocalPlayer:GetPlayerId()
 end
 
 function LocalPlayer:GetPedId()
-    return GetPlayerPed(PlayerId())
+    return PlayerPedId()
 end
 
 function LocalPlayer:GetEntity()
-    return Entity(GetPlayerPed(PlayerId()))
+    return Entity(self:GetPedId())
 end
 
 function LocalPlayer:GetEntityId()
-    return GetPlayerPed(PlayerId())
+    return self:GetPedId()
 end
 
 function LocalPlayer:SetTotallyInvincible(invincible)
