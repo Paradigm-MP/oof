@@ -10,7 +10,7 @@ end
 
 -- !! this function must be __loadFirst compatible. ask Dev_34 if confused
 function sPlayers:AddPlayer(source, already_connected)
-    if self:GetById(source) then return end -- Player already exists
+    if self:GetById(source) then return end
 
     local ids = self:GetPlayerIdentifiers(source)
 
@@ -22,6 +22,11 @@ function sPlayers:AddPlayer(source, already_connected)
 
     local player = Player(tonumber(source), ids) -- Player is an immediate_class
     local player_unique_id = player:GetUniqueId()
+
+    if self.players_by_unique_id[player_unique_id] then
+        DropPlayer(source, "A player with your unique id already exists on the server")
+        return
+    end
 
     self.players_by_unique_id[player_unique_id] = player
 

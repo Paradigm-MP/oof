@@ -63,7 +63,7 @@ function Player:GetId()
 end
 
 function Player:GetUniqueId()
-    return self.ids.license
+    return self:GetSteamId()
 end
 
 function Player:GetSteamId()

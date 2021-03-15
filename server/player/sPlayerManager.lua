@@ -78,26 +78,26 @@ function PlayerManager:PlayerConnect(source, name, setKickReason, deferrals)
 
     deferrals.update(OOF_Config.Deferrals.CheckingSteamId)
 
-    --[[for _, v in pairs(identifiers) do
+    for _, v in pairs(identifiers) do
         if string.find(v, "steam") then
             steamIdentifier = v
             break
         end
-    end]]
+    end
 
-    --[[if not steamIdentifier then
+    if not steamIdentifier then
         deferrals.done(OOF_Config.Deferrals.NotConnectedToSteam)
         CancelEvent()
         return
-    else]]
-    --if not self.whitelist_enabled or IsPlayerAceAllowed(source, "whitelist") then
-        deferrals.update(OOF_Config.Deferrals.Connecting)
-    --[[else
-        deferrals.done(OOF_Config.Deferrals.NotWhitelisted)
-        CancelEvent()
-        return
-    end]]
-    --end
+    else
+        if not self.whitelist_enabled or IsPlayerAceAllowed(source, "whitelist") then
+            deferrals.update(OOF_Config.Deferrals.Connecting)
+        else
+            deferrals.done(OOF_Config.Deferrals.NotWhitelisted)
+            CancelEvent()
+            return
+        end
+    end
 
     local name = GetPlayerName(source)
 
