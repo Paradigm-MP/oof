@@ -15,7 +15,7 @@ function Keymap:Register(key, keytype, name, cb)
     if not self.maps[key] then
         self.maps[key] = {}
 
-        local keymap_name = string.format("keymap_%s", name)
+        local keymap_name = string.format("keymap_%s", name:gsub(" ", "_"))
         RegisterKeyMapping("+" .. keymap_name, name, keytype, key)
 
         RegisterCommand("+" .. keymap_name, function()
