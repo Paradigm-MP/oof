@@ -18,7 +18,7 @@ function Entity:GetEntity()
 end
 
 function Entity:Exists()
-    return DoesEntityExist(self.entity)
+    return DoesEntityExist(self.entity) == 1
 end
 
 -- not sure if this works (doesnt seem to work well with timeout on anim)
