@@ -8,7 +8,7 @@ function Player:__init(player_id, steam_id, server_id, unique_id)
     self.unique_id = unique_id
     self.__is_player_instance = true
     -- TODO: implemetation point in 1.3
-    self.group = CreateGroup(self.server_id)
+    -- self.group = CreateGroup(self.server_id)
     --print("Player group id: ", self.group)
 
     self:InitializeValueStorage(self)
