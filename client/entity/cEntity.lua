@@ -42,6 +42,34 @@ function Entity:SetKinematic(enabled)
     FreezeEntityPosition(self.entity, enabled)
 end
 
+ForceType = {
+    MinForce = 0,
+    MaxForceRot = 1,
+    MinForce2 = 2,
+    MaxForceRot2 = 3,
+    ForceNoRot = 4,
+    ForceRotPlusForce = 5
+}
+
+function Entity:ApplyForce(forceType, amount, offset, boneIndex, isDirectionRel, ignoreUpVec, isForceRel)
+    ApplyForceToEntity(
+        self.entity --[[ Entity ]], 
+        forceType --[[ integer ]], 
+        amount.x --[[ number ]], 
+        amount.y --[[ number ]], 
+        amount.z --[[ number ]], 
+        offset.x --[[ number ]], 
+        offset.y --[[ number ]], 
+        offset.z --[[ number ]], 
+        boneIndex --[[ integer ]], 
+        isDirectionRel --[[ boolean ]], 
+        ignoreUpVec --[[ boolean ]], 
+        isForceRel --[[ boolean ]], 
+        false, 
+        true
+    )
+end
+
 -- other_entity is entity id
 -- this boy is a coroutine blocker
 function Entity:InterpolateEntityHeadingTowardsEntityBLOCKING(other_entity, duration, callback)
