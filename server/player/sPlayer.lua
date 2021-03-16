@@ -23,9 +23,15 @@ function Player:IsValid()
     return GetPlayerEP(self.player_id) ~= nil
 end
 
+-- Onesync
 function Player:GetPed()
     return GetPlayerPed(self.player_id)
 end
+
+function Player:GetPosition()
+    return GetEntityCoords(self:GetPed())
+end
+-- Onesync end
 
 function Player:Kick(reason)
     DropPlayer(self.player_id, reason or "You have been kicked from the server")
