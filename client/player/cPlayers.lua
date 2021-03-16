@@ -22,7 +22,7 @@ end
 
 -- getting all the players from the server
 function cPlayers:SyncConnectedPlayers(data, on_init)
-    print("--- syncing Players ---")
+    -- print("--- syncing Players ---")
     local local_player_ped_id = LocalPlayer:GetPedId()
 
     for player_unique_id, sync_data in pairs(data) do
@@ -36,13 +36,13 @@ function cPlayers:SyncConnectedPlayers(data, on_init)
                 Events:Fire("PlayerJoined", {player = player})
             end
 
-            print("Player Added: ", player)
+            -- print("Player Added: ", player)
         else
             self:AddPlayer(sync_data)
         end
     end
     
-    print("------------------------------------")
+    -- print("------------------------------------")
 end
 
 function cPlayers:GetLocalPlayer()
