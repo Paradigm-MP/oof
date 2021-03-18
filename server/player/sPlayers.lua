@@ -111,6 +111,7 @@ end
 
 -- "source" id: number
 function sPlayers:GetById(id)
+    id = tonumber(id)
     for player_unique_id, player in pairs(self.players_by_unique_id) do
         if player:GetId() == id then
             return player
