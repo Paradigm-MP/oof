@@ -23,15 +23,33 @@ function Player:IsValid()
     return GetPlayerEP(self.player_id) ~= nil
 end
 
--- Onesync
+function Player:GetInvincible()
+    return GetPlayerInvincible(self.player_id)
+end
+
+function Player:GetRoutingBucket()
+    return GetPlayerRoutingBucket(self.player_id)
+end
+
+function Player:SetRoutingBucket(bucket)
+    return SetPlayerRoutingBucket(self.player_id, bucket)
+end
+
 function Player:GetPed()
-    return GetPlayerPed(self.player_id)
+    return Ped(GetPlayerPed(self.player_id))
 end
 
 function Player:GetPosition()
-    return GetEntityCoords(self:GetPed())
+    return self:GetPed():GetPosition()
 end
--- Onesync end
+
+function Player:GetNumTokens()
+    return GetNumPlayerTokens(self.player_id)
+end
+
+function Player:GetToken(index)
+    return GetPlayerToken(self.player_id, index)
+end
 
 function Player:Kick(reason)
     DropPlayer(self.player_id, reason or "You have been kicked from the server")
