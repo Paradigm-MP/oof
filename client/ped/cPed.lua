@@ -653,6 +653,10 @@ function Ped:SetHeadOverlay(overlayID, index, opacity)
     SetPedHeadOverlay(self.ped_id, overlayID, index, tofloat(opacity))
 end
 
+-- See https://runtime.fivem.net/doc/natives/?_0x262B14F48D29DE80 for details
+function Ped:SetComponentVariation(componentId, drawableId, textureId, paletteId)
+    SetPedComponentVariation(self.ped_id, componentId, drawableId, textureId, paletteId)
+end
 
 PedTypes =
 {  
