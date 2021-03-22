@@ -15,6 +15,9 @@ function Player:__init(player_id, ids)
         0.8 + (math.random() * 0.2)
     )
 
+    -- Reset randomseed
+    math.randomseed(GetGameTimer())
+
     self:InitializeValueStorage(self)
     self:SetValueStorageNetworkId(self.player_id)
 end
