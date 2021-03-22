@@ -24,6 +24,11 @@ function Ped:__init(args)
     self:InitializeEntity(self.ped_id)
 end
 
+function Ped:UpdatePedId(ped_id)
+    self.ped_id = ped_id
+    self.entity = self.ped_id
+end
+
 function Ped:GetPedId()
     return self.ped_id
 end

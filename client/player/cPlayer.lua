@@ -7,9 +7,7 @@ function Player:__init(player_id, steam_id, server_id, unique_id)
     self.server_id = server_id
     self.unique_id = unique_id
     self.__is_player_instance = true
-    -- TODO: implemetation point in 1.3
-    -- self.group = CreateGroup(self.server_id)
-    --print("Player group id: ", self.group)
+    self.ped = Ped({ped = GetPlayerPed(self.player_id)})
 
     self:InitializeValueStorage(self)
     self:SetValueStorageNetworkId(self.server_id)
@@ -44,15 +42,20 @@ function Player:SetModel(model, cb)
 end
 
 --[[
-    Recreates the Ped class so that the Ped is still valid for this player.
+    Updates the Ped class so that the Ped is still valid for this player.
     Useful for respawning or changing model.
 ]]
 function Player:GetPed()
-    return Ped({ped = GetPlayerPed(self.player_id)})
+    local player_ped_id = GetPlayerPed(self.player_id)
+    if self.ped:GetEntityId() ~= player_ped_id then
+        self.ped:UpdatePedId(player_ped_id)
+    end
+
+    return self.ped
 end
 
 function Player:GetEntity()
-    return Entity(GetPlayerPed(self.player_id))
+    return self:GetPed()
 end
 
 function Player:GetEntityId()

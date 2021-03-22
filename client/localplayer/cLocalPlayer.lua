@@ -16,6 +16,7 @@ function LocalPlayer:__init()
 
     self.spawned = false
     self.controls_enabled = true
+    self.ped = Ped({ped = self:GetPedId()})
 
     self.disabled_actions = {}
 
@@ -245,7 +246,7 @@ end
 ]]
 function LocalPlayer:NetworkResurrect(args)
     NetworkResurrectLocalPlayer(args.pos.x, args.pos.y, args.pos.z, args.heading or 0, true, true, false)
-    self.ped = Ped({ped = self:GetPedId()})
+    self.ped:UpdatePedId(self:GetPedId())
 end
 
 function LocalPlayer:GetPlayer()
@@ -257,7 +258,7 @@ function LocalPlayer:HasPed()
 end
 
 function LocalPlayer:GetPed()
-    return Ped({ped = self:GetPedId()})
+    return self:GetPlayer():GetPed()
 end
 
 function LocalPlayer:GetPlayerId()
