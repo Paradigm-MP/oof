@@ -374,7 +374,7 @@ end
 
     args (in table):
         entity: (Entity) the entity to attach to
-        boneIndex: (number, optional) bone index to attach to
+        bone_enum: (number, optional) bone enum to attach to
         position: (vector3, optional) position on the entity to attach to
         rotation: (vector3, optional): rotation to attach at
         useSoftPinning (bool, optional): whether to use soft pinning or not
@@ -388,7 +388,7 @@ function Entity:AttachToEntity(args)
     AttachEntityToEntity(
         self.entity --[[ Entity ]], 
         args.entity:GetEntityId() --[[ Entity ]], 
-        args.boneIndex or 0 --[[ integer ]], 
+        args.bone_enum and GetEntityBoneIndexByName(args.entity:GetEntityId(), PedBoneEnum:MapToBoneName(args.bone_enum)) or 0 --[[ integer ]], 
         args.position and args.position.x or 0.0 --[[ number ]], 
         args.position and args.position.y or 0.0 --[[ number ]], 
         args.position and args.position.z or 0.0 --[[ number ]], 
