@@ -24,7 +24,7 @@ ParticleEffect = class()
             bone - (number) the index of the bone to play the effect on
 
     scale - (number) how big the particle is
-    rotation - (vector3) the rotation of the particle
+    rotation (optional) - (vector3) the rotation of the particle
     loop (optional) - (bool) if you want the effect to loop, default false
     axis (optional) - (vector3) if you want to flip axes and get wild (Invert Axis Flags)
     callback (optional) - (func) if you want to do something after the effect is spawned
@@ -35,13 +35,12 @@ function ParticleEffect:__init(args)
     assert(args.bank ~= nil, "cannot create ParticleEffect without bank")
     assert(args.type ~= nil, "cannot create ParticleEffect without type")
     assert(args.scale ~= nil, "cannot create ParticleEffect without scale")
-    assert(args.rotation ~= nil, "cannot create ParticleEffect without rotation")
 
     self.effect = args.effect
     self.bank = args.bank
     self.type = args.type
     self.scale = tofloat(args.scale)
-    self.rotation = args.rotation
+    self.rotation = args.rotation or vector3(0, 0, 0)
     self.loop = args.loop
     self.axis = axis or vector3(0, 0, 0)
     self.callback = args.callback
