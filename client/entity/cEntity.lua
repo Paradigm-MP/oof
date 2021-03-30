@@ -18,7 +18,7 @@ function Entity:GetEntity()
 end
 
 function Entity:Exists()
-    return DoesEntityExist(self.entity) == 1
+    return self.entity and DoesEntityExist(self.entity) == 1
 end
 
 -- not sure if this works (doesnt seem to work well with timeout on anim)
@@ -97,7 +97,6 @@ function Entity:InterpolateEntityHeadingTowardsEntityBLOCKING(other_entity, dura
             update_heading_delta = abs(interpolated_heading - current_heading)
             division_factor = division_factor + .5
         end
-        print("update_heading_delta: ", update_heading_delta)
 
         SetEntityHeading(self.entity, interpolated_heading)
         Wait(update_time)
