@@ -43,7 +43,7 @@ end
 
 function World:PlayerJoined(args)
 
-    Network:Send("API/World/InitialSync", args.player:GetId(), {
+    Network:Send("__World/InitialSync", args.player:GetId(), {
         timestep_enabled = self:GetTimestepEnabled(),
         time = self:GetTime(),
         blackout = self:GetBlackout(),
@@ -54,28 +54,28 @@ end
 function World:SetTime(hours, minutes, seconds)
     --print("Setting time to {", hours, "}, {", minutes, "}, {", seconds, "}")
     self.time = {hours = hours, minutes = minutes, seconds = seconds}
-    Network:Broadcast("API/World/SetTime", {time = self.time})
+    Network:Broadcast("__World/SetTime", {time = self.time})
 end
 
 function World:SetTimestepEnabled(enabled)
     self.timestep_enabled = enabled
     self:TimeStep()
-    Network:Send("API/World/SetTimestepEnabled", -1, {enabled = self:GetTimestepEnabled()})
+    Network:Send("__World/SetTimestepEnabled", -1, {enabled = self:GetTimestepEnabled()})
 end
 
 function World:SetTimeScale(scale)
     self.timescale = scale
-    Network:Send("API/World/SetTimeScale", -1, {scale = self:GetTimeScale()})
+    Network:Send("__World/SetTimeScale", -1, {scale = self:GetTimeScale()})
 end
 
 function World:SetBlackout(blackout)
     self.blackout = blackout
-    Network:Send("API/World/SetBlackout", -1, {blackout = self:GetBlackout()})
+    Network:Send("__World/SetBlackout", -1, {blackout = self:GetBlackout()})
 end
 
 function World:SetWorldWeather(weather)
     self:SetWeather(weather)
-    Network:Broadcast("API/World/SetWeather", {weather = self:GetWeather()})
+    Network:Broadcast("__World/SetWeather", {weather = self:GetWeather()})
 end
 
 function World:GetTimestepEnabled()
