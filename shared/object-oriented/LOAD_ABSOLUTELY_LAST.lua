@@ -59,7 +59,7 @@ Citizen.CreateThread(function()
         end
 
         if IsClient then
-            Network:Send("api/ClientReady")
+            Network:Send("__ClientReady")
             Events:Fire("ModulesLoaded")
         else
             Events:Fire("ModulesLoaded")

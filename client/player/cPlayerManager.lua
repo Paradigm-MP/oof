@@ -7,7 +7,7 @@ end
 
 function PlayerManager:SubscribeToEvents()
     Events:Subscribe("LocalPlayerSpawn", function()
-        Network:Send("api/PlayerSpawned")
+        Network:Send("__PlayerSpawned")
     end)
 end
 
@@ -25,8 +25,6 @@ function PlayerManager:PlayerRemoved(args)
         player:Disconnected()
 
         cPlayers:RemovePlayer(args.player_unique_id)
-
-        print("removed Player: ", player)
     end
 end
 

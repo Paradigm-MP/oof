@@ -4,12 +4,23 @@ function cPlayers:__init()
     self.players_by_unique_id = {}
     self.received_data = false
 
-    Network:Subscribe("api/SyncConnectedPlayers", function(data)
+    Network:Subscribe("__SyncConnectedPlayers", function(data)
         self:SyncConnectedPlayers(data, not self.received_data)
         self.received_data = true
     end)
 
-    Network:Send("api/RequestApiPlayerData")
+    Network:Subscribe("__SyncConnectedPlayer", function(sync_data)
+        if not self.players_by_unique_id[player_unique_id] then
+            self:AddPlayer(sync_data)
+
+            local player = self:GetByUniqueId(sync_data.unique_id)
+            Events:Fire("PlayerJoined", {player = player})
+        else
+            self:AddPlayer(sync_data)
+        end
+    end)
+
+    Network:Send("__RequestApiPlayerData")
 
     while not self.received_data do
         Wait(10)
@@ -23,11 +34,8 @@ end
 -- getting all the players from the server
 function cPlayers:SyncConnectedPlayers(data, on_init)
     -- print("--- syncing Players ---")
-    local local_player_ped_id = LocalPlayer:GetPedId()
 
     for player_unique_id, sync_data in pairs(data) do
-        local player_ped = GetPlayerPed(GetPlayerFromServerId(sync_data.source_id))
-
         if not self.players_by_unique_id[player_unique_id] then
             self:AddPlayer(sync_data)
 
@@ -70,12 +78,10 @@ function cPlayers:GetNearestPlayer(position)
 end
 
 function cPlayers:AddPlayer(sync_data)
-    local player = Player(GetPlayerFromServerId(sync_data.source_id), 
-        sync_data.steam_id, sync_data.source_id, sync_data.unique_id)
+    local player = Player(sync_data.source_id, sync_data.steam_id, sync_data.source_id, sync_data.unique_id)
     player:SetName(sync_data.name)
 
     for name, value in pairs(sync_data.network_values) do
-        --Chat:Print("Set net val on player")
         player:SetValue(name, value)
     end
 

@@ -27,14 +27,16 @@ function PlayerManager:ListenForLocalEvents()
 end
 
 function PlayerManager:ListenForNetworkEvents()
-    Network:Subscribe("api/RequestApiPlayerData", self, self.PlayerInitialDataRequest)
-    Network:Subscribe("api/ClientReady", self, self.ClientReady)
+    Network:Subscribe("__RequestApiPlayerData", self, self.PlayerInitialDataRequest)
+    Network:Subscribe("__ClientReady", self, self.ClientReady)
 end
 
 -- this comes from cPlayers:__loadFirst()
-function PlayerManager:PlayerInitialDataRequest(data)
-    sPlayers:AddPlayer(data.source)
-    self:SyncConnectedPlayers() -- send the updated players list to every client
+function PlayerManager:PlayerInitialDataRequest(args)
+    sPlayers:AddPlayer(args.source)
+    local player = sPlayers:GetById(args.source)
+    self:SyncConnectedPlayers(player) -- send the updated players list to this client
+    self:SyncNewPlayer(player)
 end
 
 function PlayerManager:ClientReady(args)
@@ -46,7 +48,6 @@ function PlayerManager:PlayerDisconnect(source, reason)
     self.num_players_connected = self.num_players_connected - 1
     local player = sPlayers:GetById(source)
     if not player then -- can be caused by connect (not fully), and then disconnect
-        print("player not found on PlayerDisconnect")
         return
     end
     local player_unique_id = player:GetUniqueId()
@@ -168,10 +169,16 @@ function PlayerManager:GetPositionInQueue(source)
     return '???'
 end
 
-function PlayerManager:SyncConnectedPlayers()
+function PlayerManager:SyncNewPlayer(player)
+    local sync_data = sPlayers:GetPlayerSyncData(player)
+
+    Network:Broadcast("__SyncConnectedPlayer", sync_data)
+end
+
+function PlayerManager:SyncConnectedPlayers(player)
     local sync_data = sPlayers:GetAllSyncData()
 
-    Network:Broadcast("api/SyncConnectedPlayers", sync_data)
+    Network:Send("__SyncConnectedPlayers", player, sync_data)
 end
 
 PlayerManager = PlayerManager()

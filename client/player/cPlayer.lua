@@ -1,13 +1,20 @@
 -- a Player instance represents a single player in the game
 Player = class(ValueStorage)
 
-function Player:__init(player_id, steam_id, server_id, unique_id)
-    self.player_id = player_id
+function Player:__init(source_id, steam_id, server_id, unique_id)
+    self.source_id = source_id
     self.steam_id = steam_id
     self.server_id = server_id
     self.unique_id = unique_id
     self.__is_player_instance = true
-    self.ped = Ped({ped = GetPlayerPed(self.player_id)})
+
+    -- Wait until player is valid to get player id
+    Citizen.CreateThread(function()
+        while not self.player_id or self.player_id == -1 do
+            self.player_id = GetPlayerFromServerId(self.source_id)
+            Wait(500)
+        end
+    end)
 
     self:InitializeValueStorage(self)
     self:SetValueStorageNetworkId(self.server_id)
@@ -46,9 +53,22 @@ end
     Useful for respawning or changing model.
 ]]
 function Player:GetPed()
+    if not self.player_id or self.player_id == -1 then
+        self.player_id = GetPlayerFromServerId(self.source_id)
+    end
+
     local player_ped_id = GetPlayerPed(self.player_id)
+
+    if not self.ped then
+        self.ped = Ped({ped = player_ped_id})
+    end
+
     if self.ped:GetEntityId() ~= player_ped_id then
         self.ped:UpdatePedId(player_ped_id)
+    end
+
+    if not self.ped:Exists() then
+        self.ped = Ped({ped = player_ped_id})
     end
 
     return self.ped

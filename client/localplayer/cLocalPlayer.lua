@@ -6,11 +6,12 @@ function LocalPlayer:__init()
     getter_setter(self, "unique_id") -- declares LocalPlayer:GetUniqueId() and LocalPlayer:SetUniqueId() for self.unique_id
     getter_setter(self, "is_spawning") -- declares LocalPlayer:GetIsSpawning() and LocalPlayer:SetIsSpawning() for self.is_spawning
 
-    local local_player_ped_id = LocalPlayer:GetPedId()
+    local local_player_server_id = GetPlayerServerId(LocalPlayer:GetPlayerId())
     for player_unique_id, player in pairs(cPlayers:GetPlayers()) do
-        if player:GetPedId() == local_player_ped_id then
+        if player:GetId() == local_player_server_id then
             self:SetUniqueId(player_unique_id)
             self:SetName(player:GetName())
+            break
         end
     end
 
