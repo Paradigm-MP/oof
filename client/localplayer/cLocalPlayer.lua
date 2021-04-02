@@ -50,11 +50,9 @@ function LocalPlayer:MonitorHealthChanges()
                 local damage = self.last_recorded_health - current_health -- positive for damaged, negative for healed
                 self.last_recorded_health = current_health
 
-                --print("LocalPlayer health changed to: " .. tostring(current_health))
-
                 Events:Fire("LocalPlayerHealthChanged", {
-                    old_health = old_heath,
-                    new_health = current_health,
+                    old_health = old_health,
+                    health = current_health,
                     damage = damage
                 })
             end
