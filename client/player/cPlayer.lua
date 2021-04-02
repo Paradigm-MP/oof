@@ -139,6 +139,10 @@ function Player:ResetStamina()
     ResetPlayerStamina(self.player_id)
 end
 
+function Player:SetMinFallDistance(distance)
+    SetPlayerFallDistance(self.player_id, tofloat(distance))
+end
+
 function Player:DisableFiring(disabled)
     self.firing_disabled = disabled
 
