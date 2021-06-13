@@ -74,19 +74,12 @@ end
 function PlayerManager:PlayerConnect(source, name, setKickReason, deferrals)
 
     -- First, check steam id
-    local identifiers, steamIdentifier = GetPlayerIdentifiers(source)
+    local ids = sPlayers:GetPlayerIdentifiers(source)
     deferrals.defer()
 
     deferrals.update(OOF_Config.Deferrals.CheckingSteamId)
 
-    for _, v in pairs(identifiers) do
-        if string.find(v, "steam") then
-            steamIdentifier = v
-            break
-        end
-    end
-
-    if not steamIdentifier then
+    if not ids.steam then
         deferrals.done(OOF_Config.Deferrals.NotConnectedToSteam)
         CancelEvent()
         return
@@ -106,6 +99,16 @@ function PlayerManager:PlayerConnect(source, name, setKickReason, deferrals)
         deferrals.done()
         CancelEvent()
         return
+    end
+    
+    -- Check if someone with the same steam id is already on the server
+    local name_lower = string.lower(name)
+    for id, player in pairs(sPlayers:GetPlayers()) do
+        if player:GetSteamId() == ids.steam then
+            deferrals.done(string.format(OOF_Config.Deferrals.DuplicateClient))
+            CancelEvent()
+            return
+        end
     end
 
     Citizen.CreateThread(function()
