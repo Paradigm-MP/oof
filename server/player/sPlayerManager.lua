@@ -108,16 +108,6 @@ function PlayerManager:PlayerConnect(source, name, setKickReason, deferrals)
         return
     end
 
-    -- Check if someone with the same name is already on the server
-    local name_lower = string.lower(name)
-    for id, player in pairs(sPlayers:GetPlayers()) do
-        if string.lower(player:GetName()) == name_lower then
-            deferrals.done(string.format(OOF_Config.Deferrals.DuplicateName, name))
-            CancelEvent()
-            return
-        end
-    end
-
     Citizen.CreateThread(function()
     -- Check if the server is full or if there's a queue
         if self:GetNumPlayersConnected() >= self.max_players or #self.queue > 0 then
