@@ -410,7 +410,7 @@ function Entity:SetVisible(visible)
     SetEntityVisible(self.entity, visible)
 end
 
--- Bone names here https://github.com/MoosheTV/redm-external/blob/master/External/Bones.cs
+-- RedM bone names here https://github.com/MoosheTV/redm-external/blob/master/External/Bones.cs
 function Entity:GetEntityBonePosition(bone_name)
     local bone_index = GetEntityBoneIndexByName(self.entity, bone_name)
     if bone_index == -1 then 
