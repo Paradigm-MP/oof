@@ -82,7 +82,7 @@ function sPlayers:GetPlayerIdentifiers(source)
             ids.steam = v:gsub("steam:", "")
         end
         if string.find(v, "license") then
-            ids.license = v:gsub("license:", "")
+            ids.license = v:gsub("license:", ""):gsub("license2:")
         end
         if string.find(v, "live") then
             ids.live = v:gsub("live:", "")
