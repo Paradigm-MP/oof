@@ -4,7 +4,7 @@
 OOF is an Object-Oriented Framework for developing scripts in Lua for FiveM and RedM.
 
 ## Disclaimer
-OOF is entirely functional, but has not been officially released. Primarily, we are missing lots of documentation and need to clean up the codebase and remove unnecessary things. OOF should be officially released sometime in Q1 2021.
+OOF is entirely functional, but has not been officially released. Primarily, we are missing lots of documentation and need to clean up the codebase and remove unnecessary things.
 
 ## Disclaimer
 **This is not a "drag and drop" resource that you can simply install on your server.** This is a *framework* that can be used to help you code faster and better. You must be proficient at scripting to use this and must have experience with writing resources from scratch to use this. If you are looking for something to help improve your RP server, this is not what you are looking for. This is intended for server developers who want to create the next great server from scratch (or with a little help from OOF modules), guided by their creativity and ingenuity. If you decide to use other resources, you may have difficulty integrating them into this framework. OOF is still being developed, so there are unfinished parts. We encourage you to contribute!
